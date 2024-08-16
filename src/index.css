@@ -1,0 +1,125 @@
+body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.home-container {
+    min-height: 100vh;
+    background: #f8fafc;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+  }
+  
+  .header-content {
+    max-width: 1520px;
+    margin: 0 auto;
+  }
+  
+  .logo-image {
+    width: 70px;
+  }
+  
+  .content {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .content-row {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+  
+  .text-content {
+    margin-top: 20px;
+  }
+  
+  .main-title {
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  
+  .description {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .image-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .image-wrapper {
+    position: relative;
+    max-width: 256px;
+  }
+  
+  .weigh-bridge-image {
+    width: 100%;
+    height: auto;
+  }
+  
+  .blur-effect {
+    position: absolute;
+    bottom: 10px;
+    left: 3px;
+    width: 32px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    filter: blur(57px);
+    transform: rotateX(80deg);
+  }
+  
+  .blur-effect.secondary {
+    left: 7px;
+  }
+  
+  @media (min-width: 992px) {
+    .content-row {
+      flex-direction: row;
+      text-align: left;
+    }
+  
+    .text-content {
+      margin-top: 0;
+      padding-right: 20px;
+    }
+  
+    .image-wrapper {
+      max-width: 400px;
+    }
+  
+    .main-title {
+      font-size: 40px;
+    }
+  
+    .description {
+      font-size: 16px;
+    }
+  }
+  
+
+  /* @media screen and (min-width: 1192px){
+    .truck{
+      display:flex;
+      flex-direction: column;
+      background-color: red;  
+    }
+  } */
