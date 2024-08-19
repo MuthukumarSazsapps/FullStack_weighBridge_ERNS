@@ -1,135 +1,3 @@
-// const { app, BrowserWindow } = require('electron');
-// const path = require('path');
-// const { exec } = require('child_process');
-
-// function createWindow() {
-//   const mainWindow = new BrowserWindow({
-//     width: 800,
-//     height: 600,
-//     webPreferences: {
-//       preload: path.join(__dirname, 'preload.js'),
-//       nodeIntegration: true,
-//     },
-//   });
-
-//   mainWindow.loadURL('http://localhost:3000');
-// }
-
-// app.on('ready', () => {
-//   exec('node server.js', (err, stdout, stderr) => {
-//     if (err) {
-//       console.error(`Error starting server: ${err}`);
-//       return;
-//     }
-//     console.log(`Server output: ${stdout}`);
-//   });
-//   createWindow();
-// });
-
-// app.on('window-all-closed', () => {
-//   if (process.platform !== 'darwin') {
-//     app.quit();
-//   }
-// });
-
-// app.on('activate', () => {
-//   if (BrowserWindow.getAllWindows().length === 0) {
-//     createWindow();
-//   } 
-        //its not setup for production ,its only for production
-// });
-
-
-// const { app, BrowserWindow } = require('electron');
-// const path = require('path');
-// const { exec } = require('child_process');
-
-// function createWindow() {
-//   const mainWindow = new BrowserWindow({
-//     width: 800,
-//     height: 600,
-//     webPreferences: {
-//     //   preload: path.join(__dirname, 'preload.js'),
-//       nodeIntegration: true,
-//     },
-//   });
-
-//   if (process.env.NODE_ENV === 'development') {
-//     mainWindow.loadURL('http://localhost:3000');
-//   } else {
-//     mainWindow.loadURL(`file://${path.join(__dirname, 'build/index.html')}`);
-//   }
-// }
-
-// app.on('ready', () => {
-//   exec('node server.js', (err, stdout, stderr) => {
-//     if (err) {
-//       console.error(`Error starting server: ${err}`);
-//       return;
-//     }
-//     console.log(`Server output: ${stdout}`);
-//   });
-//   createWindow();
-// });
-
-// app.on('window-all-closed', () => {
-//   if (process.platform !== 'darwin') {
-//     app.quit();
-//   }
-// });
-
-// app.on('activate', () => {
-//   if (BrowserWindow.getAllWindows().length === 0) {
-//     createWindow();
-//   }
-//its setup for both production and development
-// });
-
-// const { app, BrowserWindow } = require('electron');
-// const path = require('path');
-// const { exec } = require('child_process');
-
-// function createWindow() {
-//   const mainWindow = new BrowserWindow({
-//     width: 800,
-//     height: 600,
-//     webPreferences: {
-//       preload: path.join(__dirname, 'preload.js'),
-//       nodeIntegration: true,
-//     },
-//   });
-
-//   if (process.env.NODE_ENV === 'development') {
-//     mainWindow.loadURL('http://localhost:3000');
-//   } else {
-//     mainWindow.loadURL(`file://${path.join(__dirname, 'build/index.html')}`);
-//   }
-// }
-
-// app.on('ready', () => {
-//   exec('node server.js', (err, stdout, stderr) => {
-//     if (err) {
-//       console.error(`Error starting server: ${err}`);
-//       return;
-//     }
-//     console.log(`Server output: ${stdout}`);
-//   });
-//   createWindow();
-// });
-
-// app.on('window-all-closed', () => {
-//   if (process.platform !== 'darwin') {
-//     app.quit();
-//   }
-// });
-
-// app.on('activate', () => {
-//   if (BrowserWindow.getAllWindows().length === 0) {
-//     createWindow();
-//   }
-// });
-
-
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const { exec } = require('child_process');
@@ -139,7 +7,6 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-    //   preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
     },
   });
@@ -152,7 +19,8 @@ function createWindow() {
 }
 
 app.on('ready', () => {
-  const serverProcess = exec('node server.js', (err, stdout, stderr) => {
+  const serverPath = path.join(__dirname, 'server.js'); // Ensure the correct path
+  const serverProcess = exec(`node ${serverPath}`, (err, stdout, stderr) => {
     if (err) {
       console.error(`Error starting server: ${err}`);
       return;
@@ -171,7 +39,10 @@ app.on('ready', () => {
     console.error(`Server stderr: ${data}`);
   });
 
-  createWindow();
+  // Add a delay to ensure server is up
+  setTimeout(() => {
+    createWindow();
+  }, 3000); // Adjust the delay as needed
 });
 
 app.on('window-all-closed', () => {
