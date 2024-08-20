@@ -2,16 +2,15 @@
   "name": "weighbridge_main",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "electron/main.js",
   "homepage": "./",
   "scripts": {
-  "start": "concurrently \"npm run react-start\" \"npm run electron-start\"",
-  "react-start": "react-scripts start",
-  "electron-start": "wait-on http://localhost:3000 && electron .",
-  "build": "react-scripts build",
-  "electron-pack": "electron-packager . MyApp --platform=win32 --arch=x64 --out=dist"
-},
-
+    "start": "concurrently \"npm run react-start\" \"npm run electron-start\"",
+    "react-start": "react-scripts start",
+    "electron-start": "wait-on http://localhost:3000 && electron .",
+    "build": "react-scripts build",
+    "electron-pack": "electron-packager . MyApp --platform=win32 --arch=x64 --out=dist"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -26,6 +25,7 @@
     "react-router-dom": "^6.25.1",
     "react-scripts": "^5.0.1",
     "react-use": "^17.5.1",
+    "sqlite3": "^5.1.7",
     "xlsx": "^0.18.5"
   },
   "browserslist": {
