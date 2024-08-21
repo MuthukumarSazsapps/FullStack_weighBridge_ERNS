@@ -1,4 +1,4 @@
-import axiosInstance from "./axios"
+import axiosInstance from "./axios.js"
 
 
 export const createcompany=async (data)=>{
@@ -12,7 +12,7 @@ export const createcompany=async (data)=>{
 
 export const getallcompanylist=async ()=>{
     try {
-        const res=await axiosInstance.get('api')
+        const res=await axiosInstance.get('/login/getAllLoginUser')
         return res
     } catch (error) {
         console.log(error)

@@ -35,12 +35,12 @@ const App = () => {
     <>
       {/* <Mainlayout/> */}
       <Routes>
-        {/* <Route element={<PrivateRoutesValidator />}> */}
+        <Route element={<PrivateRoutesValidator />}>
           <Route path='/' element={<Mainlayout />}>
             <Route index element={<Home />} />
             <Route path='/company/create' element={<Customer />} />
           </Route>
-        {/* </Route> */}
+        </Route>
         <Route path='/login' element={<LoginPage />} />
         <Route path='*' element={<NotFoundPage />} />
 
