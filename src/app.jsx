@@ -24,7 +24,6 @@ const App = () => {
         </Route>
         <Route path='/login' element={<LoginPage />} />
         <Route path='*' element={<NotFoundPage />} />
-
       </Routes>
     </>
   )
