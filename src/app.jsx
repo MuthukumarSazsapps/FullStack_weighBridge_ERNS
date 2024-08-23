@@ -12,6 +12,25 @@ import { getallcompanylist } from './app/api/company'
 const App = () => {
 
   
+
+
+  // useEffect(() => {
+
+  //   const fetchData = async () => {
+  //     try {
+  //       const result = await getallcompanylist();
+  //       // setAllCompanyList(result.data.companyLists)
+  //       console.log("nodeserver",result);
+        
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchData();
+  
+    
+  // }, [])
+  
   return (
     <>
       {/* <Mainlayout/> */}
@@ -24,6 +43,7 @@ const App = () => {
         </Route>
         <Route path='/login' element={<LoginPage />} />
         <Route path='*' element={<NotFoundPage />} />
+
       </Routes>
     </>
   )

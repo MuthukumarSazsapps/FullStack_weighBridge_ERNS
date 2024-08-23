@@ -70,6 +70,21 @@ const login = async (req, res) => {
   }
 }
 
+
+// const login=async (req, res) => {
+//     const sql = 'SELECT * FROM authlogin';
+//     db.all(sql, [], (err, rows) => {
+//       if (err) {
+//         res.status(400).json({ error: err.message });
+//         return;
+//       }
+//       res.json({
+//         message: 'success',
+//         data: rows,
+//       });
+//     });
+//   };
+
   export default {
     login,
     getAllLoginUser

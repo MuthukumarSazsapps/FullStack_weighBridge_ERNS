@@ -1,9 +1,9 @@
 import React from 'react'
 import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space } from 'antd';
 
-const CustomerForm = ({ form,loading }) => {
-  console.log("form",form);
-  
+const CustomerForm = ({ form, loading }) => {
+  console.log("form", form);
+
   const onFinish = (values) => {
     console.log('Success:', values);
   };
@@ -28,56 +28,37 @@ const CustomerForm = ({ form,loading }) => {
               <Input placeholder="Please enter user name" />
             </Form.Item>
           </Col>
-          {/* <Col span={12}>
+        </Row>
+        <Row gutter={16}>
+          <Col span={12}>
             <Form.Item
-              name="dateTime"
-              label="year From"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please choose the dateTime',
-                },
-              ]}
+              name='username'
+              label='User Name'
+              rules={[{
+                required: true,
+                message: 'please Enter User Name'
+              }]}
             >
-              <DatePicker.RangePicker
-                style={{
-                  width: '100%',
-                }}
-                getPopupContainer={(trigger) => trigger.parentElement}
-              />
+              <Input placeholder="Please enter user name" />
             </Form.Item>
-          </Col> */}
-        </Row>
-        <Row gutter={16}>
-          <Col span={12}>
-                <Form.Item
-                name='username'
-                label='User Name'
-                rules={[{
-                  required:true,
-                  message:'please Enter User Name'
-                }]}
-                >
-                   <Input placeholder="Please enter user name" />
-                </Form.Item>
           </Col>
           <Col span={12}>
-                <Form.Item
-                name='BusinessName'
-                label='Business Name'
-                rules={[{
-                  required:true,
-                  message:'please Enter Business Name'
-                }]}
-                >
-                   <Input placeholder="Please enter user Business Name" />
-                </Form.Item>
+            <Form.Item
+              name='businessName'
+              label='Business Name'
+              rules={[{
+                required: true,
+                message: 'please Enter Business Name'
+              }]}
+            >
+              <Input placeholder="Please enter user Business Name" />
+            </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              name="Address"
+              name="address"
               label="Address"
               rules={[
                 {
@@ -86,13 +67,13 @@ const CustomerForm = ({ form,loading }) => {
                 },
               ]}
             >
-              <Input placeholder="Please Enter Your Address"/>
-               
+              <Input placeholder="Please Enter Your Address" />
+
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              name="Place"
+              name="place"
               label="Place"
               rules={[
                 {
@@ -101,15 +82,15 @@ const CustomerForm = ({ form,loading }) => {
                 },
               ]}
             >
-              <Input placeholder="Please Enter the Place"/>
-                
+              <Input placeholder="Please Enter the Place" />
+
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              name="Pin"
+              name="pin"
               label="Pin"
               rules={[
                 {
@@ -118,13 +99,13 @@ const CustomerForm = ({ form,loading }) => {
                 },
               ]}
             >
-              <Input placeholder="Please Enter a Pin"/>
-                
+              <Input placeholder="Please Enter a Pin" />
+
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              name="PhoneNO"
+              name="phone"
               label="Ph.No"
               rules={[
                 {
@@ -142,7 +123,7 @@ const CustomerForm = ({ form,loading }) => {
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              name="GST"
+              name="gst"
               label="GST"
               rules={[
                 {
@@ -151,13 +132,13 @@ const CustomerForm = ({ form,loading }) => {
                 },
               ]}
             >
-              <Input placeholder="Please Enter GST"/>
-                
+              <Input placeholder="Please Enter GST" />
+
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              name="Pan"
+              name="pan"
               label="PAN"
               rules={[
                 {
@@ -172,7 +153,7 @@ const CustomerForm = ({ form,loading }) => {
             </Form.Item>
           </Col>
         </Row>
-        <Row gutter={16}>
+        {/* <Row gutter={16}>
           <Col span={12}>
             <Form.Item
               name="Password"
@@ -204,23 +185,48 @@ const CustomerForm = ({ form,loading }) => {
               />
             </Form.Item>
           </Col>
-        </Row>
-        {/* <Row gutter={16}>
-          <Col span={24}>
+        </Row> */}
+        <Row gutter={16}>
+          <Col span={12}>
             <Form.Item
-              name="description"
-              label="Description"
+              name="password"
+              label="Password"
               rules={[
                 {
                   required: true,
-                  message: 'please enter url description',
+                  message: 'Please Enter Password',
                 },
               ]}
             >
-              <Input.TextArea rows={4} placeholder="please enter url description" />
+              <Input.Password placeholder="Please Enter Password" />
             </Form.Item>
           </Col>
-        </Row> */}
+          <Col span={12}>
+            <Form.Item
+              name="confirmPassword"
+              label="Confirm Password"
+              dependencies={['password']}
+              hasFeedback
+              rules={[
+                {
+                  required: true,
+                  message: 'Please enter Confirm Password',
+                },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('password') === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error('The two passwords do not match!'));
+                  },
+                }),
+              ]}
+            >
+              <Input.Password placeholder="Please enter Confirm Password" />
+            </Form.Item>
+          </Col>
+        </Row>
+
       </Form>
     </div>
   )

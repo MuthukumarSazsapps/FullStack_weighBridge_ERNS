@@ -20,9 +20,7 @@ const Customer = () => {
   const fetchData = async () => {
     try {
       const result = await getallcompanylist();
-      // setAllCompanyList(result.data.companyLists)
-      console.log("nodeserver",result);
-      
+      setAllCompanyList(result.data.companyLists)
     } catch (error) {
       console.log(error);
     }

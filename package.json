@@ -12,6 +12,7 @@
     "build": "react-scripts build",
     "electron-pack": "electron-packager . MyApp --platform=win32 --arch=x64 --out=dist"
   },
+
   "keywords": [],
   "author": "",
   "license": "ISC",

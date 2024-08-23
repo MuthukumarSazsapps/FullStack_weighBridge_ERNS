@@ -11,3 +11,24 @@ https://www.sqlitetutorial.net/sqlite-nodejs/query/
 
 
 use express.json on app ,if not u will face req.body undefined error 
+
+
+"scripts": {
+    "start": "concurrently \"npm run react-start\" \"npm run electron-start\"",
+    "react-start": "react-scripts start",
+    "electron-start": "wait-on http://localhost:3000 && electron .",
+    "build": "react-scripts build",
+    "electron-pack": "electron-packager . MyApp --platform=win32 --arch=x64 --out=dist"
+  },
+
+
+//nodemon start
+
+    "scripts": {
+  "start": "concurrently \"npm run react-start\" \"npm run electron-start\" \"npm run server-start\"",
+  "react-start": "react-scripts start",
+  "electron-start": "wait-on http://localhost:3000 && electron .",
+  "server-start": "nodemon server.js", 
+  "build": "react-scripts build",
+  "electron-pack": "electron-packager . MyApp --platform=win32 --arch=x64 --out=dist"
+},

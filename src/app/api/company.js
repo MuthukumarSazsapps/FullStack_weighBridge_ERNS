@@ -12,7 +12,7 @@ export const createcompany=async (data)=>{
 
 export const getallcompanylist=async ()=>{
     try {
-        const res=await axiosInstance.get('/login/getAllLoginUser')
+        const res=await axiosInstance.get('/company/getCompanyList')
         return res
     } catch (error) {
         console.log(error)
