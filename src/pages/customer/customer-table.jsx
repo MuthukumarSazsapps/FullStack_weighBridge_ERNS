@@ -5,7 +5,7 @@ import Highlighter from 'react-highlight-words';
 import * as XLSX from 'xlsx';
 
 
-const CustomerTable = ({ companyList, setIsModalVisible, handleEdit,title }) => {
+const CustomerTable = ({ companyList, setIsModalVisible, handleEdit,title,handleDelete }) => {
 
 
   const [searchText, setSearchText] = useState('');
@@ -234,7 +234,7 @@ const CustomerTable = ({ companyList, setIsModalVisible, handleEdit,title }) => 
 
         <Flex gap='middle'>
           <EditOutlined onClick={() => handleEdit(record)} />
-          <DeleteOutlined />
+          <DeleteOutlined onClick={() => handleDelete(record)}/>
         </Flex>
       ),
     },

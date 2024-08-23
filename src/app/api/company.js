@@ -1,6 +1,5 @@
 import axiosInstance from "./axios.js"
 
-
 export const createcompany=async (data)=>{
     try {
         const res= await axiosInstance.post('/company/create',data);
@@ -16,5 +15,23 @@ export const getallcompanylist=async ()=>{
         return res
     } catch (error) {
         console.log(error)
+    }
+}
+
+export const updateCompanyDetails=async(data)=>{
+    try {
+       const res=await axiosInstance.post('/company/updateCompanyList',data) ;
+       return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const deleteCompanyDetails=async(data)=>{
+    try {
+        const res=axiosInstance.post('/company/deleteCompanyDetails' ,data)
+        return res
+    } catch (error) {
+        console.log(error);  
     }
 }

@@ -12,7 +12,7 @@ const generateNewCode = async (db, tableName,key) => {
       const result = await executeQuery(db, sql, []);
       if (result) {
         newCode = result[0]?.newId;
-        tempCode = `${key}-${year}-0${newCode}`;
+        tempCode = `${key.toUpperCase()}-${year}-0${newCode}`;
       }
     // }
 

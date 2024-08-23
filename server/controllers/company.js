@@ -3,6 +3,7 @@ import { HttpStatusCode } from '../utils/constants.js';
 import { db } from '../server.js';
 import executeQuery from '../utils/dball.js';
 import generateNewCode from '../utils/customId.js';
+import dayjs from 'dayjs';
 
 const createCompany = async (req, res) => {
 
@@ -28,8 +29,8 @@ const createCompany = async (req, res) => {
       req.body.pan, 
       req.body.password, 
       req.body.confirmPassword, 
-      'kumar',
-      new Date(),
+      req.body.user,
+      dayjs().format('MM/DD/YYYY, h:mm A'),
       'null',
       'null',
       1                       
@@ -66,7 +67,7 @@ const createCompany = async (req, res) => {
 
 const getallcompanylist=async(req,res)=>{
     try {
-        const query = 'SELECT * FROM Sazs_WeighBridge_CompanyDetails where isActive=1';
+        const query = 'select * from Sazs_WeighBridge_CompanyDetails where isActive=1';
         const rows = await executeQuery(db, query); // Execute the SQL query
         
         return responseHandler({
@@ -121,12 +122,14 @@ const updateCompanyDetails = async (req, res) => {
       req.body.pan, 
       req.body.password, 
       req.body.confirmPassword, 
-      'kumar', // This could be dynamic, depending on your application logic
-      new Date(), // The current date and time for 'modifiedOn'
+      req.body.user, // This could be dynamic, depending on your application logic
+      dayjs().format('MM/DD/YYYY, h:mm A'),// The current date and time for 'modifiedOn'
       req.body.companyId // The ID of the company to update
     ];
 
     const result = await executeQuery(db, query, params, 'run');
+    console.log("changes",result.changes);
+    
 
     if (result.changes > 0) {
       return responseHandler({
