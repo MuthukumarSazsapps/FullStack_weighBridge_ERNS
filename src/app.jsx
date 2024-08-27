@@ -1,36 +1,19 @@
 import React ,{useEffect}from 'react'
 import Mainlayout from './layout/mainlayout'
 import { Route, Routes } from 'react-router-dom'
-import Customer from './pages/customer/customer'
+import Company from './pages/company/company'
 import Home from './pages/home'
 import NotFoundPage from './pages/404'
 import LoginPage from './pages/auth/login/login'
 import { PrivateRoutesValidator } from './validators/validators'
-import { getallcompanylist } from './app/api/company'
+import Customer from './pages/customer/customer'
+import WeighbridgeForm from './pages/weigh/weighbr'
+import Product from './pages/product/product'
+import Vehicle from './pages/vehicle/vehicle'
 
 
 const App = () => {
 
-  
-
-
-  // useEffect(() => {
-
-  //   const fetchData = async () => {
-  //     try {
-  //       const result = await getallcompanylist();
-  //       // setAllCompanyList(result.data.companyLists)
-  //       console.log("nodeserver",result);
-        
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   fetchData();
-  
-    
-  // }, [])
-  
   return (
     <>
       {/* <Mainlayout/> */}
@@ -38,7 +21,10 @@ const App = () => {
         <Route element={<PrivateRoutesValidator />}>
           <Route path='/' element={<Mainlayout />}>
             <Route index element={<Home />} />
-            <Route path='/company/create' element={<Customer />} />
+            <Route path='/company/create' element={<Company />} />
+            <Route path='/company/master' element={<Customer />} />
+            <Route path='/material/master' element={<Product />} />
+            <Route path='/vehicletype/master' element={<Vehicle />} />
           </Route>
         </Route>
         <Route path='/login' element={<LoginPage />} />

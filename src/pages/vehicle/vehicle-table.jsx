@@ -5,7 +5,7 @@ import Highlighter from 'react-highlight-words';
 import * as XLSX from 'xlsx';
 
 
-const ProductTable = ({ customerList, handleEdit,title,handleDelete }) => {
+const VehicleTable = ({ VehicleList, handleEdit,title,handleDelete }) => {
 
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -124,18 +124,18 @@ const ProductTable = ({ customerList, handleEdit,title,handleDelete }) => {
       ...getColumnSearchProps('id'),
     },
     {
-      title: 'CustomerId',
-      dataIndex: 'customerId',
-      key: 'CustomerId',
+      title: 'VehicleId',
+      dataIndex: 'VehicleId',
+      key: 'VehicleId',
       width: '20%',
-      ...getColumnSearchProps('customerId'),
+      ...getColumnSearchProps('VehicleId'),
     },
     {
-      title: 'CustomerName',
-      dataIndex: 'customerName',
-      key: 'CustomerName',
+      title: 'VehicleName',
+      dataIndex: 'VehicleName',
+      key: 'VehicleName',
       width: '30%',
-      ...getColumnSearchProps('customerName'),
+      ...getColumnSearchProps('VehicleName'),
     },
     {
       title: 'Address',
@@ -188,11 +188,11 @@ const ProductTable = ({ customerList, handleEdit,title,handleDelete }) => {
       ...getColumnSearchProps('openingBalance'),
     },
     {
-      title: 'CustomerType',
-      dataIndex: 'customerType',
-      key: 'customerType',
+      title: 'VehicleType',
+      dataIndex: 'VehicleType',
+      key: 'VehicleType',
       width: '20%',
-      ...getColumnSearchProps('customerType'),
+      ...getColumnSearchProps('VehicleType'),
     },
     {
       title: 'CreatedBy',
@@ -278,8 +278,8 @@ const ProductTable = ({ customerList, handleEdit,title,handleDelete }) => {
 
     const worksheet = XLSX.utils.json_to_sheet(data);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Customer List');
-    XLSX.writeFile(workbook, 'Customer_list.xlsx');
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Vehicle List');
+    XLSX.writeFile(workbook, 'Vehicle_list.xlsx');
   };
 
   return (
@@ -310,7 +310,7 @@ const ProductTable = ({ customerList, handleEdit,title,handleDelete }) => {
 
       <Table
         columns={filteredColumns}
-        dataSource={customerList}
+        dataSource={VehicleList}
         bordered
         pagination={{
           showSizeChanger: true,  // Enable the page size changer
@@ -326,4 +326,4 @@ const ProductTable = ({ customerList, handleEdit,title,handleDelete }) => {
     </>
   )
 };
-export default ProductTable;
+export default VehicleTable;

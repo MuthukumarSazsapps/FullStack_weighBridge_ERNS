@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Flex, Form, Input, Modal, message } from 'antd';
-import CustomerTable from './customer-table';
-import CustomerForm from './customer-form';
-import { getAllCustomerList,createCustomer,updateCustomerDetails,deleteCustomerDetails } from '../../app/api/customer';
+import ProductTable from './product-table';
+import ProductForm from './product-form';
+import { getAllProductList,createProduct,updateProductDetails,deleteProductDetails } from '../../app/api/product';
 import { useLocalStorage } from 'react-use';
 
 
-const Customer = () => {
+const Product = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [allCustomerList, setAllCustomerList] = useState([]);
+  const [allProductList, setAllProductList] = useState([]);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [action, setAction] = useState('create');
-  const [customerId, setCustomerId] = useState(null);
+  const [productId, setProductId] = useState(null);
 
   const [user] = useLocalStorage('user');
   const showModal = () => {
@@ -22,8 +22,8 @@ const Customer = () => {
 
   const fetchData = async () => {
     try {
-      const result = await getAllCustomerList();
-      setAllCustomerList(result.data.customerList);
+      const result = await getAllProductList();
+      setAllProductList(result.data.productList);
     } catch (error) {
       console.log(error);
     }
@@ -34,7 +34,7 @@ const Customer = () => {
   }, []);
 
   const handleEdit = (record) => {
-    setCustomerId(record.customerId);
+    setProductId(record.productId);
     setAction('update');
     form.setFieldsValue(record);
     setIsModalVisible(true);
@@ -42,17 +42,17 @@ const Customer = () => {
 
   const handleDelete = async (data) => {
     Modal.confirm({
-      title: 'Are you sure you want to delete this Customer?',
+      title: 'Are you sure you want to delete this Product?',
       content: 'This action cannot be undone.',
       onOk: async () => {
         try {
           setLoading(true);
-          const res = await deleteCustomerDetails(data);
+          const res = await deleteProductDetails(data);
           if (res.data.status === true) {
-            message.success('Customer deleted successfully!');
+            message.success('Product deleted successfully!');
             fetchData();
           } else {
-            message.error(`Error: ${res.data.message || 'Failed to delete Customer'}`);
+            message.error(`Error: ${res.data.message || 'Failed to delete Product'}`);
           }
         } catch (error) {
           message.error(`API Error: ${error.message}`);
@@ -75,18 +75,18 @@ const Customer = () => {
           setLoading(true);
           let res;
           if (action === 'update') {
-            res = await updateCustomerDetails({ ...data, customerId,user });
+            res = await updateProductDetails({ ...data, productId,user });
           } else {
-            res = await createCustomer({...data,user});
+            res = await createProduct({...data,user});
           }
           if (res.data.status === true) {
-            message.success('Customer saved successfully!');
+            message.success('Product saved successfully!');
             setIsModalVisible(false);
             setLoading(false);
             form.resetFields();
             fetchData();
           } else {
-            message.error(`Error: ${res.data.message || 'Failed to save Customer'}`);
+            message.error(`Error: ${res.data.message || 'Failed to save Product'}`);
           }
         } catch (error) {
           message.error(`API Error: ${error.message}`);
@@ -106,25 +106,25 @@ const Customer = () => {
     <>
       <Flex vertical gap='middle'>
         <Flex justify='flex-end'>
-          <Button type="primary" onClick={showModal}>Create Customer</Button>
+          <Button type="primary" onClick={showModal}>Create Product</Button>
         </Flex>
-        <CustomerTable customerList={allCustomerList} handleEdit={handleEdit} handleDelete={(data) => handleDelete(data)} title='Customer List' />
+        <ProductTable ProductList={allProductList} handleEdit={handleEdit} handleDelete={(data) => handleDelete(data)} title='Product List' />
       </Flex>
 
       {isModalVisible && (
         <Modal
-          title={action === 'update' ? "Edit Customer" : "Create Customer"}
+          title={action === 'update' ? "Edit Product" : "Create Product"}
           open={isModalVisible}
           onOk={handleOk}
           onCancel={handleCancel}
           okText={loading ? "Submitting..." : (action === 'update' ? "Update" : "Create")}
           cancelText="Cancel"
         >
-          <CustomerForm form={form} />
+          <ProductForm form={form} />
         </Modal>
       )}
     </>
   );
 };
 
-export default Customer;
+export default Product;

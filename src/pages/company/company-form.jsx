@@ -1,39 +1,57 @@
 import React from 'react'
 import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space } from 'antd';
 
-const ProductForm = ({ form }) => {
+const CompanyForm = ({ form }) => {
   console.log("form", form);
 
+  const onFinish = (values) => {
+    console.log('Success:', values);
+  };
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
   return (
     <div>
       <Form layout="vertical" form={form}>
         <Row gutter={16}>
-          <Col span={12}>
+          <Col span={24}>
             <Form.Item
-              name="ledgerName"
-              label="Ledger Name"
+              name="companyName"
+              label="Company Name"
               rules={[
                 {
                   required: true,
-                  message: 'Please enter Ledger name',
+                  message: 'Please enter user name',
                 },
               ]}
             >
-              <Input placeholder="Please enter Ledger name" />
+              <Input placeholder="Please enter user name" />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              name='username'
+              label='User Name'
+              rules={[{
+                required: true,
+                message: 'please Enter User Name'
+              }]}
+            >
+              <Input placeholder="Please enter user name" />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              name="customerName"
-              label="Customer Name"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please enter Customer name',
-                },
-              ]}
+              name='businessName'
+              label='Business Name'
+              rules={[{
+                required: true,
+                message: 'please Enter Business Name'
+              }]}
             >
-              <Input placeholder="Please enter Customer Name" />
+              <Input placeholder="Please enter user Business Name" />
             </Form.Item>
           </Col>
         </Row>
@@ -82,6 +100,7 @@ const ProductForm = ({ form }) => {
               ]}
             >
               <Input placeholder="Please Enter a Pin" />
+
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -114,129 +133,63 @@ const ProductForm = ({ form }) => {
               ]}
             >
               <Input placeholder="Please Enter GST" />
+
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              name="emailId"
-              label="Email Id"
+              name="pan"
+              label="PAN"
               rules={[
                 {
                   required: true,
-                  message: 'Please Enter Email Id',
+                  message: 'Please enter PAN Number',
                 },
               ]}
             >
-              <Input placeholder="Please Enter Email Id" />
+              <Input
+                placeholder="Please enter PAN Number"
+              />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              name="openingBalance"
-              label="OP Balance"
+              name="password"
+              label="Password"
               rules={[
                 {
                   required: true,
-                  message: 'Please Enter Opening Balance',
+                  message: 'Please Enter Password',
                 },
               ]}
             >
-              <Input placeholder="Please Enter Opening Balance" />
+              <Input.Password placeholder="Please Enter Password" />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              name="mode"
-              label=" "
+              name="confirmPassword"
+              label="Confirm Password"
+              dependencies={['password']}
+              hasFeedback
               rules={[
                 {
                   required: true,
-                  message: 'Please select mode',
+                  message: 'Please enter Confirm Password',
                 },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('password') === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error('The two passwords do not match!'));
+                  },
+                }),
               ]}
             >
-              <Select
-                showSearch
-                placeholder="Select a mode"
-                optionFilterProp="label"
-                options={[
-                  {
-                    value: 'debit',
-                    label: 'Debit',
-                  },
-                  {
-                    value: 'credit',
-                    label: 'Credit',
-                  }
-                ]}
-              />
-              
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              name="customerType"
-              label="Customer Type"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please Select Customer Type',
-                },
-              ]}
-            >
-             <Select
-                showSearch
-                placeholder="Select a Customer Type"
-                optionFilterProp="label"
-                options={[
-                  {
-                    value: 'cash',
-                    label: 'Cash',
-                  },
-                  {
-                    value: 'online',
-                    label: 'Online',
-                  },
-                  {
-                    value: 'credit',
-                    label: 'Credit',
-                  },
-                ]}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              name="active"
-              label="Active"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please select Active',
-                },
-              ]}
-            >
-              <Select
-                showSearch
-                placeholder="Select a Active"
-                optionFilterProp="label"
-                options={[
-                  {
-                    value: 'activated',
-                    label: 'Activated',
-                  },
-                  {
-                    value: 'deactivated',
-                    label: 'DeActivated',
-                  }
-                  
-                ]}
-              />
-              
+              <Input.Password placeholder="Please enter Confirm Password" />
             </Form.Item>
           </Col>
         </Row>
@@ -245,4 +198,4 @@ const ProductForm = ({ form }) => {
   )
 }
 
-export default ProductForm
+export default CompanyForm

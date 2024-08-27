@@ -130,7 +130,6 @@ const updateCompanyDetails = async (req, res) => {
     const result = await executeQuery(db, query, params, 'run');
     console.log("changes",result.changes);
     
-
     if (result.changes > 0) {
       return responseHandler({
         req,

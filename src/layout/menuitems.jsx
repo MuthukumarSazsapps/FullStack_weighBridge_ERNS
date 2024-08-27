@@ -59,7 +59,7 @@ export const MenuItems = [
         },
         {
           name: 'Material Master',
-          href: '/Material/master',
+          href: '/material/master',
           icon: <PiFolder />,
         },
         {

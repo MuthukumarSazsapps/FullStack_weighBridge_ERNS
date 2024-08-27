@@ -5,7 +5,7 @@ import Highlighter from 'react-highlight-words';
 import * as XLSX from 'xlsx';
 
 
-const ProductTable = ({ customerList, handleEdit,title,handleDelete }) => {
+const CompanyTable = ({ companyList, handleEdit,title,handleDelete }) => {
 
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -124,75 +124,75 @@ const ProductTable = ({ customerList, handleEdit,title,handleDelete }) => {
       ...getColumnSearchProps('id'),
     },
     {
-      title: 'CustomerId',
-      dataIndex: 'customerId',
-      key: 'CustomerId',
+      title: 'CompanyId',
+      dataIndex: 'companyId',
+      key: 'CompanyId',
       width: '20%',
-      ...getColumnSearchProps('customerId'),
+      ...getColumnSearchProps('companyId'),
     },
     {
-      title: 'CustomerName',
-      dataIndex: 'customerName',
-      key: 'CustomerName',
+      title: 'companyName',
+      dataIndex: 'companyName',
+      key: 'companyName',
       width: '30%',
-      ...getColumnSearchProps('customerName'),
+      ...getColumnSearchProps('companyName'),
+    },
+    {
+      title: 'username',
+      dataIndex: 'username',
+      key: 'username',
+      width: '30%',
+      ...getColumnSearchProps('username'),
     },
     {
       title: 'Address',
       dataIndex: 'address',
-      key: 'address',
-      width: '30%',
+      key: 'Address',
+      width: '20%',
       ...getColumnSearchProps('address'),
     },
     {
       title: 'Place',
       dataIndex: 'place',
-      key: 'place',
+      key: 'Place',
       width: '20%',
       ...getColumnSearchProps('place'),
     },
     {
       title: 'Pin',
       dataIndex: 'pin',
-      key: 'pin',
-      width: '20%',
+      key: 'Pin',
       ...getColumnSearchProps('pin'),
-    },
-    {
-      title: 'Phone',
-      dataIndex: 'phone',
-      key: 'phone',
-      ...getColumnSearchProps('phone'),
       sorter: (a, b) => a.address.length - b.address.length,
       sortDirections: ['descend', 'ascend'],
     },
     {
+      title: 'PhoneNo',
+      dataIndex: 'phone',
+      key: 'PhoneNo',
+      width: '20%',
+      ...getColumnSearchProps('phone'),
+    },
+    {
       title: 'GST',
       dataIndex: 'gst',
-      key: 'gst',
-      width: '20%',
+      key: 'GST',
+      width: '30%',
       ...getColumnSearchProps('gst'),
     },
     {
-      title: 'EmailId',
-      dataIndex: 'emailId',
-      key: 'emailId',
+      title: 'Pan',
+      dataIndex: 'pan',
+      key: 'Pan',
       width: '30%',
-      ...getColumnSearchProps('emailId'),
+      ...getColumnSearchProps('pan'),
     },
     {
-      title: 'OpeningBalance',
-      dataIndex: 'openingBalance',
-      key: 'openingBalance',
-      width: '30%',
-      ...getColumnSearchProps('openingBalance'),
-    },
-    {
-      title: 'CustomerType',
-      dataIndex: 'customerType',
-      key: 'customerType',
+      title: 'Password',
+      dataIndex: 'password',
+      key: 'password',
       width: '20%',
-      ...getColumnSearchProps('customerType'),
+      ...getColumnSearchProps('password'),
     },
     {
       title: 'CreatedBy',
@@ -278,8 +278,8 @@ const ProductTable = ({ customerList, handleEdit,title,handleDelete }) => {
 
     const worksheet = XLSX.utils.json_to_sheet(data);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Customer List');
-    XLSX.writeFile(workbook, 'Customer_list.xlsx');
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Company List');
+    XLSX.writeFile(workbook, 'company_list.xlsx');
   };
 
   return (
@@ -310,7 +310,7 @@ const ProductTable = ({ customerList, handleEdit,title,handleDelete }) => {
 
       <Table
         columns={filteredColumns}
-        dataSource={customerList}
+        dataSource={companyList}
         bordered
         pagination={{
           showSizeChanger: true,  // Enable the page size changer
@@ -326,4 +326,4 @@ const ProductTable = ({ customerList, handleEdit,title,handleDelete }) => {
     </>
   )
 };
-export default ProductTable;
+export default CompanyTable;

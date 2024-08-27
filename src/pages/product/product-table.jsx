@@ -5,7 +5,7 @@ import Highlighter from 'react-highlight-words';
 import * as XLSX from 'xlsx';
 
 
-const ProductTable = ({ customerList, handleEdit,title,handleDelete }) => {
+const ProductTable = ({ ProductList, handleEdit,title,handleDelete }) => {
 
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -120,79 +120,22 @@ const ProductTable = ({ customerList, handleEdit,title,handleDelete }) => {
       title: 'Id',
       dataIndex: 'id',
       key: 'namee',
-      width: '20%',
+      width: '5%',
       ...getColumnSearchProps('id'),
     },
     {
-      title: 'CustomerId',
-      dataIndex: 'customerId',
-      key: 'CustomerId',
+      title: 'ProductId',
+      dataIndex: 'productId',
+      key: 'productId',
+      width: '10%',
+      ...getColumnSearchProps('productId'),
+    },
+    {
+      title: 'ProductName',
+      dataIndex: 'productName',
+      key: 'productName',
       width: '20%',
-      ...getColumnSearchProps('customerId'),
-    },
-    {
-      title: 'CustomerName',
-      dataIndex: 'customerName',
-      key: 'CustomerName',
-      width: '30%',
-      ...getColumnSearchProps('customerName'),
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-      width: '30%',
-      ...getColumnSearchProps('address'),
-    },
-    {
-      title: 'Place',
-      dataIndex: 'place',
-      key: 'place',
-      width: '20%',
-      ...getColumnSearchProps('place'),
-    },
-    {
-      title: 'Pin',
-      dataIndex: 'pin',
-      key: 'pin',
-      width: '20%',
-      ...getColumnSearchProps('pin'),
-    },
-    {
-      title: 'Phone',
-      dataIndex: 'phone',
-      key: 'phone',
-      ...getColumnSearchProps('phone'),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortDirections: ['descend', 'ascend'],
-    },
-    {
-      title: 'GST',
-      dataIndex: 'gst',
-      key: 'gst',
-      width: '20%',
-      ...getColumnSearchProps('gst'),
-    },
-    {
-      title: 'EmailId',
-      dataIndex: 'emailId',
-      key: 'emailId',
-      width: '30%',
-      ...getColumnSearchProps('emailId'),
-    },
-    {
-      title: 'OpeningBalance',
-      dataIndex: 'openingBalance',
-      key: 'openingBalance',
-      width: '30%',
-      ...getColumnSearchProps('openingBalance'),
-    },
-    {
-      title: 'CustomerType',
-      dataIndex: 'customerType',
-      key: 'customerType',
-      width: '20%',
-      ...getColumnSearchProps('customerType'),
+      ...getColumnSearchProps('productName'),
     },
     {
       title: 'CreatedBy',
@@ -205,6 +148,7 @@ const ProductTable = ({ customerList, handleEdit,title,handleDelete }) => {
       title: 'CreatedOn',
       dataIndex: 'createdOn',
       key: 'CreatedOn',
+      width: '10%',
       ...getColumnSearchProps('createdOn'),
       sorter: (a, b) => a.address.length - b.address.length,
       sortDirections: ['descend', 'ascend'],
@@ -213,21 +157,21 @@ const ProductTable = ({ customerList, handleEdit,title,handleDelete }) => {
       title: 'ModifiedBy',
       dataIndex: 'modifiedBy',
       key: 'ModifiedBy',
-      width: '20%',
+      width: '10%',
       ...getColumnSearchProps('modifiedBy'),
     },
     {
       title: 'ModifiedOn',
       dataIndex: 'modifiedOn',
       key: 'ModifiedOn',
-      width: '30%',
+      width: '10%',
       ...getColumnSearchProps('modifiedOn'),
     },
     {
       title: 'Action',
       key: 'operation',
       // fixed: 'right',
-      width: '30%',
+      width: '20%',
       render: (text, record) => (
         <Flex gap='middle'>
           <EditOutlined onClick={() => handleEdit(record)} />
@@ -278,8 +222,8 @@ const ProductTable = ({ customerList, handleEdit,title,handleDelete }) => {
 
     const worksheet = XLSX.utils.json_to_sheet(data);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Customer List');
-    XLSX.writeFile(workbook, 'Customer_list.xlsx');
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Product List');
+    XLSX.writeFile(workbook, 'Product_list.xlsx');
   };
 
   return (
@@ -310,7 +254,7 @@ const ProductTable = ({ customerList, handleEdit,title,handleDelete }) => {
 
       <Table
         columns={filteredColumns}
-        dataSource={customerList}
+        dataSource={ProductList}
         bordered
         pagination={{
           showSizeChanger: true,  // Enable the page size changer
