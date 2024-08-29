@@ -52,7 +52,6 @@ const createProduct = async (req, res) => {
     }
 }
 
-
 const getAllProductList = async (req, res) => {
     try {
         const query = 'select * from Sazs_WeighBridge_Product where isActive=1';
@@ -74,7 +73,6 @@ const getAllProductList = async (req, res) => {
         });
     }
 }
-
 
 const updateProductDetails = async (req, res) => {
     try {

@@ -83,7 +83,6 @@ app.get('/api',(req,res)=>{
 
 routes(app)
 
-
 process.on('SIGINT', () => {
   db.close((err) => {
     if (err) {

@@ -5,7 +5,7 @@ import Highlighter from 'react-highlight-words';
 import * as XLSX from 'xlsx';
 
 
-const VehicleTable = ({ VehicleList, handleEdit,title,handleDelete }) => {
+const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete }) => {
 
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -124,18 +124,18 @@ const VehicleTable = ({ VehicleList, handleEdit,title,handleDelete }) => {
       ...getColumnSearchProps('id'),
     },
     {
-      title: 'VehicleId',
-      dataIndex: 'vehicleId',
-      key: 'vehicleId',
+      title: 'WeighingId',
+      dataIndex: 'weighingId',
+      key: 'weighingId',
       width: '20%',
-      ...getColumnSearchProps('vehicleId'),
+      ...getColumnSearchProps('weighingId'),
     },
     {
-      title: 'VehicleType',
-      dataIndex: 'vehicleType',
-      key: 'vehicleType',
+      title: 'WeighingType',
+      dataIndex: 'weighingType',
+      key: 'weighingType',
       width: '30%',
-      ...getColumnSearchProps('vehicleType'),
+      ...getColumnSearchProps('weighingType'),
     },
     {
       title: 'CreatedBy',
@@ -221,8 +221,8 @@ const VehicleTable = ({ VehicleList, handleEdit,title,handleDelete }) => {
 
     const worksheet = XLSX.utils.json_to_sheet(data);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Vehicle List');
-    XLSX.writeFile(workbook, 'Vehicle_list.xlsx');
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Weighing List');
+    XLSX.writeFile(workbook, 'Weighing_list.xlsx');
   };
 
   return (
@@ -253,7 +253,7 @@ const VehicleTable = ({ VehicleList, handleEdit,title,handleDelete }) => {
 
       <Table
         columns={filteredColumns}
-        dataSource={VehicleList}
+        dataSource={WeighingList}
         bordered
         pagination={{
           showSizeChanger: true,  // Enable the page size changer
@@ -269,4 +269,4 @@ const VehicleTable = ({ VehicleList, handleEdit,title,handleDelete }) => {
     </>
   )
 };
-export default VehicleTable;
+export default WeighingTable;

@@ -7,9 +7,9 @@ import NotFoundPage from './pages/404'
 import LoginPage from './pages/auth/login/login'
 import { PrivateRoutesValidator } from './validators/validators'
 import Customer from './pages/customer/customer'
-import WeighbridgeForm from './pages/weigh/weighbr'
 import Product from './pages/product/product'
 import Vehicle from './pages/vehicle/vehicle'
+import Weighing from './pages/weighing/weighing'
 
 
 const App = () => {
@@ -25,6 +25,7 @@ const App = () => {
             <Route path='/company/master' element={<Customer />} />
             <Route path='/material/master' element={<Product />} />
             <Route path='/vehicletype/master' element={<Vehicle />} />
+            <Route path='/weighing/master' element={<Weighing />} />
           </Route>
         </Route>
         <Route path='/login' element={<LoginPage />} />

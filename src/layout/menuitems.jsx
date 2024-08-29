@@ -81,7 +81,7 @@ export const MenuItems = [
       dropdownItems: [
         {
           name: 'Company Masters',
-          href: '/company/master',
+          href: '/weighing/master',
           icon: <PiFolder />,
         },
       ]

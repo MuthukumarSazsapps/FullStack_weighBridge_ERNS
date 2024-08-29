@@ -10,16 +10,16 @@ const VehicleForm = ({ form }) => {
         <Row gutter={16}>
           <Col span={18}>
             <Form.Item
-              name="vehicleName"
+              name="vehicleType"
               label="Vehicle Name"
               rules={[
                 {
                   required: true,
-                  message: 'Please enter Vehicle name',
+                  message: 'Please enter Wheel ',
                 },
               ]}
             >
-              <Input placeholder="Please enter Vehicle name" />
+              <Input placeholder="Please enter Wheel" suffix="wheel"/>
             </Form.Item>
           </Col>
         </Row>

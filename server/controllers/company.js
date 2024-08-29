@@ -9,83 +9,83 @@ const createCompany = async (req, res) => {
 
   try {
 
-    const uniqueId=await generateNewCode(db,"Sazs_WeighBridge_CompanyDetails","cust")
+    const uniqueId = await generateNewCode(db, "Sazs_WeighBridge_CompanyDetails", "cust")
     const query = `
       INSERT INTO Sazs_WeighBridge_CompanyDetails 
       (companyId, companyName, username, businessName, address, place, pin, phone, gst, pan, password, confirmPassword, createdBy,createdOn,modifiedBy,modifiedOn,isActive)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
-  
+
     const params = [
       uniqueId,
-      req.body.companyName, 
-      req.body.username, 
-      req.body.businessName, 
-      req.body.address, 
-      req.body.place, 
-      req.body.pin, 
-      req.body.phone, 
-      req.body.gst, 
-      req.body.pan, 
-      req.body.password, 
-      req.body.confirmPassword, 
+      req.body.companyName,
+      req.body.username,
+      req.body.businessName,
+      req.body.address,
+      req.body.place,
+      req.body.pin,
+      req.body.phone,
+      req.body.gst,
+      req.body.pan,
+      req.body.password,
+      req.body.confirmPassword,
       req.body.user,
       dayjs().format('MM/DD/YYYY, h:mm A'),
       'null',
       'null',
-      1                       
+      1
     ];
-  
-      const result = await executeQuery(db, query, params, 'run');
-      
-      if (result.changes > 0) {
-        return responseHandler({
-          req,
-          res,
-          data: { status:true,message: 'Record inserted successfully' },
-          httpCode: HttpStatusCode.CREATED,
-        });
-      } else {
-        return responseHandler({
-          req,
-          res,
-          data: { error: 'No record inserted' },
-          httpCode: HttpStatusCode.BAD_REQUEST,
-        });
-      }
-    } catch (err) {
-      console.error('Error inserting record:', err.message);
+
+    const result = await executeQuery(db, query, params, 'run');
+
+    if (result.changes > 0) {
       return responseHandler({
         req,
         res,
-        data: { error: 'Error inserting record' },
-        httpCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+        data: { status: true, message: 'Record inserted successfully' },
+        httpCode: HttpStatusCode.CREATED,
+      });
+    } else {
+      return responseHandler({
+        req,
+        res,
+        data: { error: 'No record inserted' },
+        httpCode: HttpStatusCode.BAD_REQUEST,
       });
     }
-  };
-  
+  } catch (err) {
+    console.error('Error inserting record:', err.message);
+    return responseHandler({
+      req,
+      res,
+      data: { error: 'Error inserting record' },
+      httpCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+    });
+  }
+};
 
-const getallcompanylist=async(req,res)=>{
-    try {
-        const query = 'select * from Sazs_WeighBridge_CompanyDetails where isActive=1';
-        const rows = await executeQuery(db, query); // Execute the SQL query
-        
-        return responseHandler({
-          req,
-          res,
-          data: { companyLists: rows },
-          httpCode: HttpStatusCode.OK,
-          message: 'success'
-        });
-      } catch (err) {
-        return responseHandler({
-          req,
-          res,
-          data: { error: err.message },
-          httpCode: HttpStatusCode.BAD_REQUEST
-        });
-      }
-} 
+
+const getallcompanylist = async (req, res) => {
+  try {
+    const query = 'select * from Sazs_WeighBridge_CompanyDetails where isActive=1';
+    const rows = await executeQuery(db, query); // Execute the SQL query
+
+    return responseHandler({
+      req,
+      res,
+      data: { companyLists: rows },
+      httpCode: HttpStatusCode.OK,
+      message: 'success'
+    });
+  } catch (err) {
+    return responseHandler({
+      req,
+      res,
+      data: { error: err.message },
+      httpCode: HttpStatusCode.BAD_REQUEST
+    });
+  }
+}
 
 
 const updateCompanyDetails = async (req, res) => {
@@ -111,25 +111,25 @@ const updateCompanyDetails = async (req, res) => {
     `;
 
     const params = [
-      req.body.companyName, 
-      req.body.username, 
-      req.body.businessName, 
-      req.body.address, 
-      req.body.place, 
-      req.body.pin, 
-      req.body.phone, 
-      req.body.gst, 
-      req.body.pan, 
-      req.body.password, 
-      req.body.confirmPassword, 
+      req.body.companyName,
+      req.body.username,
+      req.body.businessName,
+      req.body.address,
+      req.body.place,
+      req.body.pin,
+      req.body.phone,
+      req.body.gst,
+      req.body.pan,
+      req.body.password,
+      req.body.confirmPassword,
       req.body.user, // This could be dynamic, depending on your application logic
       dayjs().format('MM/DD/YYYY, h:mm A'),// The current date and time for 'modifiedOn'
       req.body.companyId // The ID of the company to update
     ];
 
     const result = await executeQuery(db, query, params, 'run');
-    console.log("changes",result.changes);
-    
+    console.log("changes", result.changes);
+
     if (result.changes > 0) {
       return responseHandler({
         req,
@@ -194,9 +194,9 @@ const deleteCompanyDetails = async (req, res) => {
   }
 };
 
-  export default{
-    createCompany,
-    getallcompanylist,
-    updateCompanyDetails,
-    deleteCompanyDetails
-  }
+export default {
+  createCompany,
+  getallcompanylist,
+  updateCompanyDetails,
+  deleteCompanyDetails
+}
