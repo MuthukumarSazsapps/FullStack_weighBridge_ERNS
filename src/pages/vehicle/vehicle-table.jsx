@@ -134,8 +134,15 @@ const VehicleTable = ({ VehicleList, handleEdit,title,handleDelete }) => {
       title: 'VehicleType',
       dataIndex: 'vehicleType',
       key: 'vehicleType',
-      width: '30%',
+      width: '20%',
       ...getColumnSearchProps('vehicleType'),
+    },
+    {
+      title: 'Amount',
+      dataIndex: 'chargeAmount',
+      key: 'chargeAmount',
+      width: '20%',
+      ...getColumnSearchProps('chargeAmount'),
     },
     {
       title: 'CreatedBy',

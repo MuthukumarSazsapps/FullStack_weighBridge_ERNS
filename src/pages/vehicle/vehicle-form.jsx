@@ -8,7 +8,7 @@ const VehicleForm = ({ form }) => {
     <div>
       <Form layout="vertical" form={form}>
         <Row gutter={16}>
-          <Col span={18}>
+          <Col span={14}>
             <Form.Item
               name="vehicleType"
               label="Vehicle Name"
@@ -20,6 +20,20 @@ const VehicleForm = ({ form }) => {
               ]}
             >
               <Input placeholder="Please enter Wheel" suffix="wheel"/>
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              name="chargeAmount"
+              label="Amount"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please enter Amount ',
+                },
+              ]}
+            >
+              <Input placeholder="Please Enter Amount" />
             </Form.Item>
           </Col>
         </Row>

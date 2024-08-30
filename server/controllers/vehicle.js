@@ -11,13 +11,14 @@ const createVehicle = async (req, res) => {
         const uniqueId = await generateNewCode(db, "Sazs_WeighBridge_Vehicle", "vehid")
         const query = `
                         INSERT INTO Sazs_WeighBridge_Vehicle
-                        (vehicleId,vehicleType,createdBy,createdOn,modifiedBy,modifiedOn,isActive)
-                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                        (vehicleId,vehicleType,chargeAmount,createdBy,createdOn,modifiedBy,modifiedOn,isActive)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                     `;
 
         const params = [
             uniqueId,
             req.body.vehicleType+' wheel',
+            req.body.chargeAmount,
             req.body.user,
             dayjs().format('MM/DD/YYYY, h:mm A'),
             'null',
@@ -79,7 +80,8 @@ const updateVehicleDetails = async (req, res) => {
         const query = `
         UPDATE Sazs_WeighBridge_Vehicle 
         SET 
-          vehicleType = ?, 
+          vehicleType = ?,
+          chargeAmount = ?, 
           modifiedBy = ?, 
           modifiedOn = ?
         WHERE 
@@ -88,6 +90,7 @@ const updateVehicleDetails = async (req, res) => {
 
         const params = [
             req.body.vehicleType,
+            req.body.chargeAmount,
             req.body.user, // This could be dynamic, depending on your application logic
             dayjs().format('MM/DD/YYYY, h:mm A'),// The current date and time for 'modifiedOn'
             req.body.vehicleId // The ID of the company to update

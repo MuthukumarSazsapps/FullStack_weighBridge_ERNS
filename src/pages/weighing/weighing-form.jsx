@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Button, Col, Radio, Drawer, Flex, Form, Input, Row, Select, Space } from 'antd';
-
 import dayjs from 'dayjs';
 
-const WeighingForm = ({ form, action }) => {
-    // console.log("action", action);
+const WeighingForm = ({ form, action, allVehicleList }) => {
+
     const [currentTime, setCurrentTime] = useState(dayjs().format('hh:mm:ss A'));
 
     useEffect(() => {
@@ -15,14 +14,41 @@ const WeighingForm = ({ form, action }) => {
         return () => clearInterval(timer); // Cleanup on component unmount
     }, []);
 
+    const options = allVehicleList.map((vehicleTypeList) => ({
+        value: vehicleTypeList.vehicleType,
+        label: vehicleTypeList.vehicleType,
+    }));
+
+    
+    const handleChange = (value) => {
+        // Find the matching vehicle type in the allVehicleList
+        const selectedVehicle = allVehicleList.find(vehicle => vehicle.vehicleType === value);
+        console.log("selectedVehicle", selectedVehicle);
+
+        // Set the amount field with the chargeAmount if a match is found
+        form.setFieldsValue({
+            amount: selectedVehicle ? selectedVehicle.chargeAmount : 0, // Default to 0 if no match found
+        });
+    };
+
+
+    const handleValue = () => {
+        form.setFieldsValue({
+            measuredWeight: form.getFieldValue('scaleValue')
+        });
+        
+    };
+
+
+    // console.log(form.getFieldValue());
+
     return (
         <div>
             <Form layout="vertical" form={form}>
                 <Row gutter={16}>
                     <Col span={12} className=''>
-                        {/* <p className="text-4xl bg-black font-calculator rounded pt-3 px-2 text-red-500">54821</p> */}
                         <Form.Item
-                            name="scaleTerminal"
+                            name="scaleValue"
                             label="Scale Terminal"
                             rules={[
                                 {
@@ -32,7 +58,7 @@ const WeighingForm = ({ form, action }) => {
                             ]}
                         >
                             <Input
-                                defaultValue="0"
+                                // defaultValue="0"
                                 placeholder="Please enter Weighing name"
                                 className='bg-black font-calculator text-4xl border-black text-red-500 
                                             focus:bg-black focus:border-black focus:ring-0 hover:bg-black hover:border-black focus
@@ -44,7 +70,7 @@ const WeighingForm = ({ form, action }) => {
                     </Col>
                     <Col span={12} className=' flex justify-around'>
                         <Form.Item
-                            name="measuredWeigh"
+                            name="measuredWeight"
                             label="Measured Weight"
                             rules={[
                                 {
@@ -55,13 +81,11 @@ const WeighingForm = ({ form, action }) => {
                         >
                             <Input placeholder="Please enter Weighing name" />
                         </Form.Item>
-                        <Button className='mt-7'> Read</Button>
+                        <Button className='mt-7' onClick={handleValue}> Read</Button>
                         <p className='text-2xl text-green-600 mt-7'>{currentTime}</p>
-                        {/* <div className='flex bg-black mt-7'>
-                       
-                        </div> */}
                     </Col>
                 </Row>
+
                 <Row gutter={16}>
                     <Col span={8}>
                         <Form.Item
@@ -90,18 +114,10 @@ const WeighingForm = ({ form, action }) => {
                         >
                             <Select
                                 showSearch
+                                onChange={handleChange}
                                 placeholder="Select a vehicle Type"
                                 optionFilterProp="label"
-                                options={[
-                                    {
-                                        value: '14 wheel',
-                                        label: '14 wheel',
-                                    },
-                                    {
-                                        value: '12 wheel',
-                                        label: '12 wheel',
-                                    },
-                                ]}
+                                options={options}
                             />
                         </Form.Item>
                     </Col>

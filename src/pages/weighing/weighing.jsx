@@ -4,6 +4,7 @@ import WeighingTable from './weighing-table';
 import WeighingForm from './weighing-form';
 import { getAllWeighingList,createWeighing,updateWeighingDetails,deleteWeighingDetails } from '../../app/api/weighing';
 import { useLocalStorage } from 'react-use';
+import { getAllVehicleList } from '../../app/api/vehicle';
 
 
 const Weighing = () => {
@@ -13,6 +14,8 @@ const Weighing = () => {
   const [loading, setLoading] = useState(false);
   const [action, setAction] = useState('create');
   const [weighingId, setWeighingId] = useState(null);
+  const [allVehicleList, setAllVehicleList] = useState([]);
+
 
   const [user] = useLocalStorage('user');
   const showModal = () => {
@@ -22,8 +25,13 @@ const Weighing = () => {
 
   const fetchData = async () => {
     try {
+      const result1 = await getAllVehicleList();
+      setAllVehicleList(result1.data.vehicleList);
       const result = await getAllWeighingList();
       setAllWeighingList(result.data.weighingList);
+      console.log("result1",result1);
+
+
     } catch (error) {
       console.log(error);
     }
@@ -32,6 +40,8 @@ const Weighing = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  
 
   const handleEdit = (record) => {
     setWeighingId(record.weighingId);
@@ -77,7 +87,7 @@ const Weighing = () => {
           if (action === 'update') {
             res = await updateWeighingDetails({ ...data, weighingId,user });
           } else {
-            // res = await createWeighing({...data,user});
+            res = await createWeighing({...data,user});
             
           }
           if (res.data.status === true) {
@@ -110,7 +120,7 @@ const Weighing = () => {
         <Flex justify='flex-end'>
           <Button type="primary" onClick={showModal}>Create Weighing</Button>
         </Flex>
-        <WeighingTable WeighingList={allWeighingList} handleEdit={handleEdit} handleDelete={(data) => handleDelete(data)} title='Weighing List' />
+        <WeighingTable WeighingList={allWeighingList} handleEdit={handleEdit}  handleDelete={(data) => handleDelete(data)} title='Weighing List' />
       </Flex>
 
       {isModalVisible && (
@@ -123,7 +133,7 @@ const Weighing = () => {
           cancelText="Cancel"
           width={1000}
         >
-          <WeighingForm form={form} action={action}/>
+          <WeighingForm form={form} action={action} allVehicleList={allVehicleList}/>
         </Modal>
       )}
     </>
