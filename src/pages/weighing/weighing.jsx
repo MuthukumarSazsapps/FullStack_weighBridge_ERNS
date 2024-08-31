@@ -2,30 +2,38 @@ import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Flex, Form, Input, Modal, message } from 'antd';
 import WeighingTable from './weighing-table';
 import WeighingForm from './weighing-form';
-import { getAllWeighingList,createWeighing,updateWeighingDetails,deleteWeighingDetails } from '../../app/api/weighing';
+import { getAllWeighingList,createWeighing,updateWeighingDetails,deleteWeighingDetails, getSecondWeightList } from '../../app/api/weighing';
 import { useLocalStorage } from 'react-use';
 import { getAllVehicleList } from '../../app/api/vehicle';
+import SecondWeightForm from './secondWeight-form';
 
 
 const Weighing = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [allWeighingList, setAllWeighingList] = useState([]);
+  const [allVehicleList, setAllVehicleList] = useState([]);
+  const [secondWeightList,setsecondWeightList]=useState([]);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [action, setAction] = useState('create');
   const [weighingId, setWeighingId] = useState(null);
-  const [allVehicleList, setAllVehicleList] = useState([]);
-
-
+  const [isForm,setIsForm]=useState(null)
   const [user] = useLocalStorage('user');
-  const showModal = () => {
-    setIsModalVisible(true);
-    setAction('create');
-  };
+
+
+const showModal = (formType) => {
+  setIsModalVisible(true);
+  setAction('create');
+  setIsForm(formType === 'firstWeight'); // If 'firstWeight' is clicked, set form to WeighingForm; otherwise SecondWeightForm
+};
 
   const fetchData = async () => {
     try {
       const result1 = await getAllVehicleList();
+      const result2=await getSecondWeightList();
+      setsecondWeightList(result2.data.secondWeightList)
+      console.log("result2",result2);
+      
       setAllVehicleList(result1.data.vehicleList);
       const result = await getAllWeighingList();
       setAllWeighingList(result.data.weighingList);
@@ -117,8 +125,10 @@ const Weighing = () => {
   return (
     <>
       <Flex vertical gap='middle'>
-        <Flex justify='flex-end'>
-          <Button type="primary" onClick={showModal}>Create Weighing</Button>
+        <Flex justify='flex-end' gap={5}>
+          <Button type="primary" onClick={()=>showModal('firstWeight')}>First Weight</Button>
+          <Button type="primary" onClick={()=>showModal('secondweight')}>Second Weight</Button>
+
         </Flex>
         <WeighingTable WeighingList={allWeighingList} handleEdit={handleEdit}  handleDelete={(data) => handleDelete(data)} title='Weighing List' />
       </Flex>
@@ -133,7 +143,8 @@ const Weighing = () => {
           cancelText="Cancel"
           width={1000}
         >
-          <WeighingForm form={form} action={action} allVehicleList={allVehicleList}/>
+        { isForm ?( <WeighingForm form={form} action={action} allVehicleList={allVehicleList}/>):
+         ( <SecondWeightForm form={form} action={action} allVehicleList={allVehicleList} secondWeightList={secondWeightList}/>)}
         </Modal>
       )}
     </>

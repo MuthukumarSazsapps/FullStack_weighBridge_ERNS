@@ -180,6 +180,13 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete }) => {
       ...getColumnSearchProps('mobileNumber'),
     },
     {
+      title: 'Load Type',
+      dataIndex: 'loadType',
+      key: 'loadType',
+      // width: '10%',
+      ...getColumnSearchProps('loadType'),
+    },
+    {
       title: 'billType',
       dataIndex: 'billType',
       key: 'billType',

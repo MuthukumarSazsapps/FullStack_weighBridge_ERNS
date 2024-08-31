@@ -18,6 +18,15 @@ export const getAllWeighingList=async ()=>{
     }
 }
 
+export const getSecondWeightList=async ()=>{
+    try {
+        const res=await axiosInstance.get('/weighing/getSecondWeightList')
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 export const updateWeighingDetails=async(data)=>{
     try {

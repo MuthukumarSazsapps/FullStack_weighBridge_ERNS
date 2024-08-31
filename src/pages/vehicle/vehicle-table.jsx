@@ -218,7 +218,7 @@ const VehicleTable = ({ VehicleList, handleEdit,title,handleDelete }) => {
   );
 
   const exportToExcel = () => {
-    const data = companyList.map(row => {
+    const data = VehicleList.map(row => {
       const obj = {};
       columns.forEach(col => {
         obj[col.title] = row[col.dataIndex];

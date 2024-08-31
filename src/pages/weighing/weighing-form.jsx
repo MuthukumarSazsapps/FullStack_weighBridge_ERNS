@@ -58,11 +58,12 @@ const WeighingForm = ({ form, action, allVehicleList }) => {
                             ]}
                         >
                             <Input
-                                // defaultValue="0"
                                 placeholder="Please enter Weighing name"
                                 className='bg-black font-calculator text-4xl border-black text-red-500 
                                             focus:bg-black focus:border-black focus:ring-0 hover:bg-black hover:border-black focus
                                             active:bg-black active:border-black'
+                                // suffix="Kg"
+
                             />
 
                         </Form.Item>
@@ -132,24 +133,9 @@ const WeighingForm = ({ form, action, allVehicleList }) => {
                                 },
                             ]}
                         >
-                            {/* <Select
-                                showSearch
-                                placeholder="Select a trip Type"
-                                optionFilterProp="label"
-                                options={[
-                                    {
-                                        value: 'firstWeight',
-                                        label: 'firstWeight',
-                                    },
-                                    {
-                                        value: 'secondWeight',
-                                        label: 'secondWeight',
-                                    },
-                                ]}
-                            /> */}
                             <Radio.Group>
-                                <Radio value={1}>Yes</Radio>
-                                <Radio value={0}>No</Radio>
+                                <Radio value={"yes"}>Yes</Radio>
+                                <Radio value={"No"}>No</Radio>
                             </Radio.Group>
                         </Form.Item>
                     </Col>

@@ -268,7 +268,7 @@ const ProductTable = ({ customerList, handleEdit,title,handleDelete }) => {
   );
 
   const exportToExcel = () => {
-    const data = companyList.map(row => {
+    const data = customerList.map(row => {
       const obj = {};
       columns.forEach(col => {
         obj[col.title] = row[col.dataIndex];

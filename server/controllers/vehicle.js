@@ -128,7 +128,7 @@ const updateVehicleDetails = async (req, res) => {
 const deleteVehicleDetails = async (req, res) => {
     try {
         const query = `
-        UPDATE   
+        UPDATE Sazs_WeighBridge_Vehicle   
         SET isActive=0  WHERE 
           vehicleId = ?
       `;
