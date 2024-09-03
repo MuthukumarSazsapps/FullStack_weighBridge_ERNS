@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.ant-table-filter-column{
+  width: max-content !important;
+}
+
+.ant-table-cell{
+  text-wrap: nowrap;
+}
 /* 
 body{
     margin: 0;

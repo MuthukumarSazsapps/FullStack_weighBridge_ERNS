@@ -3,6 +3,8 @@ import { SearchOutlined, EditOutlined, DeleteOutlined,FilterTwoTone,DownloadOutl
 import { Button, Checkbox, Flex, Input, Popover, Space, Table, Tooltip } from 'antd';
 import Highlighter from 'react-highlight-words';
 import * as XLSX from 'xlsx';
+import jsPDF from 'jspdf'; 
+import 'jspdf-autotable';
 
 
 const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete }) => {
@@ -117,101 +119,99 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete }) => {
   
   const columns = [
     {
-      title: 'Id',
-      dataIndex: 'id',
-      key: 'namee',
-      // width: '5%',
-      ...getColumnSearchProps('id'),
+      title: 'S.No',
+      dataIndex: 'sno',
+      key: 'sno',
+      render: (text, record, index) =>index+1, // Generate serial number based on index
     },
     {
       title: 'Token No',
       dataIndex: 'tokenNo',
       key: 'tokenNo',
-      // width: '40%',
       ...getColumnSearchProps('tokenNo'),
     },
     {
       title: 'Vehicle No',
       dataIndex: 'VehicleNo',
       key: 'vehicleNo',
-      // width: '10%',
       ...getColumnSearchProps('VehicleNo'),
     },
     {
       title: 'Vehicle Type',
       dataIndex: 'vehicleType',
       key: 'vehicleNo',
-      // width: '10%',
       ...getColumnSearchProps('vehicleType'),
     },
     {
       title: 'returnType',
       dataIndex: 'returnType',
       key: 'returnType',
-      // width: '10%',
       ...getColumnSearchProps('returnType'),
     },
     {
       title: 'customerName',
       dataIndex: 'customerName',
       key: 'customerName',
-      // width: '10%',
       ...getColumnSearchProps('customerName'),
     },
     {
       title: 'driverName',
       dataIndex: 'driverName',
       key: 'driverName',
-      // width: '10%',
       ...getColumnSearchProps('driverName'),
     },
     {
       title: 'materialName',
       dataIndex: 'materialName',
       key: 'materialName',
-      // width: '10%',
       ...getColumnSearchProps('materialName'),
     },
     {
       title: 'mobileNumber',
       dataIndex: 'mobileNumber',
       key: 'mobileNumber',
-      // width: '10%',
       ...getColumnSearchProps('mobileNumber'),
     },
     {
       title: 'Load Type',
       dataIndex: 'loadType',
       key: 'loadType',
-      // width: '10%',
       ...getColumnSearchProps('loadType'),
     },
     {
       title: 'billType',
       dataIndex: 'billType',
       key: 'billType',
-      // width: '10%',
       ...getColumnSearchProps('billType'),
     },
     {
       title: 'amount',
       dataIndex: 'amount',
       key: 'amount',
-      // width: '10%',
       ...getColumnSearchProps('amount'),
     },
     {
       title: 'firstWeight',
       dataIndex: 'firstWeight',
       key: 'firstWeight',
-      // width: '10%',
       ...getColumnSearchProps('firstWeight'),
+    },
+    {
+      title: 'Second Weight',
+      dataIndex: 'secondWeight',
+      key: 'secondWeight',
+      ...getColumnSearchProps('secondWeight'),
+    },
+    {
+      title: 'Net Weight',
+      dataIndex: 'netWeight',
+      key: 'netWeight',
+      ...getColumnSearchProps('netWeight'),
     },
     {
       title: 'CreatedBy',
       dataIndex: 'createdBy',
       key: 'CreatedBy',
-      // width: '10%',
       ...getColumnSearchProps('createdBy'),
     },
     {
@@ -226,21 +226,18 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete }) => {
       title: 'ModifiedBy',
       dataIndex: 'modifiedBy',
       key: 'ModifiedBy',
-      // width: '10%',
       ...getColumnSearchProps('modifiedBy'),
     },
     {
       title: 'ModifiedOn',
       dataIndex: 'modifiedOn',
       key: 'ModifiedOn',
-      // width: '20%',
       ...getColumnSearchProps('modifiedOn'),
     },
     {
       title: 'Action',
       key: 'operation',
       // fixed: 'right',
-      // width: '30%',
       render: (text, record) => (
         <Flex gap='middle'>
           <EditOutlined onClick={() => handleEdit(record)} />
@@ -281,7 +278,7 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete }) => {
   );
 
   const exportToExcel = () => {
-    const data = companyList.map(row => {
+    const data = WeighingList.map(row => {
       const obj = {};
       columns.forEach(col => {
         obj[col.title] = row[col.dataIndex];
@@ -295,16 +292,35 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete }) => {
     XLSX.writeFile(workbook, 'Weighing_list.xlsx');
   };
 
+  // const exportToPDF = () => {
+  //   const data = WeighingList.map(row => {
+  //     const obj = {};
+  //     columns.forEach(col => {
+  //       obj[col.title] = row[col.dataIndex];
+  //     });
+  //     return obj;
+  //   });
+  
+  //   const doc = new jsPDF();
+  //   doc.autoTable({
+  //     head: [columns.map(col => col.title)],
+  //     body: data.map(row => columns.map(col => row[col.title])),
+  //   });
+  
+  //   doc.save('Weighing_list.pdf');
+  // };
+
   return (
     <>
       <Flex justify='space-between'>
-        <h3>{title}</h3>
+        <h2 className='text-3xl font-bold' >{title}</h2>
         <Flex justify='flex-end' gap='middle'>
           <Tooltip title="Export">
             <Button  onClick={exportToExcel}>
               <DownloadOutlined /> Export
             </Button>
           </Tooltip>
+         
           <Popover
             content={content}
             title="Columns"
@@ -329,6 +345,7 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete }) => {
           showSizeChanger: true,  // Enable the page size changer
           pageSizeOptions: ['5', '10', '15', '100'],
         }}
+        // style={{overflowX:"scroll"}}
         scroll={{
           x: 1300,
           // y: 300,

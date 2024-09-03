@@ -15,48 +15,35 @@ const SecondWeightForm = ({ form, action, allVehicleList,secondWeightList }) => 
     }, []);
 
     const options = secondWeightList.map((secondWeightList) => ({
-        value: secondWeightList.VehicleNo,
-        label: secondWeightList.VehicleNo,
+        value: secondWeightList.tokenNo,
+        label: secondWeightList.tokenNo,
     }));
 
     
     
-    // const handleChange = (value) => {
-    //     // Find the matching vehicle type in the allVehicleList
-    //     const selectedValue = secondWeightList.find(vehicle => vehicle.VehicleNo === value);
-    // console.log(selectedValue.loadType);
-
-    //     // Set the amount field with the chargeAmount if a match is found
-    //     form.setFieldsValue({
-    //         amount: selectedValue ? selectedValue.chargeAmount : 0, // Default to 0 if no match found
-    //         loadType:selectedValue ? ("empty"==="empty"?"Empty":"Load") : "",
-    //         firstWeight:selectedValue ? parseInt(selectedValue.firstWeight): 0,
-    //         netWeight:selectedValue?(parseInt(selectedValue.firstWeight)+parseInt(form.getFieldValue('secondWeight'))):0
-    //     });
-    // };
+    
     const handleChange = (value) => {
         // Find the matching vehicle type in the secondWeightList
-        const selectedValue = secondWeightList.find(vehicle => vehicle.VehicleNo === value);
-    
-        // Debugging: Log the selectedValue's loadType
-        console.log(selectedValue ? selectedValue.loadType : 'No match found');
+        const selectedValue = secondWeightList.find(token => token.tokenNo === value);
     
         // Determine the loadType value
         const loadType = selectedValue && selectedValue.loadType === "empty" ? "Load" : "Empty";
     
-        // Calculate netWeight only if selectedValue exists
+        // Calculate netWeight only if selectedValue exists, ensuring it is non-negative
         const netWeight = selectedValue
-            ? parseInt(selectedValue.firstWeight) + parseInt(form.getFieldValue('secondWeight') || 0)
+            ? Math.abs(parseInt(form.getFieldValue('secondWeight') || 0) - parseInt(selectedValue.firstWeight))
             : 0;
     
         // Set form values
         form.setFieldsValue({
             amount: selectedValue ? selectedValue.chargeAmount : 0,
+            VehicleNo: selectedValue ? selectedValue.VehicleNo : '',
             loadType: selectedValue ? loadType : "",
             firstWeight: selectedValue ? parseInt(selectedValue.firstWeight) : 0,
             netWeight: netWeight
         });
     };
+    
     
 
     const handleValue = () => {
@@ -109,7 +96,23 @@ const SecondWeightForm = ({ form, action, allVehicleList,secondWeightList }) => 
                                 },
                             ]}
                         >
-                            <Input placeholder="Please enter Weighing name" disabled />
+                            <Input placeholder="Please enter Weighing name" disabled className='text-red-600'/>
+                        </Form.Item>
+                        <Button className='mt-7' onClick={handleValue}> Read</Button>
+                        <p className='text-2xl text-green-600 mt-7'>{currentTime}</p>
+                    </Col>
+                    <Col span={12} className=' flex justify-around'>
+                        <Form.Item
+                            name="summa"
+                            label="summa"
+                            rules={[
+                                {
+                                    // required: true,
+                                    message: 'Please enter Weighing name',
+                                },
+                            ]}
+                        >
+                           <p>itachi</p>
                         </Form.Item>
                         <Button className='mt-7' onClick={handleValue}> Read</Button>
                         <p className='text-2xl text-green-600 mt-7'>{currentTime}</p>
@@ -119,12 +122,12 @@ const SecondWeightForm = ({ form, action, allVehicleList,secondWeightList }) => 
                 <Row gutter={16}>
                     <Col span={8}>
                         <Form.Item
-                            name="VehicleNo"
-                            label="Vehicle No"
+                            name="tokenNo"
+                            label="Token No"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please enter Vehicle Number',
+                                    message: 'Please enter Token Number',
                                 },
                             ]}
                         >
@@ -134,6 +137,35 @@ const SecondWeightForm = ({ form, action, allVehicleList,secondWeightList }) => 
                                 placeholder="Select a Vehicle Number"
                                 optionFilterProp="label"
                                 options={options}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                        <Form.Item
+                            name="VehicleNo"
+                            label="Vehicle Number"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please enter Vehicle Type',
+                                },
+                            ]}
+                        >
+                            <Select
+                                disabled
+                                showSearch
+                                placeholder="Select a Load Type"
+                                optionFilterProp="label"
+                                options={[
+                                    {
+                                        value: 'empty',
+                                        label: 'Empty',
+                                    },
+                                    {
+                                        value: 'load',
+                                        label: 'Load',
+                                    },
+                                ]}
                             />
                         </Form.Item>
                     </Col>
@@ -166,9 +198,9 @@ const SecondWeightForm = ({ form, action, allVehicleList,secondWeightList }) => 
                             />
                         </Form.Item>
                     </Col>
-                    <Col span={8}>
+                    {/* <Col span={8}>
                         <p className='text-3xl text-red-500 ml-5'>{form.getFieldValue('netWeight')?form.getFieldValue('netWeight')+" Kg":"0 KG"}</p>
-                    </Col>
+                    </Col> */}
                 </Row>
                 <Row gutter={16}>
                             <Col span={8}>
@@ -205,7 +237,7 @@ const SecondWeightForm = ({ form, action, allVehicleList,secondWeightList }) => 
                                     label="Net Weight"
                                     rules={[
                                         {
-                                            // required: true,
+                                            required: true,
                                             message: 'Please Net Weight',
                                         },
                                     ]}

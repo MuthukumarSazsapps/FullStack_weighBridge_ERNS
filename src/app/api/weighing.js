@@ -37,6 +37,17 @@ export const updateWeighingDetails=async(data)=>{
     }
 }
 
+export const updateSecondWeight=async(data)=>{
+    try {
+       const res=await axiosInstance.post('/weighing/updateSecondWeight',data) ;
+       return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+
 export const deleteWeighingDetails=async(data)=>{
     try {
         const res=axiosInstance.post('/weighing/deleteWeighingDetails' ,data)

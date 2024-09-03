@@ -6,6 +6,7 @@ router.post('/create', weighing.createWeighing);
 router.get('/getAllWeighingList',weighing.getAllWeighingList)
 router.get('/getSecondWeightList',weighing.getSecondWeightList)
 router.post('/updateWeighingDetails',weighing.updateWeighingDetails)
+router.post('/updateSecondWeight',weighing.updateSecondWeight)
 router.post('/deleteWeighingDetails',weighing.deleteWeighingDetails)
 
 

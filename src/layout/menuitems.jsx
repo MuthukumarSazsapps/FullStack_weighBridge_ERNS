@@ -20,21 +20,21 @@ export const MenuItems = [
           href: '/company/create',
           icon: <PiFolder />,
         },
-        {
-          name: 'Change Company',
-          href: '/Company/Change',
-          icon: <PiFolder />,
-        },
-        {
-          name: 'Modify Company',
-          href: '/Company/Modify',
-          icon: <PiFolder />,
-        },
-        {
-          name: 'User LogOut',
-          href: '/Company/logout',
-          icon: <PiFolder />,
-        },
+        // {
+        //   name: 'Change Company',
+        //   href: '/Company/Change',
+        //   icon: <PiFolder />,
+        // },
+        // {
+        //   name: 'Modify Company',
+        //   href: '/Company/Modify',
+        //   icon: <PiFolder />,
+        // },
+        // {
+        //   name: 'User LogOut',
+        //   href: '/Company/logout',
+        //   icon: <PiFolder />,
+        // },
       ],
     },
     {
@@ -43,8 +43,8 @@ export const MenuItems = [
       icon: <PiTable />,
       dropdownItems: [
         {
-          name: 'Company Masters',
-          href: '/company/master',
+          name: 'customer Masters',
+          href: '/customer/master',
           icon: <PiFolder />,
         },
         {
@@ -75,12 +75,12 @@ export const MenuItems = [
       ],
     },
     {
-      name: 'Weighing',
+      name: 'Weighment',
       href: '#',
       icon: <PiTable />,
       dropdownItems: [
         {
-          name: 'Company Masters',
+          name: 'Weighment Master',
           href: '/weighing/master',
           icon: <PiFolder />,
         },

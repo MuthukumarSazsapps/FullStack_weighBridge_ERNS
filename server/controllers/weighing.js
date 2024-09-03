@@ -11,10 +11,12 @@ const createWeighing = async (req, res) => {
     try {
   
       const uniqueId = await generateNewCode(db, "Sazs_WeighBridge_WeighingTransaction", "token")
+      const {returnType}=req.body
+      const status= returnType==='yes'?'pending':'completed'
       const query = `
         INSERT INTO Sazs_WeighBridge_WeighingTransaction 
-        (tokenNo, VehicleNo, vehicleType, returnType, customerName, driverName, materialName, mobileNumber,loadType, billType, amount, firstWeight,createdBy,createdOn,modifiedBy,modifiedOn,isActive)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)
+        (tokenNo, VehicleNo, vehicleType, returnType, customerName, driverName, materialName, mobileNumber,loadType, billType,weighmentStatus, amount, firstWeight,createdBy,createdOn,modifiedBy,modifiedOn,isActive)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)
       `;
   
       const params = [
@@ -28,6 +30,7 @@ const createWeighing = async (req, res) => {
         req.body.mobileNumber,
         req.body.loadType,
         req.body.billType,
+        status,
         req.body.amount,
         req.body.measuredWeight,
         req.body.user,
@@ -89,7 +92,7 @@ const createWeighing = async (req, res) => {
 
 const getSecondWeightList =async(req,res)=>{
   try {
-    const query="select * from Sazs_WeighBridge_WeighingTransaction where IsActive=1 AND returnType='yes'"
+    const query="select * from Sazs_WeighBridge_WeighingTransaction where IsActive=1 AND returnType='yes' and weighmentStatus='pending'"
     const result=await executeQuery(db,query);
 
     return responseHandler({
@@ -185,16 +188,20 @@ const updateSecondWeight=async(req,res)=>{
     const query=`
           update Sazs_WeighBridge_WeighingTransaction
           set
+          loadType = loadType || ' To ' || ?,
           secondWeight=?,
           netWeight=?,
-          loadType=?,
+          weighmentStatus=?
           where
           tokenNo=?
     `
+
+    
     const params=[
+        req.body.loadType,
         req.body.secondWeight,
         req.body.netWeight,
-        req.body.loadType,
+        'completed',
         req.body.tokenNo
     ]
 
@@ -209,7 +216,7 @@ const updateSecondWeight=async(req,res)=>{
       });
     } else {
       return responseHandler({
-        req,
+        req,   
         res,
         data: { error: 'No record updated' },
         httpCode: HttpStatusCode.BAD_REQUEST,
@@ -217,7 +224,7 @@ const updateSecondWeight=async(req,res)=>{
     }
 
   } catch (error) {
-    console.error('Error updating record:', err.message);
+    console.error('Error updating record:', error.message);
     return responseHandler({
       req,
       res,
@@ -270,5 +277,6 @@ export default {
     getAllWeighingList,
     updateWeighingDetails,
     deleteWeighingDetails,
-    getSecondWeightList
+    getSecondWeightList,
+    updateSecondWeight
   }

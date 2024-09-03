@@ -198,8 +198,8 @@ const ProductForm = ({ form }) => {
                     label: 'Cash',
                   },
                   {
-                    value: 'online',
-                    label: 'Online',
+                    value: 'online',  
+                    label: 'Online',   
                   },
                   {
                     value: 'credit',

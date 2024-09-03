@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Flex, Form, Input, Modal, message } from 'antd';
 import WeighingTable from './weighing-table';
 import WeighingForm from './weighing-form';
-import { getAllWeighingList,createWeighing,updateWeighingDetails,deleteWeighingDetails, getSecondWeightList } from '../../app/api/weighing';
+import { getAllWeighingList,createWeighing,updateWeighingDetails,deleteWeighingDetails, getSecondWeightList, updateSecondWeight } from '../../app/api/weighing';
 import { useLocalStorage } from 'react-use';
 import { getAllVehicleList } from '../../app/api/vehicle';
 import SecondWeightForm from './secondWeight-form';
@@ -15,8 +15,8 @@ const Weighing = () => {
   const [secondWeightList,setsecondWeightList]=useState([]);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [action, setAction] = useState('create');
-  const [weighingId, setWeighingId] = useState(null);
+  const [action, setAction] = useState(null);
+  const [tokenNo, setTokenNo] = useState(null);
   const [isForm,setIsForm]=useState(null)
   const [user] = useLocalStorage('user');
 
@@ -24,7 +24,7 @@ const Weighing = () => {
 const showModal = (formType) => {
   setIsModalVisible(true);
   setAction('create');
-  setIsForm(formType === 'firstWeight'); // If 'firstWeight' is clicked, set form to WeighingForm; otherwise SecondWeightForm
+  setIsForm(formType); // If 'firstWeight' is clicked, set form to WeighingForm; otherwise SecondWeightForm
 };
 
   const fetchData = async () => {
@@ -52,8 +52,9 @@ const showModal = (formType) => {
   
 
   const handleEdit = (record) => {
-    setWeighingId(record.weighingId);
+    setTokenNo(record.tokenNo);
     setAction('update');
+    setIsForm('firstWeight');
     form.setFieldsValue(record);
     setIsModalVisible(true);
   };
@@ -93,9 +94,13 @@ const showModal = (formType) => {
           setLoading(true);
           let res;
           if (action === 'update') {
-            res = await updateWeighingDetails({ ...data, weighingId,user });
+            res = await updateWeighingDetails({ ...data, tokenNo,user });
           } else {
-            res = await createWeighing({...data,user});
+            if(isForm==='firstWeight'){
+              res = await createWeighing({...data,user});
+            }else{
+              res = await updateSecondWeight({...data,user});
+            }
             
           }
           if (res.data.status === true) {
@@ -130,7 +135,7 @@ const showModal = (formType) => {
           <Button type="primary" onClick={()=>showModal('secondweight')}>Second Weight</Button>
 
         </Flex>
-        <WeighingTable WeighingList={allWeighingList} handleEdit={handleEdit}  handleDelete={(data) => handleDelete(data)} title='Weighing List' />
+        <WeighingTable WeighingList={allWeighingList} handleEdit={handleEdit}  handleDelete={(data) => handleDelete(data)} title='Weighment List' />
       </Flex>
 
       {isModalVisible && (
@@ -143,7 +148,7 @@ const showModal = (formType) => {
           cancelText="Cancel"
           width={1000}
         >
-        { isForm ?( <WeighingForm form={form} action={action} allVehicleList={allVehicleList}/>):
+        { isForm==="firstWeight" ?( <WeighingForm form={form} action={action} allVehicleList={allVehicleList}/>):
          ( <SecondWeightForm form={form} action={action} allVehicleList={allVehicleList} secondWeightList={secondWeightList}/>)}
         </Modal>
       )}
