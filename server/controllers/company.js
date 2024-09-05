@@ -5,19 +5,114 @@ import executeQuery from '../utils/dball.js';
 import generateNewCode from '../utils/customId.js';
 import dayjs from 'dayjs';
 
+// const createCompany = async (req, res) => {
+
+//   try {
+
+//     const uniqueId = await generateNewCode(db, "Sazs_WeighBridge_CompanyDetails", "cust")
+//     const query1 = `
+//       INSERT INTO Sazs_WeighBridge_CompanyDetails 
+//       (companyId, companyName, username, businessName, address, place, pin, phone, gst, pan, password, confirmPassword, createdBy,createdOn,modifiedBy,modifiedOn,isActive)
+//       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+//     `;
+
+//     const params1 = [
+//       uniqueId,
+//       req.body.companyName,
+//       req.body.username,
+//       req.body.businessName,
+//       req.body.address,
+//       req.body.place,
+//       req.body.pin,
+//       req.body.phone,
+//       req.body.gst,
+//       req.body.pan,
+//       req.body.password,
+//       req.body.confirmPassword,
+//       req.body.user,
+//       dayjs().format('MM/DD/YYYY, h:mm A'),
+//       'null',
+//       'null',
+//       1
+//     ];
+
+
+//     const uniqueId2 = await generateNewCode(db, "Sazs_WeighBridge_AuthLogin", "user");
+
+//     const query2=`INSERT INTO Sazs_WeighBridge_AuthLogin 
+//         (userId, username, password, role, createdBy, createdOn, isActive)
+//         VALUES 
+//         (?, '?, ?, ?, ?, ? , ?)`;
+
+//         const params2=[
+//           uniqueId2,
+//           req.body.username,
+//           req.body.password,
+//           'owner',
+//           'admin',
+//           dayjs().format('MM/DD/YYYY, h:mm A'),
+//           1
+//         ]
+    
+//     const result1 = await executeQuery(db, query2, params2, 'run');
+
+//     const result = await executeQuery(db, query1, params1, 'run');
+
+//     if (result.changes > 0) {
+//       return responseHandler({
+//         req,
+//         res,
+//         data: { status: true, message: 'Record inserted successfully' },
+//         httpCode: HttpStatusCode.CREATED,
+//       });
+//     } else {
+//       return responseHandler({
+//         req,
+//         res,
+//         data: { error: 'No record inserted' },
+//         httpCode: HttpStatusCode.BAD_REQUEST,
+//       });
+//     }
+//   } catch (err) {
+//     console.error('Error inserting record:', err.message);
+//     return responseHandler({
+//       req,
+//       res,
+//       data: { error: 'Error inserting record' },
+//       httpCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+//     });
+//   }
+// };
+
+
+
 const createCompany = async (req, res) => {
-
   try {
+    // Generate unique IDs for company and user in parallel
+    const [companyId, userId] = await Promise.all([
+      generateNewCode(db, "Sazs_WeighBridge_CompanyDetails", "cmny"),
+      generateNewCode(db, "Sazs_WeighBridge_AuthLogin", "user")
+    ]);
 
-    const uniqueId = await generateNewCode(db, "Sazs_WeighBridge_CompanyDetails", "cust")
-    const query = `
+    // Prepare the SQL queries
+    const companyQuery = `
       INSERT INTO Sazs_WeighBridge_CompanyDetails 
-      (companyId, companyName, username, businessName, address, place, pin, phone, gst, pan, password, confirmPassword, createdBy,createdOn,modifiedBy,modifiedOn,isActive)
+      (companyId, companyName, username, businessName, address, place, pin, phone, gst, pan, password, confirmPassword, createdBy, createdOn, modifiedBy, modifiedOn, isActive)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-    const params = [
-      uniqueId,
+    const authQuery = `
+      INSERT INTO Sazs_WeighBridge_AuthLogin 
+      (userId, username, password, role, companyId,createdBy, createdOn, isActive)
+      VALUES (?, ?, ?, ?, ?, ?, ?,?)
+    `;
+
+    // Common timestamp
+    const currentTimestamp = dayjs().format('MM/DD/YYYY, h:mm A');
+
+    // Prepare parameters for queries
+    const companyParams = [
+      companyId,
       req.body.companyName,
       req.body.username,
       req.body.businessName,
@@ -30,35 +125,51 @@ const createCompany = async (req, res) => {
       req.body.password,
       req.body.confirmPassword,
       req.body.user,
-      dayjs().format('MM/DD/YYYY, h:mm A'),
-      'null',
-      'null',
-      1
+      currentTimestamp,
+      null,  // modifiedBy is initially null
+      null,  // modifiedOn is initially null
+      1      // isActive is true
     ];
 
-    const result = await executeQuery(db, query, params, 'run');
+    const authParams = [
+      userId,
+      req.body.username,
+      req.body.password,
+      'owner',          // role is 'owner' by default
+      companyId,
+      'admin',          // createdBy is 'admin'
+      currentTimestamp, // createdOn is the current timestamp
+      1                 // isActive is true
+    ];
 
-    if (result.changes > 0) {
+    // Execute both queries in parallel
+    const [companyResult, authResult] = await Promise.all([
+      executeQuery(db, companyQuery, companyParams, 'run'),
+      executeQuery(db, authQuery, authParams, 'run')
+    ]);
+
+    // Check if both insertions were successful
+    if (companyResult.changes > 0 && authResult.changes > 0) {
       return responseHandler({
         req,
         res,
-        data: { status: true, message: 'Record inserted successfully' },
+        data: { status: true, message: 'Company and User records inserted successfully' },
         httpCode: HttpStatusCode.CREATED,
       });
     } else {
       return responseHandler({
         req,
         res,
-        data: { error: 'No record inserted' },
+        data: { error: 'No records inserted' },
         httpCode: HttpStatusCode.BAD_REQUEST,
       });
     }
   } catch (err) {
-    console.error('Error inserting record:', err.message);
+    console.error('Error inserting records:', err.message);
     return responseHandler({
       req,
       res,
-      data: { error: 'Error inserting record' },
+      data: { error: 'Error inserting records' },
       httpCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
     });
   }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Flex, Form, Input, Modal, message } from 'antd';
 import ProductTable from './product-table';
 import ProductForm from './product-form';
-import { getAllProductList,createProduct,updateProductDetails,deleteProductDetails } from '../../app/api/product';
+import { getAllProductList,createProduct,updateProductDetails,deleteProductDetails } from '../../../app/api/product';
 import { useLocalStorage } from 'react-use';
 
 

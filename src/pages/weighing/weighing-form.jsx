@@ -59,7 +59,7 @@ const WeighingForm = ({ form, action, allVehicleList }) => {
                         >
                             <Input
                                 placeholder="Please enter Weighing name"
-                                className='bg-black font-calculator text-4xl border-black text-red-500 
+                                className='bg-black font-calculator text-5xl border-black text-red-500 h-24
                                             focus:bg-black focus:border-black focus:ring-0 hover:bg-black hover:border-black focus
                                             active:bg-black active:border-black'
                                 // suffix="Kg"

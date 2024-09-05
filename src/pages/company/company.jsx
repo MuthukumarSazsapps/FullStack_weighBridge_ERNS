@@ -158,6 +158,10 @@ const Company = () => {
     setIsModalVisible(true);
   };
 
+  const handlePrint=()=>{
+    alert("j")
+  }
+
   const handleDelete = async (data) => {
     Modal.confirm({
       title: 'Are you sure you want to delete this company?',
@@ -226,7 +230,7 @@ const Company = () => {
         <Flex justify='flex-end'>
           <Button type="primary" onClick={showModal}>Create Company</Button>
         </Flex>
-        <CustomerTable companyList={allCompanyList} handleEdit={handleEdit} handleDelete={(data) => handleDelete(data)} title='Customer List' />
+        <CustomerTable companyList={allCompanyList} handleEdit={handleEdit} handleDelete={(data) => handleDelete(data)} title='Customer List' handlePrint={handlePrint}/>
       </Flex>
 
       {isModalVisible && (

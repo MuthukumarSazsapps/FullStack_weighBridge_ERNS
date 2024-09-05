@@ -188,7 +188,7 @@ const updateSecondWeight=async(req,res)=>{
     const query=`
           update Sazs_WeighBridge_WeighingTransaction
           set
-          loadType = loadType || ' To ' || ?,
+          loadType = loadType || ' To   ' || ?,
           secondWeight=?,
           netWeight=?,
           weighmentStatus=?

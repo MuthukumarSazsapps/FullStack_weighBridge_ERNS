@@ -20,6 +20,7 @@
     "axios": "^1.7.2",
     "cors": "^2.8.5",
     "dayjs": "^1.11.13",
+    "jsbarcode": "^3.11.6",
     "jsonwebtoken": "^9.0.2",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.3",

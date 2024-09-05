@@ -1,38 +1,24 @@
 import React, { useRef, useState } from 'react';
-import { SearchOutlined, EditTwoTone, DeleteTwoTone,FilterTwoTone,DownloadOutlined,PrinterTwoTone } from '@ant-design/icons';
-import { Button, Checkbox, DatePicker, Flex, Input, Popover, Space, Table, Tooltip } from 'antd';
+import { SearchOutlined, EditOutlined, DeleteOutlined,FilterTwoTone,DownloadOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Flex, Input, Popover, Space, Table, Tooltip } from 'antd';
 import Highlighter from 'react-highlight-words';
 import * as XLSX from 'xlsx';
-import jsPDF from 'jspdf'; 
-import 'jspdf-autotable';
-import dayjs from 'dayjs';
-import isBetween from 'dayjs/plugin/isBetween';
 
-dayjs.extend(isBetween);
 
-const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint }) => {
-
+const UserTable = ({ ProductList, handleEdit,title,handleDelete }) => {
 
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
-  const { RangePicker } = DatePicker;
-
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    console.log("selectedKeys",selectedKeys[0].length,selectedKeys);
-    
     confirm();
-    setSearchText(selectedKeys[0]+selectedKeys[1]?selectedKeys[1]:'');
-    // setSearchText(selectedKeys[0]);
-
+    setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   };
-
   const handleReset = (clearFilters) => {
     clearFilters();
     setSearchText('');
   };
-  
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
       <div
@@ -53,22 +39,6 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
           }}
         />
         <Space>
-        <RangePicker
-            onChange={(dates) => {
-              console.log("dates",dates);
-              
-              if (dates) {
-                const formattedRange = [
-                  dayjs(dates[0]).startOf('day').format('MM/DD/YYYY'),
-                  dayjs(dates[1]).endOf('day').format('MM/DD/YYYY'),
-                ];
-                setSelectedKeys([formattedRange]);
-              } else {
-                setSelectedKeys([]);
-              }
-            }}
-            allowClear
-          />
           <Button
             type="primary"
             onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
@@ -109,7 +79,7 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
               close();
             }}
           >
-            Close
+            close
           </Button>
         </Space>
       </div>
@@ -121,20 +91,13 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
         }}
       />
     ),
-    onFilter: (value, record) => {
-      if (Array.isArray(value)) {
-        const recordDate = dayjs(record[dataIndex]).format('MM/DD/YYYY');
-        return dayjs(recordDate).isBetween(value[0], value[1], null, '[]');
-      }
-      return record[dataIndex].toString().toLowerCase().includes(value.toLowerCase());
-    },
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
         setTimeout(() => searchInput.current?.select(), 100);
       }
     },
-
-
     render: (text) =>
       searchedColumn === dataIndex ? (
         <Highlighter
@@ -144,119 +107,48 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
           }}
           searchWords={[searchText]}
           autoEscape
-          textToHighlight={text ? String(text) : ''} // Ensure text is a string
+          textToHighlight={text ? text.toString() : ''}
         />
       ) : (
         text
       ),
-
-    
-  
-    
   });
   
   
   const columns = [
     {
-      title: 'S.No',
-      dataIndex: 'sno',
-      key: 'sno',
-      render: (text, record, index) =>index+1, // Generate serial number based on index
+      title: 'Id',
+      dataIndex: 'id',
+      key: 'namee',
+      width: '5%',
+      ...getColumnSearchProps('id'),
     },
     {
-      title: 'Token No',
-      dataIndex: 'tokenNo',
-      key: 'tokenNo',
-      ...getColumnSearchProps('tokenNo'),
+      title: 'ProductId',
+      dataIndex: 'productId',
+      key: 'productId',
+      width: '10%',
+      ...getColumnSearchProps('productId'),
     },
     {
-      title: 'Vehicle No',
-      dataIndex: 'VehicleNo',
-      key: 'vehicleNo',
-      ...getColumnSearchProps('VehicleNo'),
-    },
-    {
-      title: 'Vehicle Type',
-      dataIndex: 'vehicleType',
-      key: 'vehicleNo',
-      ...getColumnSearchProps('vehicleType'),
-    },
-    {
-      title: 'returnType',
-      dataIndex: 'returnType',
-      key: 'returnType',
-      ...getColumnSearchProps('returnType'),
-    },
-    {
-      title: 'customerName',
-      dataIndex: 'customerName',
-      key: 'customerName',
-      ...getColumnSearchProps('customerName'),
-    },
-    {
-      title: 'driverName',
-      dataIndex: 'driverName',
-      key: 'driverName',
-      ...getColumnSearchProps('driverName'),
-    },
-    {
-      title: 'materialName',
-      dataIndex: 'materialName',
-      key: 'materialName',
-      ...getColumnSearchProps('materialName'),
-    },
-    {
-      title: 'mobileNumber',
-      dataIndex: 'mobileNumber',
-      key: 'mobileNumber',
-      ...getColumnSearchProps('mobileNumber'),
-    },
-    {
-      title: 'Load Type',
-      dataIndex: 'loadType',
-      key: 'loadType',
-      ...getColumnSearchProps('loadType'),
-    },
-    {
-      title: 'billType',
-      dataIndex: 'billType',
-      key: 'billType',
-      ...getColumnSearchProps('billType'),
-    },
-    {
-      title: 'amount',
-      dataIndex: 'amount',
-      key: 'amount',
-      ...getColumnSearchProps('amount'),
-    },
-    {
-      title: 'firstWeight',
-      dataIndex: 'firstWeight',
-      key: 'firstWeight',
-      ...getColumnSearchProps('firstWeight'),
-    },
-    {
-      title: 'Second Weight',
-      dataIndex: 'secondWeight',
-      key: 'secondWeight',
-      ...getColumnSearchProps('secondWeight'),
-    },
-    {
-      title: 'Net Weight',
-      dataIndex: 'netWeight',
-      key: 'netWeight',
-      ...getColumnSearchProps('netWeight'),
+      title: 'ProductName',
+      dataIndex: 'productName',
+      key: 'productName',
+      width: '20%',
+      ...getColumnSearchProps('productName'),
     },
     {
       title: 'CreatedBy',
       dataIndex: 'createdBy',
       key: 'CreatedBy',
+      width: '20%',
       ...getColumnSearchProps('createdBy'),
     },
     {
       title: 'CreatedOn',
       dataIndex: 'createdOn',
       key: 'CreatedOn',
+      width: '10%',
       ...getColumnSearchProps('createdOn'),
       sorter: (a, b) => a.address.length - b.address.length,
       sortDirections: ['descend', 'ascend'],
@@ -265,23 +157,25 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
       title: 'ModifiedBy',
       dataIndex: 'modifiedBy',
       key: 'ModifiedBy',
+      width: '10%',
       ...getColumnSearchProps('modifiedBy'),
     },
     {
       title: 'ModifiedOn',
       dataIndex: 'modifiedOn',
       key: 'ModifiedOn',
+      width: '10%',
       ...getColumnSearchProps('modifiedOn'),
     },
     {
       title: 'Action',
       key: 'operation',
       // fixed: 'right',
+      width: '20%',
       render: (text, record) => (
         <Flex gap='middle'>
-          <PrinterTwoTone twoToneColor="green"  onClick={() => handlePrint(record)}/>
-          <EditTwoTone twoToneColor="#eb2f96" onClick={() => handleEdit(record)} />
-          <DeleteTwoTone twoToneColor='red' onClick={() =>  handleDelete(record)}/>
+          <EditOutlined onClick={() => handleEdit(record)} />
+          <DeleteOutlined onClick={() => handleDelete(record)}/>
         </Flex>
       ),
     },
@@ -318,7 +212,7 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
   );
 
   const exportToExcel = () => {
-    const data = WeighingList.map(row => {
+    const data = ProductList.map(row => {
       const obj = {};
       columns.forEach(col => {
         obj[col.title] = row[col.dataIndex];
@@ -328,39 +222,20 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
 
     const worksheet = XLSX.utils.json_to_sheet(data);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Weighing List');
-    XLSX.writeFile(workbook, 'Weighing_list.xlsx');
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Product List');
+    XLSX.writeFile(workbook, 'Product_list.xlsx');
   };
-
-  // const exportToPDF = () => {
-  //   const data = WeighingList.map(row => {
-  //     const obj = {};
-  //     columns.forEach(col => {
-  //       obj[col.title] = row[col.dataIndex];
-  //     });
-  //     return obj;
-  //   });
-  
-  //   const doc = new jsPDF();
-  //   doc.autoTable({
-  //     head: [columns.map(col => col.title)],
-  //     body: data.map(row => columns.map(col => row[col.title])),
-  //   });
-  
-  //   doc.save('Weighing_list.pdf');
-  // };
 
   return (
     <>
       <Flex justify='space-between'>
-        <h2 className='text-3xl font-bold' >{title}</h2>
+        <h3>{title}</h3>
         <Flex justify='flex-end' gap='middle'>
           <Tooltip title="Export">
             <Button  onClick={exportToExcel}>
               <DownloadOutlined /> Export
             </Button>
           </Tooltip>
-         
           <Popover
             content={content}
             title="Columns"
@@ -379,13 +254,12 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
 
       <Table
         columns={filteredColumns}
-        dataSource={WeighingList}
+        dataSource={ProductList}
         bordered
         pagination={{
           showSizeChanger: true,  // Enable the page size changer
           pageSizeOptions: ['5', '10', '15', '100'],
         }}
-        // style={{overflowX:"scroll"}}
         scroll={{
           x: 1300,
           // y: 300,
@@ -396,7 +270,4 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
     </>
   )
 };
-export default WeighingTable;
-
-
-
+export default UserTable;

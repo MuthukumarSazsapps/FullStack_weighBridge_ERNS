@@ -20,6 +20,11 @@ export const MenuItems = [
           href: '/company/create',
           icon: <PiFolder />,
         },
+        {
+          name: 'user Masters',
+          href: '/user/master',
+          icon: <PiFolder />,
+        },
         // {
         //   name: 'Change Company',
         //   href: '/Company/Change',
@@ -62,16 +67,16 @@ export const MenuItems = [
           href: '/material/master',
           icon: <PiFolder />,
         },
-        {
-          name: 'Vehicle Charge Master',
-          href: '/vehiclecharge/master',
-          icon: <PiFolder />,
-        },
-        {
-          name: 'Customerized Weighing Charge',
-          href: '/customerizedweighingcharge/master',
-          icon: <PiFolder />,
-        },
+        // {
+        //   name: 'Vehicle Charge Master',
+        //   href: '/vehiclecharge/master',
+        //   icon: <PiFolder />,
+        // },
+        // {
+        //   name: 'Customerized Weighing Charge',
+        //   href: '/customerizedweighingcharge/master',
+        //   icon: <PiFolder />,
+        // },
       ],
     },
     {
@@ -111,11 +116,6 @@ export const MenuItems = [
         {
           name: 'User Permission',
           href: '/userpermission/setting',
-          icon: <PiFolder />,
-        },
-        {
-          name: 'Change Password',
-          href: '/password/setting',
           icon: <PiFolder />,
         },
         {

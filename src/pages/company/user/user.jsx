@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Flex, Form, Input, Modal, message } from 'antd';
-import VehicleTable from './vehicle-table';
-import VehicleForm from './vehicle-form';
-import { getAllVehicleList,createVehicle,updateVehicleDetails,deleteVehicleDetails } from '../../app/api/vehicle';
+import UserTable from './user-table';
+import UserForm from './user-form'
+import { getAllProductList,createProduct,updateProductDetails,deleteProductDetails } from '../../../app/api/product';
 import { useLocalStorage } from 'react-use';
 
 
-const Vehicle = () => {
+const User = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [allVehicleList, setAllVehicleList] = useState([]);
+  const [allProductList, setAllProductList] = useState([]);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [action, setAction] = useState('create');
-  const [vehicleId, setVehicleId] = useState(null);
+  const [productId, setProductId] = useState(null);
 
   const [user] = useLocalStorage('user');
   const showModal = () => {
@@ -22,8 +22,8 @@ const Vehicle = () => {
 
   const fetchData = async () => {
     try {
-      const result = await getAllVehicleList();
-      setAllVehicleList(result.data.vehicleList);
+      const result = await getAllProductList();
+      setAllProductList(result.data.productList);
     } catch (error) {
       console.log(error);
     }
@@ -34,7 +34,7 @@ const Vehicle = () => {
   }, []);
 
   const handleEdit = (record) => {
-    setVehicleId(record.vehicleId);
+    setProductId(record.productId);
     setAction('update');
     form.setFieldsValue(record);
     setIsModalVisible(true);
@@ -42,17 +42,17 @@ const Vehicle = () => {
 
   const handleDelete = async (data) => {
     Modal.confirm({
-      title: 'Are you sure you want to delete this Vehicle?',
+      title: 'Are you sure you want to delete this Product?',
       content: 'This action cannot be undone.',
       onOk: async () => {
         try {
           setLoading(true);
-          const res = await deleteVehicleDetails(data);
+          const res = await deleteProductDetails(data);
           if (res.data.status === true) {
-            message.success('Vehicle deleted successfully!');
+            message.success('Product deleted successfully!');
             fetchData();
           } else {
-            message.error(`Error: ${res.data.message || 'Failed to delete Vehicle'}`);
+            message.error(`Error: ${res.data.message || 'Failed to delete Product'}`);
           }
         } catch (error) {
           message.error(`API Error: ${error.message}`);
@@ -75,18 +75,18 @@ const Vehicle = () => {
           setLoading(true);
           let res;
           if (action === 'update') {
-            res = await updateVehicleDetails({ ...data, vehicleId,user });
+            res = await updateProductDetails({ ...data, productId,user });
           } else {
-            res = await createVehicle({...data,user});
+            res = await createProduct({...data,user});
           }
           if (res.data.status === true) {
-            message.success('Vehicle saved successfully!');
+            message.success('Product saved successfully!');
             setIsModalVisible(false);
             setLoading(false);
             form.resetFields();
             fetchData();
           } else {
-            message.error(`Error: ${res.data.message || 'Failed to save Vehicle'}`);
+            message.error(`Error: ${res.data.message || 'Failed to save Product'}`);
           }
         } catch (error) {
           message.error(`API Error: ${error.message}`);
@@ -100,32 +100,31 @@ const Vehicle = () => {
   const handleCancel = () => {
     setIsModalVisible(false);
     form.resetFields();
-    setLoading(false);
   };
 
   return (
     <>
       <Flex vertical gap='middle'>
         <Flex justify='flex-end'>
-          <Button type="primary" onClick={showModal}>Create Vehicle</Button>
+          <Button type="primary" onClick={showModal}>Create Product</Button>
         </Flex>
-        <VehicleTable VehicleList={allVehicleList} handleEdit={handleEdit} handleDelete={(data) => handleDelete(data)} title='Vehicle List' />
+        <UserTable ProductList={allProductList} handleEdit={handleEdit} handleDelete={(data) => handleDelete(data)} title='Product List' />
       </Flex>
 
       {isModalVisible && (
         <Modal
-          title={action === 'update' ? "Edit Vehicle" : "Create Vehicle"}
+          title={action === 'update' ? "Edit Product" : "Create Product"}
           open={isModalVisible}
           onOk={handleOk}
           onCancel={handleCancel}
           okText={loading ? "Submitting..." : (action === 'update' ? "Update" : "Create")}
           cancelText="Cancel"
         >
-          <VehicleForm form={form} />
+          <UserForm form={form} />
         </Modal>
       )}
     </>
   );
 };
 
-export default Vehicle;
+export default User;

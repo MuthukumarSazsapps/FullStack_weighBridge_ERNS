@@ -10,6 +10,10 @@ const LoginForm = () => {
 
     const [jwt, setJwt] = useLocalStorage('auth');
     const [username, setUserName] = useLocalStorage('user');
+    const [userId, setUserId] = useLocalStorage('userId');
+    const [role, setRole] = useLocalStorage('role');
+
+
 
     const navigate = useNavigate();
   
@@ -22,7 +26,10 @@ const LoginForm = () => {
     
     if (result.data.Status === "success") {
            setJwt(result.data.token); // Save JWT token
-           setUserName(values.username)
+           setUserName(result.data.companyData.username)
+           setUserId(result.data.companyData.userId)
+           setRole(result.data.companyData.role)
+
            navigate("/");
          } else {
            alert(result.Error);

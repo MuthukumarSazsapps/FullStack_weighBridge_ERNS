@@ -6,10 +6,11 @@ import Home from './pages/home'
 import NotFoundPage from './pages/404'
 import LoginPage from './pages/auth/login/login'
 import { PrivateRoutesValidator } from './validators/validators'
-import Customer from './pages/customer/customer'
-import Product from './pages/product/product'
-import Vehicle from './pages/vehicle/vehicle'
+import Customer from './pages/masters/customer/customer'
+import Product from './pages/masters/product/product'
+import Vehicle from './pages/masters/vehicle/vehicle'
 import Weighing from './pages/weighing/weighing'
+import User from './pages/company/user/user'
 
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
             <Route path='/material/master' element={<Product />} />
             <Route path='/vehicletype/master' element={<Vehicle />} />
             <Route path='/weighing/master' element={<Weighing />} />
+            <Route path='/user/master' element={<User />} />
           </Route>
         </Route>
         <Route path='/login' element={<LoginPage />} />

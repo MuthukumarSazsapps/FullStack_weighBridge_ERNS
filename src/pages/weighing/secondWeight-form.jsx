@@ -101,22 +101,6 @@ const SecondWeightForm = ({ form, action, allVehicleList,secondWeightList }) => 
                         <Button className='mt-7' onClick={handleValue}> Read</Button>
                         <p className='text-2xl text-green-600 mt-7'>{currentTime}</p>
                     </Col>
-                    <Col span={12} className=' flex justify-around'>
-                        <Form.Item
-                            name="summa"
-                            label="summa"
-                            rules={[
-                                {
-                                    // required: true,
-                                    message: 'Please enter Weighing name',
-                                },
-                            ]}
-                        >
-                           <p>itachi</p>
-                        </Form.Item>
-                        <Button className='mt-7' onClick={handleValue}> Read</Button>
-                        <p className='text-2xl text-green-600 mt-7'>{currentTime}</p>
-                    </Col>
                 </Row>
 
                 <Row gutter={16}>

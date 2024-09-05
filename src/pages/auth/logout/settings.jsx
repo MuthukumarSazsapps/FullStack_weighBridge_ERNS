@@ -4,20 +4,31 @@ import { useLocalStorage } from 'react-use'
 
 const Settings = ({ hide }) => {
   const [user] = useLocalStorage('user')
+  const [role] = useLocalStorage('role')
+  const [userId] = useLocalStorage('userId')
+
   return (
-    <Flex align='center' vertical>
-      <div style={{ width: '150px', height: '100px', margin: 10 }}>
-        <strong>{user}</strong>
+    <>
+      <div className='flex justify-between font-medium'>
+        <div>
+          <p>User Name </p>
+          <p>Role </p>
+          <p>UserId </p>
+        </div>
+        <div>
+          <p>:</p>
+          <p>:</p>
+          <p>:</p>
+        </div>
+        <div>
+          <p><strong>{user}</strong></p>
+          <p><strong>{role}</strong></p>
+          <p><strong>{userId}</strong></p>
+        </div>
       </div>
-      <Divider style={{
-        borderColor: '#7cb305',
-      }} />
-
-
-      {/* <p >fsd</p> */}
-      {/* <Button type='primary' size='large' onClick={hide}>Log Out</Button> */}
-      <a onClick={hide}> <b>Log Out</b> </a>
-    </Flex>
+      <Divider style={{ borderColor: '#7cb305', }} />
+      <p className='text-center'><a onClick={hide} > <b>Log Out</b> </a></p>
+    </>
   )
 }
 
