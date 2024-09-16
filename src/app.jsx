@@ -1,4 +1,4 @@
-import React ,{useEffect}from 'react'
+import React ,{useEffect, useState}from 'react'
 import Mainlayout from './layout/mainlayout'
 import { Route, Routes } from 'react-router-dom'
 import Company from './pages/company/company'
@@ -11,12 +11,16 @@ import Product from './pages/masters/product/product'
 import Vehicle from './pages/masters/vehicle/vehicle'
 import Weighing from './pages/weighing/weighing'
 import User from './pages/company/user/user'
+import CameraView from './pages/camera/CameraView'
 
 
 const App = () => {
 
+  
+
   return (
     <>
+   
       {/* <Mainlayout/> */}
       <Routes>
         <Route element={<PrivateRoutesValidator />}>
@@ -28,6 +32,7 @@ const App = () => {
             <Route path='/vehicletype/master' element={<Vehicle />} />
             <Route path='/weighing/master' element={<Weighing />} />
             <Route path='/user/master' element={<User />} />
+            <Route path='/vehicleno/master' element={<CameraView />} />
           </Route>
         </Route>
         <Route path='/login' element={<LoginPage />} />

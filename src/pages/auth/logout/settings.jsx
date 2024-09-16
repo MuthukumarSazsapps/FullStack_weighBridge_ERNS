@@ -3,9 +3,11 @@ import React from 'react'
 import { useLocalStorage } from 'react-use'
 
 const Settings = ({ hide }) => {
-  const [user] = useLocalStorage('user')
-  const [role] = useLocalStorage('role')
-  const [userId] = useLocalStorage('userId')
+  const [userData] = useLocalStorage('userData', {}); // 'userData' is the key in localStorage
+
+  // Destructure the properties from userData
+  const { username, role, userId } = userData || {};
+ 
 
   return (
     <>
@@ -21,7 +23,7 @@ const Settings = ({ hide }) => {
           <p>:</p>
         </div>
         <div>
-          <p><strong>{user}</strong></p>
+          <p><strong>{username}</strong></p>
           <p><strong>{role}</strong></p>
           <p><strong>{userId}</strong></p>
         </div>

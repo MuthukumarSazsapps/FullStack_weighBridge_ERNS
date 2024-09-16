@@ -126,8 +126,8 @@ const login = async (req, res) => {
       return responseHandler({
         req,
         res,
-        data: { error: 'User not found or inactive' },
-        httpCode: HttpStatusCode.BAD_REQUEST,
+        data: { error: 'User Not Found or Incorrect credentials ' },
+        httpCode: HttpStatusCode.OK,
       });
     }
 

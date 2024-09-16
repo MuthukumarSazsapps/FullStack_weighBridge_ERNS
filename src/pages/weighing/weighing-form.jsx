@@ -119,6 +119,7 @@ const WeighingForm = ({ form, action, allVehicleList }) => {
                                 placeholder="Select a vehicle Type"
                                 optionFilterProp="label"
                                 options={options}
+                                
                             />
                         </Form.Item>
                     </Col>

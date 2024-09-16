@@ -51,9 +51,14 @@ import cors from 'cors';
 import sqlite3Module from 'sqlite3';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
+import fetch from 'node-fetch';
+
+import DigestFetch from 'digest-fetch'
 
 const sqlite3 = sqlite3Module.verbose();
 const port=5000
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -81,6 +86,47 @@ app.get('/api',(req,res)=>{
   res.send("hello from server")
 })
 
+
+
+
+app.get('/api/capture-image', async (req, res) => {
+  const cameraIp = '192.168.1.10'; // Camera IP
+  const username = 'admin';        // Your camera username
+  const password = 'Advika123';     // Your camera password
+  const tokenNo = req.query.tokenNo; // Accept tokenNo as a query parameter
+
+  // Create a DigestFetch client
+  const client = new DigestFetch(username, password);
+
+  try {
+    // Use Digest Authentication with the camera's API endpoint
+    const response = await client.fetch(`http://${cameraIp}/ISAPI/Streaming/channels/1/picture`, {
+      method: 'GET',
+    });
+
+    if (response.ok) {
+      const arrayBuffer = await response.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+
+      // Save the image locally
+      const imagePath = path.join(__dirname, `images/weighing_${tokenNo}.jpg`);
+      fs.writeFileSync(imagePath, buffer);
+
+      console.log(`Image saved to: ${imagePath}`);
+      res.json({ success: true, imagePath });
+    } else {
+      const responseBody = await response.text();
+      console.error('Camera responded with:', response.status, responseBody);
+      throw new Error('Failed to capture image from camera');
+    }
+  } catch (error) {
+    console.error('Error capturing image:', error);
+    res.status(500).json({ success: false, message: 'Failed to capture image', error: error.message });
+  }
+});
+
+
+
 routes(app)
 
 process.on('SIGINT', () => {
@@ -97,3 +143,5 @@ process.on('SIGINT', () => {
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
+

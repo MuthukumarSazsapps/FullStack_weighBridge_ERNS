@@ -15,8 +15,8 @@ const createWeighing = async (req, res) => {
       const status= returnType==='yes'?'pending':'completed'
       const query = `
         INSERT INTO Sazs_WeighBridge_WeighingTransaction 
-        (tokenNo, VehicleNo, vehicleType, returnType, customerName, driverName, materialName, mobileNumber,loadType, billType,weighmentStatus, amount, firstWeight,createdBy,createdOn,modifiedBy,modifiedOn,isActive)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)
+        (tokenNo, VehicleNo, vehicleType, returnType, customerName, driverName, materialName, mobileNumber,loadType, billType,weighmentStatus, amount, firstWeight,imagePath,createdBy,createdOn,modifiedBy,modifiedOn,isActive)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)
       `;
   
       const params = [
@@ -33,6 +33,7 @@ const createWeighing = async (req, res) => {
         status,
         req.body.amount,
         req.body.measuredWeight,
+        req.body.imagePath,
         req.body.user,
         dayjs().format('MM/DD/YYYY, h:mm A'),
         'null',
@@ -46,7 +47,7 @@ const createWeighing = async (req, res) => {
         return responseHandler({
           req,
           res,
-          data: { status: true, message: 'Record inserted successfully' },
+          data: { status: true, message: 'Record inserted successfully',tokenNo:uniqueId },
           httpCode: HttpStatusCode.CREATED,
         });
       } else {
@@ -191,6 +192,7 @@ const updateSecondWeight=async(req,res)=>{
           loadType = loadType || ' To   ' || ?,
           secondWeight=?,
           netWeight=?,
+          imagePath=?,
           weighmentStatus=?
           where
           tokenNo=?
@@ -201,6 +203,7 @@ const updateSecondWeight=async(req,res)=>{
         req.body.loadType,
         req.body.secondWeight,
         req.body.netWeight,
+        req.body.imagePath,
         'completed',
         req.body.tokenNo
     ]

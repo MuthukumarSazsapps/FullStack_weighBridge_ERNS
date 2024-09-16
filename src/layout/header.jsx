@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { Popover, Tooltip } from 'antd';
 import { RiAccountPinCircleFill } from 'react-icons/ri';
-
-
 import { HiMiniXMark } from "react-icons/hi2";
 import Settings from '../pages/auth/logout/settings';
 import { useNavigate } from 'react-router-dom';

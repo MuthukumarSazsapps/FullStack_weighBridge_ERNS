@@ -7,13 +7,11 @@ const NotFoundPage = () => {
   
   return (
     <div>
-
       <Result
         status="404"
         title="Page Not Found"
         subTitle="Sorry, the page you visited does not exist."
         extra={<Link to={'/'}> <Button type="primary">Back Home</Button></Link>}
-        
       />
     </div>
   )
