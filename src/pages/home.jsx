@@ -1,7 +1,7 @@
 
 
 import React from 'react'
-import logo from '../assets/images/WeighBridge.png'
+import logo from '../assets/images/logo/WeighBridge.png'
 import { Flex } from 'antd'
 import SocialItems from '../components/social-shares'
 const Home = () => {

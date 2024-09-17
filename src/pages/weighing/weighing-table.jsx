@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { SearchOutlined, EditTwoTone, DeleteTwoTone,FilterTwoTone,DownloadOutlined,PrinterTwoTone } from '@ant-design/icons';
-import { Button, Checkbox, DatePicker, Flex, Input, Popover, Space, Table, Tooltip } from 'antd';
+import { Button, Checkbox, DatePicker, Flex, Input, Popover, Space, Table, Tooltip,Modal } from 'antd';
 import Highlighter from 'react-highlight-words';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf'; 
@@ -12,6 +12,9 @@ dayjs.extend(isBetween);
 
 const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint }) => {
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedImage1, setSelectedImage1] = useState(null);
+  const [selectedImage2, setSelectedImage2] = useState(null);
 
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -155,6 +158,33 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
     
   });
   
+
+  const handleImageClick = (imagePath) => {
+      console.log("imagePath",imagePath);
+      let  imageName=imagePath.split(',')
+      console.log("imageNamearr",imageName);
+
+
+      if(imageName.length===2){
+       
+        setSelectedImage1(imageName[0]?.split('\\').pop())
+        setSelectedImage2(imageName[1]?.split('\\').pop())
+        setIsModalVisible(true);
+
+      }else{
+        setSelectedImage1(imageName[0].split('\\').pop())
+        setSelectedImage2(null)
+        setIsModalVisible(true);
+
+      }
+    
+   
+  };
+
+  // Handle modal close
+  const handleClose = () => {
+    setIsModalVisible(false);
+  };
   
   const columns = [
     {
@@ -246,6 +276,16 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
       dataIndex: 'netWeight',
       key: 'netWeight',
       ...getColumnSearchProps('netWeight'),
+    },
+    {
+      title: 'Captured Image',
+      dataIndex: 'imagePath',
+      key: 'imagePath',
+      render: (text, record) => (
+        record.imagePath?(<Button type="link" onClick={() => handleImageClick(record.imagePath)}>
+          View Image
+        </Button>):'No Images'
+      ),
     },
     {
       title: 'CreatedBy',
@@ -393,6 +433,30 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
         size='small'
 
       />
+
+       <Modal
+        title="Captured Image"
+        open={isModalVisible}
+        onCancel={handleClose}
+        footer={null}  // No footer, just close the modal manually
+      >
+          { selectedImage1?
+          (<img
+            src={require(`../../assets/images/camImages/${selectedImage1}`)} // Adjust the path accordingly
+            alt="Captured"
+            style={{ width: '100%' }}
+          />)
+          :null}
+          <br />
+         { selectedImage2?
+          (<img
+            src={require(`../../assets/images/camImages/${selectedImage2}`)} // Adjust the path accordingly
+            alt="Captured"
+            style={{ width: '100%' }}
+          />)
+          :null}
+          
+      </Modal> 
     </>
   )
 };

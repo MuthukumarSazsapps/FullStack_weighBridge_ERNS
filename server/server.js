@@ -109,7 +109,7 @@ app.get('/api/capture-image', async (req, res) => {
       const buffer = Buffer.from(arrayBuffer);
 
       // Save the image locally
-      const imagePath = path.join(__dirname, `images/weighing_${tokenNo}.jpg`);
+      const imagePath = path.join(__dirname, `images/weighing_${tokenNo}.jpg`);//adjust image path where you want save image in local
       fs.writeFileSync(imagePath, buffer);
 
       console.log(`Image saved to: ${imagePath}`);

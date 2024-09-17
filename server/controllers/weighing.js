@@ -4,6 +4,7 @@ import { db } from '../server.js';
 import executeQuery from '../utils/dball.js';
 import generateNewCode from '../utils/customId.js';
 import dayjs from 'dayjs';
+import cameraScreenShot from '../utils/screenShot.js';
 
 
 const createWeighing = async (req, res) => {
@@ -11,6 +12,7 @@ const createWeighing = async (req, res) => {
     try {
   
       const uniqueId = await generateNewCode(db, "Sazs_WeighBridge_WeighingTransaction", "token")
+      const imagePath = await cameraScreenShot(uniqueId)
       const {returnType}=req.body
       const status= returnType==='yes'?'pending':'completed'
       const query = `
@@ -33,7 +35,8 @@ const createWeighing = async (req, res) => {
         status,
         req.body.amount,
         req.body.measuredWeight,
-        req.body.imagePath,
+        // req.body.imagePath,
+        imagePath,
         req.body.user,
         dayjs().format('MM/DD/YYYY, h:mm A'),
         'null',
@@ -71,7 +74,7 @@ const createWeighing = async (req, res) => {
 
   const getAllWeighingList = async (req, res) => {
     try {
-        const query = 'select * from Sazs_WeighBridge_WeighingTransaction where isActive=1';
+        const query = 'SELECT * FROM Sazs_WeighBridge_WeighingTransaction WHERE isActive = 1 ORDER BY createdOn DESC;';
         const rows = await executeQuery(db, query); // Execute the SQL query
 
         return responseHandler({
@@ -186,13 +189,16 @@ const updateWeighingDetails = async (req, res) => {
 
 const updateSecondWeight=async(req,res)=>{
   try {
+
+    const imagePath = await cameraScreenShot(`${ req.body.tokenNo}-2`)
+
     const query=`
           update Sazs_WeighBridge_WeighingTransaction
           set
-          loadType = loadType || ' To   ' || ?,
+          loadType = loadType || ' To ' || ?,
           secondWeight=?,
           netWeight=?,
-          imagePath=?,
+          imagePath= imagePath || ',' || ?,
           weighmentStatus=?
           where
           tokenNo=?
@@ -203,7 +209,7 @@ const updateSecondWeight=async(req,res)=>{
         req.body.loadType,
         req.body.secondWeight,
         req.body.netWeight,
-        req.body.imagePath,
+        imagePath,
         'completed',
         req.body.tokenNo
     ]

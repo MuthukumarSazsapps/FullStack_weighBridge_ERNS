@@ -80,7 +80,7 @@ import { Form, Input, Button, Row, Col, Card, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'react-use';
-import logo from '../../../assets/images/sazsgrey.png'; // Make sure to use your logo path
+import logo from '../../../assets/images/logo/sazsgrey.png'; // Make sure to use your logo path
 import { login } from '../../../app/api/auth';
 
 const LoginForm = () => {

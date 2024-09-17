@@ -8,6 +8,8 @@ import dayjs from 'dayjs';
 
 const createVehicle = async (req, res) => {
     try {
+        await executeQuery(db, 'PRAGMA busy_timeout = 3000;', [], 'run');
+
         const uniqueId = await generateNewCode(db, "Sazs_WeighBridge_Vehicle", "vehid")
         const query = `
                         INSERT INTO Sazs_WeighBridge_Vehicle

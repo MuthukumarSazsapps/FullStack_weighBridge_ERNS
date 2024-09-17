@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Breadcrumb, Layout, Menu, theme, Tooltip, Button } from 'antd';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { MenuItems } from './menuitems';  // Import your MenuItems
-import logo from '../assets/images/sazsapplogo.png'
+import logo from '../assets/images/logo/sazsapplogo.png'
 
 
 import { RiAccountPinCircleFill } from "react-icons/ri";

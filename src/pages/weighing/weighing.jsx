@@ -8,6 +8,7 @@ import { getAllVehicleList } from '../../app/api/vehicle';
 import SecondWeightForm from './secondWeight-form';
 import JsBarcode from 'jsbarcode';
 import dayjs from 'dayjs';
+import { getScreenShot } from '../../app/api/camera';
 
 
 
@@ -380,22 +381,7 @@ const Weighing = () => {
   };
 
 
-  const captureAndSaveImage = async (tokenNo) => {
-    try {
-      const response = await fetch(`http://localhost:5000/api/capture-image?tokenNo=${tokenNo}`);
-      const data = await response.json();
-
-      if (data.success) {
-        console.log('Image captured and saved to', data.imagePath);
-        return  data.imagePath
-      } else {
-        console.error('Failed to capture image:', data.message);
-      }
-    } catch (error) {
-      console.error('Error capturing image:', error);
-    }
-  };
-
+ 
 
  
   const handleOk = () => {
@@ -406,25 +392,25 @@ const Weighing = () => {
           console.log('Form values:', data);
           setLoading(true);
 
-          const imagePath = await captureAndSaveImage(tokenNo);
+          // const imagePath = await getScreenShot(tokenNo);
     
           let res;
           if (action === 'update') {
             res = await updateWeighingDetails({ ...data, tokenNo, user });
           } else {
             if (isForm === 'firstWeight') {
-              res = await createWeighing({ ...data, user,imagePath });
+              res = await createWeighing({ ...data, user });
             } else {
-              res = await updateSecondWeight({ ...data, user,imagePath });
+              res = await updateSecondWeight({ ...data, user });
             }
 
           }
           if (res.data.status === true) {
-            let token=res.data.tokenNo
+            let tokenNo=res.data.tokenNo
             message.success('Weighing saved successfully!');
             setIsModalVisible(false);
             setLoading(false);
-            handlePrint({...data,token,user})
+            handlePrint({...data,tokenNo,user})
             form.resetFields();
             fetchData();
           } else {
@@ -451,7 +437,6 @@ const Weighing = () => {
         <Flex justify='flex-end' gap={5}>
           <Button type="primary" onClick={() => showModal('firstWeight')}>First Weight</Button>
           <Button type="primary" onClick={() => showModal('secondweight')}>Second Weight</Button>
-
         </Flex>
         <WeighingTable WeighingList={allWeighingList} handlePrint={handlePrint} handleEdit={handleEdit} handleDelete={(data) => handleDelete(data)} title='Weighment List' />
       </Flex>

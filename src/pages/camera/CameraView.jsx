@@ -288,12 +288,15 @@
 //   export default CameraView;
 
 
+import axios from 'axios';
 import React from 'react';
+import { getScreenShot } from '../../app/api/camera';
 
 const CameraView = () => {
   const captureAndSaveImage = async (tokenNo) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/capture-image?tokenNo=${tokenNo}`);
+      // const response = await fetch(`http://localhost:5000/api/capture-image?tokenNo=${tokenNo}`);
+      const response=await getScreenShot(tokenNo)
       const data = await response.json();
 
       if (data.success) {
@@ -309,7 +312,7 @@ const CameraView = () => {
   return (
     <div>
       <div>
-        <button onClick={() => captureAndSaveImage('t2024-1')}>Get Image</button>
+        <button onClick={() => captureAndSaveImage('t2025-1')}>Get Image</button>
       </div>
     </div>
   );
