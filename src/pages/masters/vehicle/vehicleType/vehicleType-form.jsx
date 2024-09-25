@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space } from 'antd';
 
-const VehicleForm = ({ form }) => {
+const VehicleTypeForm = ({ form }) => {
   console.log("form", form);
 
   return (
@@ -42,4 +42,4 @@ const VehicleForm = ({ form }) => {
   )
 }
 
-export default VehicleForm
+export default VehicleTypeForm

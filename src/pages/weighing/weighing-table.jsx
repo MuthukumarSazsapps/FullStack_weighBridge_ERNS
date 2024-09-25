@@ -8,6 +8,7 @@ import 'jspdf-autotable';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 
+
 dayjs.extend(isBetween);
 
 const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint }) => {
@@ -163,8 +164,6 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
       console.log("imagePath",imagePath);
       let  imageName=imagePath.split(',')
       console.log("imageNamearr",imageName);
-
-
       if(imageName.length===2){
        
         setSelectedImage1(imageName[0]?.split('\\').pop())
@@ -175,15 +174,15 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
         setSelectedImage1(imageName[0].split('\\').pop())
         setSelectedImage2(null)
         setIsModalVisible(true);
-
       }
-    
-   
   };
 
   // Handle modal close
   const handleClose = () => {
     setIsModalVisible(false);
+    setSelectedImage1(null)
+    setSelectedImage2(null)
+
   };
   
   const columns = [
@@ -201,7 +200,7 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
     },
     {
       title: 'Vehicle No',
-      dataIndex: 'VehicleNo',
+      dataIndex: 'vehicleNo',
       key: 'vehicleNo',
       ...getColumnSearchProps('VehicleNo'),
     },
@@ -298,8 +297,8 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
       dataIndex: 'createdOn',
       key: 'CreatedOn',
       ...getColumnSearchProps('createdOn'),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortDirections: ['descend', 'ascend'],
+      // sorter: (a, b) => a.address.length - b.address.length,
+      // sortDirections: ['descend', 'ascend'],
     },
     {
       title: 'ModifiedBy',
@@ -325,7 +324,6 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
         </Flex>
       ),
     },
-
   ];
 
   const [hiddenColumns, setHiddenColumns] = useState([]);
@@ -457,6 +455,7 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
           :null}
           
       </Modal> 
+     
     </>
   )
 };

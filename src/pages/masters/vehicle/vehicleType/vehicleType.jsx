@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Flex, Form, Input, Modal, message } from 'antd';
-import VehicleTable from './vehicle-table';
-import VehicleForm from './vehicle-form';
-import { getAllVehicleList,createVehicle,updateVehicleDetails,deleteVehicleDetails } from '../../../app/api/vehicle';
+import VehicleTable from './vehicleType-table';
+import VehicleForm from './vehicleType-form';
+import { getAllVehicleTypeList,createVehicleType,updateVehicleTypeDetails,deleteVehicleTypeDetails } from '../../../../app/api/vehicle';
 import { useLocalStorage } from 'react-use';
 
 
-const Vehicle = () => {
+const VehicleType = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [allVehicleList, setAllVehicleList] = useState([]);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [action, setAction] = useState('create');
   const [vehicleId, setVehicleId] = useState(null);
+  const [userData] = useLocalStorage('userData');
 
-  const [user] = useLocalStorage('user');
+  let user=userData.username
   const showModal = () => {
     setIsModalVisible(true);
     setAction('create');
@@ -22,7 +23,7 @@ const Vehicle = () => {
 
   const fetchData = async () => {
     try {
-      const result = await getAllVehicleList();
+      const result = await getAllVehicleTypeList();
       setAllVehicleList(result.data.vehicleList);
     } catch (error) {
       console.log(error);
@@ -47,7 +48,7 @@ const Vehicle = () => {
       onOk: async () => {
         try {
           setLoading(true);
-          const res = await deleteVehicleDetails(data);
+          const res = await deleteVehicleTypeDetails(data);
           if (res.data.status === true) {
             message.success('Vehicle deleted successfully!');
             fetchData();
@@ -75,9 +76,9 @@ const Vehicle = () => {
           setLoading(true);
           let res;
           if (action === 'update') {
-            res = await updateVehicleDetails({ ...data, vehicleId,user });
+            res = await updateVehicleTypeDetails({ ...data, vehicleId,user });
           } else {
-            res = await createVehicle({...data,user});
+            res = await createVehicleType({...data,user});
           }
           if (res.data.status === true) {
             message.success('Vehicle saved successfully!');
@@ -86,7 +87,8 @@ const Vehicle = () => {
             form.resetFields();
             fetchData();
           } else {
-            message.error(`Error: ${res.data.message || 'Failed to save Vehicle'}`);
+            message.warning(`Warning : ${res.data.message || 'Failed to save Vehicle'}`);
+            setLoading(false);
           }
         } catch (error) {
           message.error(`API Error: ${error.message}`);
@@ -107,7 +109,7 @@ const Vehicle = () => {
     <>
       <Flex vertical gap='middle'>
         <Flex justify='flex-end'>
-          <Button type="primary" onClick={showModal}>Create Vehicle</Button>
+          <Button type="primary" onClick={showModal}>Create VehicleType</Button>
         </Flex>
         <VehicleTable VehicleList={allVehicleList} handleEdit={handleEdit} handleDelete={(data) => handleDelete(data)} title='Vehicle List' />
       </Flex>
@@ -128,4 +130,4 @@ const Vehicle = () => {
   );
 };
 
-export default Vehicle;
+export default VehicleType;

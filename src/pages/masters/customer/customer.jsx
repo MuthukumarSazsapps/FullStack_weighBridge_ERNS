@@ -14,7 +14,9 @@ const Customer = () => {
   const [action, setAction] = useState('create');
   const [customerId, setCustomerId] = useState(null);
 
-  const [user] = useLocalStorage('user');
+  const [userData] = useLocalStorage('userData');
+
+  let user=userData.username
   const showModal = () => {
     setIsModalVisible(true);
     setAction('create');

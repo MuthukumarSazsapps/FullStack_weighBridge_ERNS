@@ -8,10 +8,11 @@ import LoginPage from './pages/auth/login/login'
 import { PrivateRoutesValidator } from './validators/validators'
 import Customer from './pages/masters/customer/customer'
 import Product from './pages/masters/product/product'
-import Vehicle from './pages/masters/vehicle/vehicle'
+import VehicleType from './pages/masters/vehicle/vehicleType/vehicleType'
 import Weighing from './pages/weighing/weighing'
 import User from './pages/company/user/user'
 import CameraView from './pages/camera/CameraView'
+import VehicleNumber from './pages/masters/vehicle/vehicleNumber/vehicleNumber'
 
 
 const App = () => {
@@ -29,10 +30,10 @@ const App = () => {
             <Route path='/company/create' element={<Company />} />
             <Route path='/customer/master' element={<Customer />} />
             <Route path='/material/master' element={<Product />} />
-            <Route path='/vehicletype/master' element={<Vehicle />} />
+            <Route path='/vehicletype/master' element={<VehicleType />} />
             <Route path='/weighing/master' element={<Weighing />} />
             <Route path='/user/master' element={<User />} />
-            <Route path='/vehicleno/master' element={<CameraView />} />
+            <Route path='/vehicleno/master' element={<VehicleNumber />} />
           </Route>
         </Route>
         <Route path='/login' element={<LoginPage />} />

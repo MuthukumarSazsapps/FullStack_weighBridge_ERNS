@@ -8,7 +8,23 @@ import dayjs from 'dayjs';
 
 const createVehicle = async (req, res) => {
     try {
-        await executeQuery(db, 'PRAGMA busy_timeout = 3000;', [], 'run');
+        // await executeQuery(db, 'PRAGMA busy_timeout = 3000;', [], 'run');
+
+        const checkQuery = `
+        SELECT * FROM Sazs_WeighBridge_Vehicle WHERE vehicleType = ? AND isActive=1
+      `;
+      const checkParams = [req.body.vehicleType+' wheel'];
+      const existingvehicleType = await executeQuery(db, checkQuery, checkParams, 'get');
+  
+      if (existingvehicleType) {
+        // If a product with the same name exists, return a message
+        return responseHandler({
+          req,
+          res,
+          data: { status: false, message: 'vehicle Type already exists' },
+          httpCode: HttpStatusCode.OK,
+        });
+      }
 
         const uniqueId = await generateNewCode(db, "Sazs_WeighBridge_Vehicle", "vehid")
         const query = `

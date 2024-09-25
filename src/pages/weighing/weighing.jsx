@@ -4,11 +4,12 @@ import WeighingTable from './weighing-table';
 import WeighingForm from './weighing-form';
 import { getAllWeighingList, createWeighing, updateWeighingDetails, deleteWeighingDetails, getSecondWeightList, updateSecondWeight } from '../../app/api/weighing';
 import { useLocalStorage } from 'react-use';
-import { getAllVehicleList } from '../../app/api/vehicle';
+import { getAllVehicleTypeList } from '../../app/api/vehicle';
 import SecondWeightForm from './secondWeight-form';
 import JsBarcode from 'jsbarcode';
 import dayjs from 'dayjs';
 import { getScreenShot } from '../../app/api/camera';
+import { getAllProductList } from '../../app/api/product';
 
 
 
@@ -18,6 +19,8 @@ const Weighing = () => {
   const [allWeighingList, setAllWeighingList] = useState([]);
   const [allVehicleList, setAllVehicleList] = useState([]);
   const [secondWeightList, setsecondWeightList] = useState([]);
+  const [allProductList, setAllProductList] = useState([]);
+
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [action, setAction] = useState(null);
@@ -40,17 +43,14 @@ const Weighing = () => {
 
   const fetchData = async () => {
     try {
-      const result1 = await getAllVehicleList();
-      const result2 = await getSecondWeightList();
-      setsecondWeightList(result2.data.secondWeightList)
-      console.log("result2", result2);
-
-      setAllVehicleList(result1.data.vehicleList);
-      const result = await getAllWeighingList();
-      setAllWeighingList(result.data.weighingList);
-      console.log("result1", result1);
-
-
+      const vehicleType = await getAllVehicleTypeList();
+      setAllVehicleList(vehicleType.data.vehicleList);
+      const secondWeightList = await getSecondWeightList();
+      setsecondWeightList(secondWeightList.data.secondWeightList)
+      const productList = await getAllProductList();
+      setAllProductList(productList.data.productList)
+      const weighingTransactionList = await getAllWeighingList();
+      setAllWeighingList(weighingTransactionList.data.weighingList);
     } catch (error) {
       console.log(error);
     }
@@ -380,10 +380,6 @@ const Weighing = () => {
     });
   };
 
-
- 
-
- 
   const handleOk = () => {
     form
       .validateFields()
@@ -410,7 +406,7 @@ const Weighing = () => {
             message.success('Weighing saved successfully!');
             setIsModalVisible(false);
             setLoading(false);
-            handlePrint({...data,tokenNo,user})
+            // handlePrint({...data,tokenNo,user})
             form.resetFields();
             fetchData();
           } else {
@@ -451,7 +447,7 @@ const Weighing = () => {
           cancelText="Cancel"
           width={1000}
         >
-          {isForm === "firstWeight" ? (<WeighingForm form={form} action={action} allVehicleList={allVehicleList} />) :
+          {isForm === "firstWeight" ? (<WeighingForm form={form} action={action} allVehicleList={allVehicleList} allProductList={allProductList}/>) :
             (<SecondWeightForm form={form} action={action} allVehicleList={allVehicleList} secondWeightList={secondWeightList} />)}
         </Modal>
       )}

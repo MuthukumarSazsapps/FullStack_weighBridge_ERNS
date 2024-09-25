@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Button, Col, Radio, Drawer, Flex, Form, Input, Row, Select, Space } from 'antd';
 import dayjs from 'dayjs';
 
-const WeighingForm = ({ form, action, allVehicleList }) => {
+const WeighingForm = ({ form, action, allVehicleList,allProductList }) => {
 
     const [currentTime, setCurrentTime] = useState(dayjs().format('hh:mm:ss A'));
 
@@ -14,11 +14,15 @@ const WeighingForm = ({ form, action, allVehicleList }) => {
         return () => clearInterval(timer); // Cleanup on component unmount
     }, []);
 
-    const options = allVehicleList.map((vehicleTypeList) => ({
+    const vehicleTypeOptions = allVehicleList.map((vehicleTypeList) => ({
         value: vehicleTypeList.vehicleType,
         label: vehicleTypeList.vehicleType,
     }));
 
+    const productOptions = allProductList.map((allProductList) => ({
+        value: allProductList.productName,
+        label: allProductList.productName,
+    }));
     
     const handleChange = (value) => {
         // Find the matching vehicle type in the allVehicleList
@@ -39,8 +43,6 @@ const WeighingForm = ({ form, action, allVehicleList }) => {
         
     };
 
-
-    // console.log(form.getFieldValue());
 
     return (
         <div>
@@ -86,7 +88,6 @@ const WeighingForm = ({ form, action, allVehicleList }) => {
                         <p className='text-2xl text-green-600 mt-7'>{currentTime}</p>
                     </Col>
                 </Row>
-
                 <Row gutter={16}>
                     <Col span={8}>
                         <Form.Item
@@ -118,7 +119,7 @@ const WeighingForm = ({ form, action, allVehicleList }) => {
                                 onChange={handleChange}
                                 placeholder="Select a vehicle Type"
                                 optionFilterProp="label"
-                                options={options}
+                                options={vehicleTypeOptions}
                                 
                             />
                         </Form.Item>
@@ -184,7 +185,13 @@ const WeighingForm = ({ form, action, allVehicleList }) => {
                                 },
                             ]}
                         >
-                            <Input placeholder="Please enter Material Name" />
+                             <Select
+                                showSearch
+                                placeholder="Select a product "
+                                optionFilterProp="label"
+                                options={productOptions}
+                                
+                            />
                         </Form.Item>
                     </Col>
                     <Col span={12}>

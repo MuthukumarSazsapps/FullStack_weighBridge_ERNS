@@ -1,6 +1,8 @@
 import axiosInstance from "./axios.js"
 
-export const createVehicle=async (data)=>{
+
+///vehiclt type api----------------------------------------------------
+export const createVehicleType=async (data)=>{
     try {
         const res= await axiosInstance.post('/vehicle/create',data);
         return res
@@ -9,27 +11,66 @@ export const createVehicle=async (data)=>{
     }
 }
 
-export const getAllVehicleList=async ()=>{
+export const getAllVehicleTypeList=async ()=>{
     try {
-        const res=await axiosInstance.get('/vehicle/getAllVehicleList')
+        const res=await axiosInstance.get('/vehicle/getAllVehicleTypeList')
         return res
     } catch (error) {
         console.log(error)
     }
 }
 
-export const updateVehicleDetails=async(data)=>{
+export const updateVehicleTypeDetails=async(data)=>{
     try {
-       const res=await axiosInstance.post('/vehicle/updateVehicleDetails',data) ;
+       const res=await axiosInstance.post('/vehicle/updateVehicleTypeDetails',data) ;
        return res
     } catch (error) {
         console.log(error)
     }
 }
 
-export const deleteVehicleDetails=async(data)=>{
+export const deleteVehicleTypeDetails=async(data)=>{
     try {
-        const res=axiosInstance.post('/vehicle/deleteVehicleDetails' ,data)
+        const res=axiosInstance.post('/vehicle/deleteVehicleTypeDetails' ,data)
+        return res
+    } catch (error) {
+        console.log(error);  
+    }
+}
+
+///vehiclt number api----------------------------------------------------
+
+
+export const createVehicleNumber=async (data)=>{
+    try {
+        const res= await axiosInstance.post('/vehicle/createNumber',data);
+        return res
+    } catch (error) {
+        console.log(error);   
+    }
+}
+
+export const getAllVehicleNumberList=async ()=>{
+    try {
+        const res=await axiosInstance.get('/vehicle/getAllVehicleNumberList')
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const updateVehicleNumberDetails=async(data)=>{
+    try {
+       const res=await axiosInstance.post('/vehicle/updateVehicleNumberDetails',data) ;
+       return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const deleteVehicleNumberDetails=async(data)=>{
+    try {
+        const res=axiosInstance.post('/vehicle/deleteVehicleNumberDetails' ,data)
         return res
     } catch (error) {
         console.log(error);  

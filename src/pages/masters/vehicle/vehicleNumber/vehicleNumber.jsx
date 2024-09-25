@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Flex, Form, Input, Modal, message } from 'antd';
-import ProductTable from './product-table';
-import ProductForm from './product-form';
-import { getAllProductList,createProduct,updateProductDetails,deleteProductDetails } from '../../../app/api/product';
+import { getAllVehicleTypeList,getAllVehicleNumberList,createVehicleNumber,updateVehicleNumberDetails,deleteVehicleNumberDetails } from '../../../../app/api/vehicle';
 import { useLocalStorage } from 'react-use';
+import VehicleNumberForm from './vehicleNumber-form';
+import VehicleNumberTable from './vehicleNumber-table';
 
 
-const Product = () => {
+const VehicleNumber = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [allProductList, setAllProductList] = useState([]);
+  const [allVehicleNumberList, setAllVehicleNumberList] = useState([]);
+  const [allVehicleTypeList, setAllVehicleTypeList] = useState([]);
+
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [action, setAction] = useState('create');
-  const [productId, setProductId] = useState(null);
-
+  const [vehicleNumId, setVehicleNumId] = useState(null);
   const [userData] = useLocalStorage('userData');
 
   let user=userData.username
@@ -24,8 +25,12 @@ const Product = () => {
 
   const fetchData = async () => {
     try {
-      const result = await getAllProductList();
-      setAllProductList(result.data.productList);
+        const result1 = await getAllVehicleNumberList();
+        const result2 = await getAllVehicleTypeList();
+
+        setAllVehicleNumberList(result1.data.vehicleNumberList);
+        setAllVehicleTypeList(result2.data.vehicleList);
+
     } catch (error) {
       console.log(error);
     }
@@ -36,7 +41,7 @@ const Product = () => {
   }, []);
 
   const handleEdit = (record) => {
-    setProductId(record.productId);
+    setVehicleNumId(record.vehicleNumId);
     setAction('update');
     form.setFieldsValue(record);
     setIsModalVisible(true);
@@ -44,17 +49,17 @@ const Product = () => {
 
   const handleDelete = async (data) => {
     Modal.confirm({
-      title: 'Are you sure you want to delete this Product?',
+      title: 'Are you sure you want to delete this Vehicle?',
       content: 'This action cannot be undone.',
       onOk: async () => {
         try {
           setLoading(true);
-          const res = await deleteProductDetails(data);
+          const res = await deleteVehicleNumberDetails(data);
           if (res.data.status === true) {
-            message.success('Product deleted successfully!');
+            message.success('Vehicle Number deleted successfully!');
             fetchData();
           } else {
-            message.error(`Error: ${res.data.message || 'Failed to delete Product'}`);
+            message.error(`Error: ${res.data.message || 'Failed to delete Vehicle Number'}`);
           }
         } catch (error) {
           message.error(`API Error: ${error.message}`);
@@ -77,19 +82,19 @@ const Product = () => {
           setLoading(true);
           let res;
           if (action === 'update') {
-            res = await updateProductDetails({ ...data, productId,user });
+            res = await updateVehicleNumberDetails({ ...data, vehicleNumId,user });
           } else {
-            res = await createProduct({...data,user});
+            res = await createVehicleNumber({...data,user});
           }
           if (res.data.status === true) {
-            message.success('Product saved successfully!');
+            message.success('Vehicle Number saved successfully!');
             setIsModalVisible(false);
             setLoading(false);
             form.resetFields();
             fetchData();
           } else {
+            message.warning(`Warning : ${res.data.message || 'Failed to save Vehicle Number'}`);
             setLoading(false);
-            message.warning(`Warning : ${res.data.message || 'Failed to save Product'}`);
           }
         } catch (error) {
           message.error(`API Error: ${error.message}`);
@@ -103,31 +108,32 @@ const Product = () => {
   const handleCancel = () => {
     setIsModalVisible(false);
     form.resetFields();
+    setLoading(false);
   };
 
   return (
     <>
       <Flex vertical gap='middle'>
         <Flex justify='flex-end'>
-          <Button type="primary" onClick={showModal}>Create Product</Button>
+          <Button type="primary" onClick={showModal}>Create Vehicle Number</Button>
         </Flex>
-        <ProductTable ProductList={allProductList} handleEdit={handleEdit} handleDelete={(data) => handleDelete(data)} title='Product List' />
+        <VehicleNumberTable vehicleNumberList={allVehicleNumberList}  handleEdit={handleEdit} handleDelete={(data) => handleDelete(data)} title='Vehicle List' />
       </Flex>
 
       {isModalVisible && (
         <Modal
-          title={action === 'update' ? "Edit Product" : "Create Product"}
+          title={action === 'update' ? "Edit Vehicle Number" : "Create Vehicle Number"}
           open={isModalVisible}
           onOk={handleOk}
           onCancel={handleCancel}
           okText={loading ? "Submitting..." : (action === 'update' ? "Update" : "Create")}
           cancelText="Cancel"
         >
-          <ProductForm form={form} />
+          <VehicleNumberForm form={form}  vehicleTypeList={allVehicleTypeList}/>
         </Modal>
       )}
     </>
   );
 };
 
-export default Product;
+export default VehicleNumber;

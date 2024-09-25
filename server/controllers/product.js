@@ -6,51 +6,116 @@ import generateNewCode from '../utils/customId.js';
 import dayjs from 'dayjs';
 
 
+// const createProduct = async (req, res) => {
+//     try {
+//         const uniqueId = await generateNewCode(db, "Sazs_WeighBridge_Product", "proid")
+//         const query = `
+//                         INSERT INTO Sazs_WeighBridge_Product
+//                         (productId,productName,createdBy,createdOn,modifiedBy,modifiedOn,isActive)
+//                         VALUES (?, ?, ?, ?, ?, ?, ?)
+//                     `;
+
+//         const params = [
+//             uniqueId,
+//             req.body.productName,
+//             req.body.user,
+//             dayjs().format('MM/DD/YYYY, h:mm A'),
+//             'null',
+//             'null',
+//             1
+//         ];
+
+//         const result = await executeQuery(db, query, params, 'run');
+//         if (result.changes > 0) {
+//             return responseHandler({
+//                 req,
+//                 res,
+//                 data: { status: true, message: 'Record inserted successfully' },
+//                 httpCode: HttpStatusCode.CREATED,
+//             });
+//         } else {
+//             return responseHandler({
+//                 req,
+//                 res,
+//                 data: { error: 'No record inserted' },
+//                 httpCode: HttpStatusCode.BAD_REQUEST,
+//             });
+//         }
+//     } catch (error) {
+//         console.error('Error inserting record:', error.message);
+//         return responseHandler({
+//             req,
+//             res,
+//             data: { error: 'Error inserting record' },
+//             httpCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+//         });
+//     }
+// }
+
 const createProduct = async (req, res) => {
     try {
-        const uniqueId = await generateNewCode(db, "Sazs_WeighBridge_Product", "proid")
-        const query = `
-                        INSERT INTO Sazs_WeighBridge_Product
-                        (productId,productName,createdBy,createdOn,modifiedBy,modifiedOn,isActive)
-                        VALUES (?, ?, ?, ?, ?, ?, ?)
-                    `;
-
-        const params = [
-            uniqueId,
-            req.body.productName,
-            req.body.user,
-            dayjs().format('MM/DD/YYYY, h:mm A'),
-            'null',
-            'null',
-            1
-        ];
-
-        const result = await executeQuery(db, query, params, 'run');
-        if (result.changes > 0) {
-            return responseHandler({
-                req,
-                res,
-                data: { status: true, message: 'Record inserted successfully' },
-                httpCode: HttpStatusCode.CREATED,
-            });
-        } else {
-            return responseHandler({
-                req,
-                res,
-                data: { error: 'No record inserted' },
-                httpCode: HttpStatusCode.BAD_REQUEST,
-            });
-        }
-    } catch (error) {
-        console.error('Error inserting record:', error.message);
+      // First, check if the product already exists
+      const checkQuery = `
+        SELECT * FROM Sazs_WeighBridge_Product WHERE productName = ? AND isActive=1
+      `;
+      const checkParams = [req.body.productName];
+      const existingProduct = await executeQuery(db, checkQuery, checkParams, 'get');
+  
+      if (existingProduct) {
+        // If a product with the same name exists, return a message
         return responseHandler({
-            req,
-            res,
-            data: { error: 'Error inserting record' },
-            httpCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+          req,
+          res,
+          data: { status: false, message: 'Product already exists' },
+          httpCode: HttpStatusCode.OK,
         });
+      }
+  
+      // If the product does not exist, proceed to create a new product
+      const uniqueId = await generateNewCode(db, "Sazs_WeighBridge_Product", "proid");
+      const query = `
+        INSERT INTO Sazs_WeighBridge_Product
+        (productId, productName, createdBy, createdOn, modifiedBy, modifiedOn, isActive)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `;
+      const params = [
+        uniqueId,
+        req.body.productName,
+        req.body.user,
+        dayjs().format('MM/DD/YYYY, h:mm A'),
+        'null',
+        'null',
+        1
+      ];
+  
+      const result = await executeQuery(db, query, params, 'run');
+  
+      if (result.changes > 0) {
+        return responseHandler({
+          req,
+          res,
+          data: { status: true, message: 'Record inserted successfully' },
+          httpCode: HttpStatusCode.CREATED,
+        });
+      } else {
+        return responseHandler({
+          req,
+          res,
+          data: { error: 'No record inserted' },
+          httpCode: HttpStatusCode.BAD_REQUEST,
+        });
+      }
+    } catch (error) {
+      console.error('Error inserting record:', error.message);
+      return responseHandler({
+        req,
+        res,
+        data: { error: 'Error inserting record' },
+        httpCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      });
     }
-}
+  };
+  
 
 const getAllProductList = async (req, res) => {
     try {

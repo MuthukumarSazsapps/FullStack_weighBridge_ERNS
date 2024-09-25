@@ -17,7 +17,7 @@ const createWeighing = async (req, res) => {
       const status= returnType==='yes'?'pending':'completed'
       const query = `
         INSERT INTO Sazs_WeighBridge_WeighingTransaction 
-        (tokenNo, VehicleNo, vehicleType, returnType, customerName, driverName, materialName, mobileNumber,loadType, billType,weighmentStatus, amount, firstWeight,imagePath,createdBy,createdOn,modifiedBy,modifiedOn,isActive)
+        (tokenNo, vehicleNo, vehicleType, returnType, customerName, driverName, materialName, mobileNumber,loadType, billType,weighmentStatus, amount, firstWeight,imagePath,createdBy,createdOn,modifiedBy,modifiedOn,isActive)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)
       `;
   

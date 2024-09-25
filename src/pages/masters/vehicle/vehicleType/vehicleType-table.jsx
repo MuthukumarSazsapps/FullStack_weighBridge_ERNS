@@ -5,7 +5,7 @@ import Highlighter from 'react-highlight-words';
 import * as XLSX from 'xlsx';
 
 
-const VehicleTable = ({ VehicleList, handleEdit,title,handleDelete }) => {
+const VehicleTypeTable = ({ VehicleList, handleEdit,title,handleDelete }) => {
 
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -254,7 +254,6 @@ const VehicleTable = ({ VehicleList, handleEdit,title,handleDelete }) => {
               </Button>
             </Tooltip>
           </Popover>
-        
         </Flex>
       </Flex>
 
@@ -271,9 +270,8 @@ const VehicleTable = ({ VehicleList, handleEdit,title,handleDelete }) => {
           // y: 300,
         }}
         size='small'
-
       />
     </>
   )
 };
-export default VehicleTable;
+export default VehicleTypeTable;

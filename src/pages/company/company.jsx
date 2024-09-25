@@ -132,7 +132,9 @@ const Company = () => {
   const [action, setAction] = useState('create');
   const [companyId, setCompanyId] = useState(null);
 
-  const [user] = useLocalStorage('user');
+  const [userData] = useLocalStorage('userData');
+
+  let user=userData.username
   const showModal = () => {
     setIsModalVisible(true);
     setAction('create');
