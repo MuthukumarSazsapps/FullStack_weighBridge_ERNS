@@ -68,8 +68,70 @@
 //     });
 //   }
 // };
-
+//----------------------------------------------
 // export default  cameraScreenShot
+
+
+// import DigestFetch from 'digest-fetch';
+// import fs from 'fs';
+// import path from 'path';
+// import { fileURLToPath } from 'url';
+
+// const cameraScreenShot = async (tokenNo) => {
+//   const cameraIp = '192.168.1.10';  // Camera IP
+//   const username = 'admin';         // Your camera username
+//   const password = 'Advika123';     
+
+//   // Get the current directory
+//   const __filename = fileURLToPath(import.meta.url);
+//   const __dirname = path.dirname(__filename);
+
+//   // Define the path to save the image
+//   let imageDir;
+//   if (process.env.NODE_ENV === "development") {
+//     imageDir = path.join(__dirname, '../../src/assets/images/camImages');
+//   } else {
+//     imageDir = path.join(__dirname, '../../build/static/media'); // Adjust this path as needed
+//   }
+//   const imagePath = path.join(imageDir, `weighing_${tokenNo}.jpg`);
+
+//   // Create the directory if it doesn't exist
+//   if (!fs.existsSync(imageDir)) {
+//     fs.mkdirSync(imageDir, { recursive: true });
+//   }
+
+//   // Create a DigestFetch client
+//   const client = new DigestFetch(username, password);
+
+//   try {
+//     // Fetch the image from the camera
+//     const response = await client.fetch(`http://${cameraIp}/ISAPI/Streaming/channels/1/picture`, {
+//       method: 'GET',
+//     });
+
+//     if (response.ok) {
+//       // Get binary data from the response
+//       const arrayBuffer = await response.arrayBuffer();
+//       const buffer = Buffer.from(arrayBuffer);
+
+//       // Save the image locally
+//       fs.writeFileSync(imagePath, buffer);
+
+//       console.log(`Image saved to: ${imagePath}`);
+//       return imagePath;
+//     } else {
+//       console.error('Camera responded with:', response.status);
+//       throw new Error('Failed to capture image from camera');
+//     }
+//   } catch (error) {
+//     console.error('Error capturing image:', error);
+//     throw new Error('Error capturing image');
+//   }
+// };
+
+// export default cameraScreenShot;
+
+
 
 import DigestFetch from 'digest-fetch';
 import fs from 'fs';
@@ -79,14 +141,14 @@ import { fileURLToPath } from 'url';
 const cameraScreenShot = async (tokenNo) => {
   const cameraIp = '192.168.1.10';  // Camera IP
   const username = 'admin';         // Your camera username
-  const password = 'Advika123';     // Your camera password
+  const password = 'Advika123';     
 
   // Get the current directory
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
 
   // Define the path to save the image
-  const imageDir = path.join(__dirname, '../../src/assets/images/camImages');
+  const imageDir = process.env.IMAGE_SAVE_PATH || path.join(__dirname, '../../src/assets/images/camImages');
   const imagePath = path.join(imageDir, `weighing_${tokenNo}.jpg`);
 
   // Create the directory if it doesn't exist

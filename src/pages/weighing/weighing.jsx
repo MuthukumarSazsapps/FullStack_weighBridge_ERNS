@@ -29,11 +29,14 @@ const Weighing = () => {
   const [userData] = useLocalStorage('userData');
   const user=userData.username
   console.log("user",user);
+  console.log("env",process.env);
+
   
   // const canvasRef = useRef(null);
 
 
-
+  console.log("path",process.env.IMAGE_SAVE_PATH);
+  
 
   const showModal = (formType) => {
     setIsModalVisible(true);

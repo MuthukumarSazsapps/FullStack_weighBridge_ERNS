@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react';
-import { SearchOutlined, EditTwoTone, DeleteTwoTone,FilterTwoTone,DownloadOutlined,PrinterTwoTone } from '@ant-design/icons';
-import { Button, Checkbox, DatePicker, Flex, Input, Popover, Space, Table, Tooltip,Modal } from 'antd';
+import { SearchOutlined, EditTwoTone, DeleteTwoTone, FilterTwoTone, DownloadOutlined, PrinterTwoTone } from '@ant-design/icons';
+import { Button, Checkbox, DatePicker, Flex, Input, Popover, Space, Table, Tooltip, Modal } from 'antd';
 import Highlighter from 'react-highlight-words';
 import * as XLSX from 'xlsx';
-import jsPDF from 'jspdf'; 
+import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
@@ -11,7 +11,7 @@ import isBetween from 'dayjs/plugin/isBetween';
 
 dayjs.extend(isBetween);
 
-const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint }) => {
+const WeighingTable = ({ WeighingList, handleEdit, title, handleDelete, handlePrint }) => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedImage1, setSelectedImage1] = useState(null);
@@ -23,10 +23,10 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
   const { RangePicker } = DatePicker;
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    console.log("selectedKeys",selectedKeys[0].length,selectedKeys);
-    
+    console.log("selectedKeys", selectedKeys[0].length, selectedKeys);
+
     confirm();
-    setSearchText(selectedKeys[0]+selectedKeys[1]?selectedKeys[1]:'');
+    setSearchText(selectedKeys[0] + selectedKeys[1] ? selectedKeys[1] : '');
     // setSearchText(selectedKeys[0]);
 
     setSearchedColumn(dataIndex);
@@ -36,7 +36,7 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
     clearFilters();
     setSearchText('');
   };
-  
+
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
       <div
@@ -57,10 +57,10 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
           }}
         />
         <Space>
-        <RangePicker
+          <RangePicker
             onChange={(dates) => {
-              console.log("dates",dates);
-              
+              console.log("dates", dates);
+
               if (dates) {
                 const formattedRange = [
                   dayjs(dates[0]).startOf('day').format('MM/DD/YYYY'),
@@ -154,29 +154,55 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
         text
       ),
 
-    
-  
-    
+
+
+
   });
-  
 
-  const handleImageClick = (imagePath) => {
-      console.log("imagePath",imagePath);
-      let  imageName=imagePath.split(',')
-      console.log("imageNamearr",imageName);
-      if(imageName.length===2){
-       
-        setSelectedImage1(imageName[0]?.split('\\').pop())
-        setSelectedImage2(imageName[1]?.split('\\').pop())
-        setIsModalVisible(true);
 
-      }else{
-        setSelectedImage1(imageName[0].split('\\').pop())
-        setSelectedImage2(null)
-        setIsModalVisible(true);
-      }
+  // const handleImageClick = (imagePath) => {
+  //     console.log("imagePath",imagePath);
+  //     let  imageName=imagePath.split(',')
+  //     console.log("imageNamearr",imageName);
+  //     if(imageName.length===2){
+
+  //       setSelectedImage1(imageName[0]?.split('\\').pop())
+  //       setSelectedImage2(imageName[1]?.split('\\').pop())
+  //       setIsModalVisible(true);
+
+  //     }else{
+  //       setSelectedImage1(imageName[0].split('\\').pop())
+  //       setSelectedImage2(null)
+  //       setIsModalVisible(true);
+  //     }
+  // };
+
+
+  const getImagePath = async (imageName) => {
+    if (window.electron) {
+      return await window.electron.getImagePath(imageName);
+    }
+    return '';
   };
 
+  // Example usage in your component
+  const handleImageClick = async (imagePath) => {
+    console.log("imagePath", imagePath);
+    let imageName = imagePath.split(',');
+    console.log("imageNamearr", imageName);
+    if (imageName.length === 2) {
+      setSelectedImage1(await getImagePath(imageName[0]?.split('\\').pop()));
+      setSelectedImage2(await getImagePath(imageName[1]?.split('\\').pop()));
+      setIsModalVisible(true);
+    } else {
+      setSelectedImage1(await getImagePath(imageName[0].split('\\').pop()));
+      setSelectedImage2(null);
+      setIsModalVisible(true);
+    }
+  };
+
+  console.log("selectedImage1",selectedImage1);
+  
   // Handle modal close
   const handleClose = () => {
     setIsModalVisible(false);
@@ -184,13 +210,13 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
     setSelectedImage2(null)
 
   };
-  
+
   const columns = [
     {
       title: 'S.No',
       dataIndex: 'sno',
       key: 'sno',
-      render: (text, record, index) =>index+1, // Generate serial number based on index
+      render: (text, record, index) => index + 1, // Generate serial number based on index
     },
     {
       title: 'Token No',
@@ -281,9 +307,9 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
       dataIndex: 'imagePath',
       key: 'imagePath',
       render: (text, record) => (
-        record.imagePath?(<Button type="link" onClick={() => handleImageClick(record.imagePath)}>
+        record.imagePath ? (<Button type="link" onClick={() => handleImageClick(record.imagePath)}>
           View Image
-        </Button>):'No Images'
+        </Button>) : 'No Images'
       ),
     },
     {
@@ -318,9 +344,9 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
       // fixed: 'right',
       render: (text, record) => (
         <Flex gap='middle'>
-          <PrinterTwoTone twoToneColor="green"  onClick={() => handlePrint(record)}/>
+          <PrinterTwoTone twoToneColor="green" onClick={() => handlePrint(record)} />
           <EditTwoTone twoToneColor="#eb2f96" onClick={() => handleEdit(record)} />
-          <DeleteTwoTone twoToneColor='red' onClick={() =>  handleDelete(record)}/>
+          <DeleteTwoTone twoToneColor='red' onClick={() => handleDelete(record)} />
         </Flex>
       ),
     },
@@ -378,13 +404,13 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
   //     });
   //     return obj;
   //   });
-  
+
   //   const doc = new jsPDF();
   //   doc.autoTable({
   //     head: [columns.map(col => col.title)],
   //     body: data.map(row => columns.map(col => row[col.title])),
   //   });
-  
+
   //   doc.save('Weighing_list.pdf');
   // };
 
@@ -394,11 +420,11 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
         <h2 className='text-3xl font-bold' >{title}</h2>
         <Flex justify='flex-end' gap='middle'>
           <Tooltip title="Export">
-            <Button  onClick={exportToExcel}>
+            <Button onClick={exportToExcel}>
               <DownloadOutlined /> Export
             </Button>
           </Tooltip>
-         
+
           <Popover
             content={content}
             title="Columns"
@@ -407,11 +433,11 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
           >
             <Tooltip title='hidden column'>
               <Button>
-              <FilterTwoTone style={{fontSize:'20px'}}/>
+                <FilterTwoTone style={{ fontSize: '20px' }} />
               </Button>
             </Tooltip>
           </Popover>
-        
+
         </Flex>
       </Flex>
 
@@ -432,30 +458,52 @@ const WeighingTable = ({ WeighingList, handleEdit,title,handleDelete,handlePrint
 
       />
 
-       <Modal
+      {/* <Modal
         title="Captured Image"
         open={isModalVisible}
         onCancel={handleClose}
         footer={null}  // No footer, just close the modal manually
       >
-          { selectedImage1?
+        {selectedImage1 ?
           (<img
             src={require(`../../assets/images/camImages/${selectedImage1}`)} // Adjust the path accordingly
             alt="Captured"
             style={{ width: '100%' }}
           />)
-          :null}
-          <br />
-         { selectedImage2?
+          : null}
+        <br />
+        {selectedImage2 ?
           (<img
             src={require(`../../assets/images/camImages/${selectedImage2}`)} // Adjust the path accordingly
             alt="Captured"
             style={{ width: '100%' }}
           />)
-          :null}
-          
-      </Modal> 
-     
+          : null}
+
+      </Modal> */}
+      <Modal
+        title="Captured Image"
+        open={isModalVisible}
+        onCancel={handleClose}
+        footer={null}  // No footer, just close the modal manually
+      >
+        {selectedImage1 && (
+          <img
+            src={selectedImage1}  // Get the correct path for the first image
+            alt="Captured"
+            style={{ width: '100%' }}
+          />
+        )}
+        <br />
+        {selectedImage2 && (
+          <img
+            src={selectedImage2}  // Get the correct path for the second image
+            alt="Captured"
+            style={{ width: '100%' }}
+          />
+        )}
+      </Modal>
+
     </>
   )
 };

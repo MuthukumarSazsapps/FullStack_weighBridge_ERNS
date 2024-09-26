@@ -32,3 +32,11 @@ use express.json on app ,if not u will face req.body undefined error
   "build": "react-scripts build",
   "electron-pack": "electron-packager . MyApp --platform=win32 --arch=x64 --out=dist"
 },
+
+
+//tutorial video
+https://www.youtube.com/watch?v=VCl8li22mrA
+
+https://www.youtube.com/watch?v=Y-E7eqgv-EQ
+
+https://www.youtube.com/watch?v=ONpVol7B7AY
