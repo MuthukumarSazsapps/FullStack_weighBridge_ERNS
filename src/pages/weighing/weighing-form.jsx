@@ -91,7 +91,7 @@ const WeighingForm = ({ form, action, allVehicleList,allProductList }) => {
                 <Row gutter={16}>
                     <Col span={8}>
                         <Form.Item
-                            name="VehicleNo"
+                            name="vehicleNumber"
                             label="Vehicle No"
                             rules={[
                                 {

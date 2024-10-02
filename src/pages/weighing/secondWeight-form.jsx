@@ -37,7 +37,7 @@ const SecondWeightForm = ({ form, action, allVehicleList,secondWeightList }) => 
         // Set form values
         form.setFieldsValue({
             amount: selectedValue ? selectedValue.chargeAmount : 0,
-            VehicleNo: selectedValue ? selectedValue.vehicleNo : '',
+            VehicleNo: selectedValue ? selectedValue.vehicleNumber : '',
             loadType: selectedValue ? loadType : "",
             firstWeight: selectedValue ? parseInt(selectedValue.firstWeight) : 0,
             netWeight: netWeight

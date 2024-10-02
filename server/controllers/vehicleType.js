@@ -11,7 +11,7 @@ const createVehicle = async (req, res) => {
         // await executeQuery(db, 'PRAGMA busy_timeout = 3000;', [], 'run');
 
         const checkQuery = `
-        SELECT * FROM Sazs_WeighBridge_Vehicle WHERE vehicleType = ? AND isActive=1
+        SELECT * FROM Sazs_WeighBridge_VehicleTypeMaster WHERE vehicleType = ? AND isActive=1
       `;
       const checkParams = [req.body.vehicleType+' wheel'];
       const existingvehicleType = await executeQuery(db, checkQuery, checkParams, 'get');
@@ -26,9 +26,9 @@ const createVehicle = async (req, res) => {
         });
       }
 
-        const uniqueId = await generateNewCode(db, "Sazs_WeighBridge_Vehicle", "vehid")
+        const uniqueId = await generateNewCode(db, "Sazs_WeighBridge_VehicleTypeMaster", "vehid")
         const query = `
-                        INSERT INTO Sazs_WeighBridge_Vehicle
+                        INSERT INTO Sazs_WeighBridge_VehicleTypeMaster
                         (vehicleId,vehicleType,chargeAmount,createdBy,createdOn,modifiedBy,modifiedOn,isActive)
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                     `;
@@ -73,7 +73,7 @@ const createVehicle = async (req, res) => {
 
 const getAllVehicleList = async (req, res) => {
     try {
-        const query = 'select * from Sazs_WeighBridge_Vehicle where isActive=1';
+        const query = 'select * from Sazs_WeighBridge_VehicleTypeMaster where isActive=1';
         const rows = await executeQuery(db, query); // Execute the SQL query
 
         return responseHandler({
@@ -96,7 +96,7 @@ const getAllVehicleList = async (req, res) => {
 const updateVehicleDetails = async (req, res) => {
     try {
         const query = `
-        UPDATE Sazs_WeighBridge_Vehicle 
+        UPDATE Sazs_WeighBridge_VehicleTypeMaster 
         SET 
           vehicleType = ?,
           chargeAmount = ?, 
@@ -146,7 +146,7 @@ const updateVehicleDetails = async (req, res) => {
 const deleteVehicleDetails = async (req, res) => {
     try {
         const query = `
-        UPDATE Sazs_WeighBridge_Vehicle   
+        UPDATE Sazs_WeighBridge_VehicleTypeMaster   
         SET isActive=0  WHERE 
           vehicleId = ?
       `;

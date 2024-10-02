@@ -148,7 +148,13 @@ const cameraScreenShot = async (tokenNo) => {
   const __dirname = path.dirname(__filename);
 
   // Define the path to save the image
-  const imageDir = process.env.IMAGE_SAVE_PATH || path.join(__dirname, '../../src/assets/images/camImages');
+  // const imageDir = process.env.IMAGE_SAVE_PATH || path.join(__dirname, '../../src/assets/images/camImages');
+  let imageDir
+  if(process.env.NODE_ENV==="development"){
+     imageDir =path.join(__dirname, '../../src/assets/images/camImages');
+  }else{
+    imageDir = process.env.IMAGE_SAVE_PATH
+  }
   const imagePath = path.join(imageDir, `weighing_${tokenNo}.jpg`);
 
   // Create the directory if it doesn't exist

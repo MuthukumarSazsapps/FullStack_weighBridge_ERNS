@@ -159,25 +159,67 @@ const WeighingTable = ({ WeighingList, handleEdit, title, handleDelete, handlePr
 
   });
 
+// if(process.env.NODE_ENV="development"){
+//     handleImageClick = (imagePath) => {
+//       console.log("imagePath",imagePath);
+//       let  imageName=imagePath.split(',')
+//       console.log("imageNamearr",imageName);
+//       if(imageName.length===2){
 
-  // const handleImageClick = (imagePath) => {
-  //     console.log("imagePath",imagePath);
-  //     let  imageName=imagePath.split(',')
-  //     console.log("imageNamearr",imageName);
-  //     if(imageName.length===2){
+//         setSelectedImage1(imageName[0]?.split('\\').pop())
+//         setSelectedImage2(imageName[1]?.split('\\').pop())
+//         setIsModalVisible(true);
 
-  //       setSelectedImage1(imageName[0]?.split('\\').pop())
-  //       setSelectedImage2(imageName[1]?.split('\\').pop())
-  //       setIsModalVisible(true);
+//       }else{
+//         setSelectedImage1(imageName[0].split('\\').pop())
+//         setSelectedImage2(null)
+//         setIsModalVisible(true);
+//       }
+//   };
+//   }else{
 
-  //     }else{
-  //       setSelectedImage1(imageName[0].split('\\').pop())
-  //       setSelectedImage2(null)
-  //       setIsModalVisible(true);
-  //     }
-  // };
+//     const getImagePath = async (imageName) => {
+//       if (window.electron) {
+//         return await window.electron.getImagePath(imageName);
+//       }
+//       return '';
+//     };
+  
+//     // Example usage in your component
+//      handleImageClick = async (imagePath) => {
+//       console.log("imagePath", imagePath);
+//       let imageName = imagePath.split(',');
+//       console.log("imageNamearr", imageName);
+//       if (imageName.length === 2) {
+//         setSelectedImage1(await getImagePath(imageName[0]?.split('\\').pop()));
+//         setSelectedImage2(await getImagePath(imageName[1]?.split('\\').pop()));
+//         setIsModalVisible(true);
+//       } else {
+//         setSelectedImage1(await getImagePath(imageName[0].split('\\').pop()));
+//         setSelectedImage2(null);
+//         setIsModalVisible(true);
+//       }
+//     };
+//   }
+  
+let handleImageClick;
 
-
+if (process.env.NODE_ENV === "development") {
+  handleImageClick = (imagePath) => {
+    console.log("imagePath", imagePath);
+    let imageName = imagePath.split(',');
+    console.log("imageNamearr", imageName);
+    if (imageName.length === 2) {
+      setSelectedImage1(imageName[0]?.split('\\').pop());
+      setSelectedImage2(imageName[1]?.split('\\').pop());
+      setIsModalVisible(true);
+    } else {
+      setSelectedImage1(imageName[0].split('\\').pop());
+      setSelectedImage2(null);
+      setIsModalVisible(true);
+    }
+  };
+} else {
   const getImagePath = async (imageName) => {
     if (window.electron) {
       return await window.electron.getImagePath(imageName);
@@ -186,7 +228,7 @@ const WeighingTable = ({ WeighingList, handleEdit, title, handleDelete, handlePr
   };
 
   // Example usage in your component
-  const handleImageClick = async (imagePath) => {
+  handleImageClick = async (imagePath) => {
     console.log("imagePath", imagePath);
     let imageName = imagePath.split(',');
     console.log("imageNamearr", imageName);
@@ -200,6 +242,11 @@ const WeighingTable = ({ WeighingList, handleEdit, title, handleDelete, handlePr
       setIsModalVisible(true);
     }
   };
+}
+
+
+
+  
 
   console.log("selectedImage1",selectedImage1);
   
@@ -226,7 +273,7 @@ const WeighingTable = ({ WeighingList, handleEdit, title, handleDelete, handlePr
     },
     {
       title: 'Vehicle No',
-      dataIndex: 'vehicleNo',
+      dataIndex: 'vehicleNumber',
       key: 'vehicleNo',
       ...getColumnSearchProps('VehicleNo'),
     },
@@ -458,7 +505,7 @@ const WeighingTable = ({ WeighingList, handleEdit, title, handleDelete, handlePr
 
       />
 
-      {/* <Modal
+       {process.env.NODE_ENV==="development" ? (<Modal
         title="Captured Image"
         open={isModalVisible}
         onCancel={handleClose}
@@ -480,8 +527,9 @@ const WeighingTable = ({ WeighingList, handleEdit, title, handleDelete, handlePr
           />)
           : null}
 
-      </Modal> */}
-      <Modal
+      </Modal> ):
+
+     ( <Modal
         title="Captured Image"
         open={isModalVisible}
         onCancel={handleClose}
@@ -502,7 +550,7 @@ const WeighingTable = ({ WeighingList, handleEdit, title, handleDelete, handlePr
             style={{ width: '100%' }}
           />
         )}
-      </Modal>
+      </Modal>)}
 
     </>
   )

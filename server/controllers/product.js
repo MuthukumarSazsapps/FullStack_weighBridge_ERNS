@@ -56,7 +56,7 @@ const createProduct = async (req, res) => {
     try {
       // First, check if the product already exists
       const checkQuery = `
-        SELECT * FROM Sazs_WeighBridge_Product WHERE productName = ? AND isActive=1
+        SELECT * FROM Sazs_WeighBridge_ProductMaster WHERE productName = ? AND isActive=1
       `;
       const checkParams = [req.body.productName];
       const existingProduct = await executeQuery(db, checkQuery, checkParams, 'get');
@@ -72,9 +72,9 @@ const createProduct = async (req, res) => {
       }
   
       // If the product does not exist, proceed to create a new product
-      const uniqueId = await generateNewCode(db, "Sazs_WeighBridge_Product", "proid");
+      const uniqueId = await generateNewCode(db, "Sazs_WeighBridge_ProductMaster", "proid");
       const query = `
-        INSERT INTO Sazs_WeighBridge_Product
+        INSERT INTO Sazs_WeighBridge_ProductMaster
         (productId, productName, createdBy, createdOn, modifiedBy, modifiedOn, isActive)
         VALUES (?, ?, ?, ?, ?, ?, ?)
       `;
@@ -119,7 +119,7 @@ const createProduct = async (req, res) => {
 
 const getAllProductList = async (req, res) => {
     try {
-        const query = 'select * from Sazs_WeighBridge_Product where isActive=1';
+        const query = 'select * from Sazs_WeighBridge_ProductMaster where isActive=1';
         const rows = await executeQuery(db, query); // Execute the SQL query
 
         return responseHandler({
@@ -142,7 +142,7 @@ const getAllProductList = async (req, res) => {
 const updateProductDetails = async (req, res) => {
     try {
         const query = `
-        UPDATE Sazs_WeighBridge_Product 
+        UPDATE Sazs_WeighBridge_ProductMaster 
         SET 
           productName = ?, 
           modifiedBy = ?, 
@@ -190,7 +190,7 @@ const updateProductDetails = async (req, res) => {
 const deleteProductDetails = async (req, res) => {
     try {
         const query = `
-        UPDATE Sazs_WeighBridge_Product 
+        UPDATE Sazs_WeighBridge_ProductMaster 
         SET isActive=0  WHERE 
           productId = ?
       `;
