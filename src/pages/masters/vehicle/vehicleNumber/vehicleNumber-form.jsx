@@ -7,7 +7,7 @@ const VehicleNumberForm = ({ form,vehicleTypeList }) => {
  
 
   const options = vehicleTypeList.map((vehicleTypeList) => ({
-    value: vehicleTypeList.vehicleType,
+    value: vehicleTypeList.vehicleTypeId,
     label: vehicleTypeList.vehicleType,
 }));
 

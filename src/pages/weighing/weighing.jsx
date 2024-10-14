@@ -5,6 +5,7 @@ import WeighingForm from './weighing-form';
 import { getAllWeighingList, createWeighing, updateWeighingDetails, deleteWeighingDetails, getSecondWeightList, updateSecondWeight } from '../../app/api/weighing';
 import { useLocalStorage } from 'react-use';
 import { getAllVehicleTypeList } from '../../app/api/vehicle';
+import { getAllCustomerList } from '../../app/api/customer';
 import SecondWeightForm from './secondWeight-form';
 import JsBarcode from 'jsbarcode';
 import dayjs from 'dayjs';
@@ -20,6 +21,8 @@ const Weighing = () => {
   const [allVehicleList, setAllVehicleList] = useState([]);
   const [secondWeightList, setsecondWeightList] = useState([]);
   const [allProductList, setAllProductList] = useState([]);
+  const [allCustomerList, setAllCustomerList] = useState([]);
+
 
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
@@ -33,7 +36,6 @@ const Weighing = () => {
 
   
   // const canvasRef = useRef(null);
-
 
   console.log("path",process.env.IMAGE_SAVE_PATH);
   
@@ -54,6 +56,8 @@ const Weighing = () => {
       setAllProductList(productList.data.productList)
       const weighingTransactionList = await getAllWeighingList();
       setAllWeighingList(weighingTransactionList.data.weighingList);
+      const customerList=await getAllCustomerList();
+      setAllCustomerList(customerList.data.customerList)
     } catch (error) {
       console.log(error);
     }
@@ -223,7 +227,7 @@ const Weighing = () => {
               padding: 0;
             }
             .receipt-container {
-              width: 58mm; /* For 58mm thermal paper */
+              width: 80mm; /* For 58mm thermal paper */
               padding: 5mm;
               text-align: center;
               border: 1px solid black; /* Keep the border */
@@ -450,8 +454,24 @@ const Weighing = () => {
           cancelText="Cancel"
           width={1000}
         >
-          {isForm === "firstWeight" ? (<WeighingForm form={form} action={action} allVehicleList={allVehicleList} allProductList={allProductList}/>) :
-            (<SecondWeightForm form={form} action={action} allVehicleList={allVehicleList} secondWeightList={secondWeightList} />)}
+          {isForm === "firstWeight" ? 
+            (
+              <WeighingForm 
+                form={form} 
+                action={action} 
+                // allVehicleList={allVehicleList} 
+                // allProductList={allProductList} 
+                allCustomerList={allCustomerList}
+              />
+            ) :
+            (
+              <SecondWeightForm 
+                form={form} action={action} 
+                allVehicleList={allVehicleList} 
+                secondWeightList={secondWeightList} 
+              />
+            )
+          }
         </Modal>
       )}
     </>

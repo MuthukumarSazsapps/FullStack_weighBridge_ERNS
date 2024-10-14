@@ -124,11 +124,11 @@ const VehicleTypeTable = ({ VehicleList, handleEdit,title,handleDelete }) => {
       ...getColumnSearchProps('id'),
     },
     {
-      title: 'VehicleId',
-      dataIndex: 'vehicleId',
-      key: 'vehicleId',
+      title: 'VehicleTypeId',
+      dataIndex: 'vehicleTypeId',
+      key: 'vehicleTypeId',
       width: '20%',
-      ...getColumnSearchProps('vehicleId'),
+      ...getColumnSearchProps('vehicleTypeId'),
     },
     {
       title: 'VehicleType',

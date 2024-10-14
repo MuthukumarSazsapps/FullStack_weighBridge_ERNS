@@ -29,7 +29,7 @@ const createVehicle = async (req, res) => {
         const uniqueId = await generateNewCode(db, "Sazs_WeighBridge_VehicleTypeMaster", "vehid")
         const query = `
                         INSERT INTO Sazs_WeighBridge_VehicleTypeMaster
-                        (vehicleId,vehicleType,chargeAmount,createdBy,createdOn,modifiedBy,modifiedOn,isActive)
+                        (vehicleTypeId,vehicleType,chargeAmount,createdBy,createdOn,modifiedBy,modifiedOn,isActive)
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                     `;
 
@@ -103,7 +103,7 @@ const updateVehicleDetails = async (req, res) => {
           modifiedBy = ?, 
           modifiedOn = ?
         WHERE 
-          vehicleId = ?
+          vehicleTypeId = ?
       `;
 
         const params = [
@@ -111,7 +111,7 @@ const updateVehicleDetails = async (req, res) => {
             req.body.chargeAmount,
             req.body.user, // This could be dynamic, depending on your application logic
             dayjs().format('MM/DD/YYYY, h:mm A'),// The current date and time for 'modifiedOn'
-            req.body.vehicleId // The ID of the company to update
+            req.body.vehicleTypeId // The ID of the company to update
         ];
 
         const result = await executeQuery(db, query, params, 'run');
@@ -148,10 +148,10 @@ const deleteVehicleDetails = async (req, res) => {
         const query = `
         UPDATE Sazs_WeighBridge_VehicleTypeMaster   
         SET isActive=0  WHERE 
-          vehicleId = ?
+          vehicleTypeId = ?
       `;
 
-        const params = [req.body.vehicleId]; // The ID of the company to delete
+        const params = [req.body.vehicleTypeId]; // The ID of the company to delete
 
         const result = await executeQuery(db, query, params, 'run');
 

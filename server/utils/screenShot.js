@@ -150,6 +150,8 @@ const cameraScreenShot = async (tokenNo) => {
   // Define the path to save the image
   // const imageDir = process.env.IMAGE_SAVE_PATH || path.join(__dirname, '../../src/assets/images/camImages');
   let imageDir
+  console.log("env",process.env.NODE_ENV);
+  
   if(process.env.NODE_ENV==="development"){
      imageDir =path.join(__dirname, '../../src/assets/images/camImages');
   }else{

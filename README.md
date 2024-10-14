@@ -40,3 +40,6 @@ https://www.youtube.com/watch?v=VCl8li22mrA
 https://www.youtube.com/watch?v=Y-E7eqgv-EQ
 
 https://www.youtube.com/watch?v=ONpVol7B7AY
+
+
+const isDev = !app.isPackaged ,, for using development and production seperation

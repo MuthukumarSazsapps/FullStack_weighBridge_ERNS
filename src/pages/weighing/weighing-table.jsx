@@ -228,20 +228,20 @@ if (process.env.NODE_ENV === "development") {
   };
 
   // Example usage in your component
-  handleImageClick = async (imagePath) => {
-    console.log("imagePath", imagePath);
-    let imageName = imagePath.split(',');
-    console.log("imageNamearr", imageName);
-    if (imageName.length === 2) {
-      setSelectedImage1(await getImagePath(imageName[0]?.split('\\').pop()));
-      setSelectedImage2(await getImagePath(imageName[1]?.split('\\').pop()));
-      setIsModalVisible(true);
-    } else {
-      setSelectedImage1(await getImagePath(imageName[0].split('\\').pop()));
-      setSelectedImage2(null);
-      setIsModalVisible(true);
-    }
-  };
+  // handleImageClick = async (imagePath) => {
+  //   console.log("imagePath", imagePath);
+  //   let imageName = imagePath.split(',');
+  //   console.log("imageNamearr", imageName);
+  //   if (imageName.length === 2) {
+  //     setSelectedImage1(await getImagePath(imageName[0]?.split('\\').pop()));
+  //     setSelectedImage2(await getImagePath(imageName[1]?.split('\\').pop()));
+  //     setIsModalVisible(true);
+  //   } else {
+  //     setSelectedImage1(await getImagePath(imageName[0].split('\\').pop()));
+  //     setSelectedImage2(null);
+  //     setIsModalVisible(true);
+  //   }
+  // };
 }
 
 
@@ -399,7 +399,7 @@ if (process.env.NODE_ENV === "development") {
     },
   ];
 
-  const [hiddenColumns, setHiddenColumns] = useState([]);
+  const [hiddenColumns, setHiddenColumns] = useState(['ModifiedOn','ModifiedBy',"CreatedOn","CreatedBy",'returnType','loadType','billType']);
 
   const handleToggleColumn = (columnKey) => {
     setHiddenColumns(prevState => {

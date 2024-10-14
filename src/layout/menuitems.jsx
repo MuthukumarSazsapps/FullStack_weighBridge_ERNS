@@ -91,48 +91,48 @@ export const MenuItems = [
         },
       ]
     },
-    {
-      name: 'Report',
-      href: '#',
-      icon: <PiTable />,
-      dropdownItems: [
-        {
-          name: 'Ledger Report',
-          href: '/ledger/report',
-          icon: <PiFolder />,
-        },
-        {
-          name: 'Day Book Report',
-          href: '/daybook/report',
-          icon: <PiFolder />,
-        },
-      ]
-    },
-    {
-      name: 'Settings',
-      href: '#',
-      icon: <PiTable />,
-      dropdownItems: [
-        {
-          name: 'User Permission',
-          href: '/userpermission/setting',
-          icon: <PiFolder />,
-        },
-        {
-          name: 'DataBase Shrink',
-          href: '/shrinkdatabase/setting',
-          icon: <PiFolder />,
-        },
-        {
-          name: 'DataBase Shrink',
-          href: '/shrinkdatabase/setting',
-          icon: <PiFolder />,
-        },
-        {
-          name: 'Log Out',
-          href: '/settings/logout',
-          icon: <PiFolder />,
-        },
-      ]
-    }
+    // {
+    //   name: 'Report',
+    //   href: '#',
+    //   icon: <PiTable />,
+    //   dropdownItems: [
+    //     {
+    //       name: 'Ledger Report',
+    //       href: '/ledger/report',
+    //       icon: <PiFolder />,
+    //     },
+    //     {
+    //       name: 'Day Book Report',
+    //       href: '/daybook/report',
+    //       icon: <PiFolder />,
+    //     },
+    //   ]
+    // },
+    // {
+    //   name: 'Settings',
+    //   href: '#',
+    //   icon: <PiTable />,
+    //   dropdownItems: [
+    //     {
+    //       name: 'User Permission',
+    //       href: '/userpermission/setting',
+    //       icon: <PiFolder />,
+    //     },
+    //     {
+    //       name: 'DataBase Shrink',
+    //       href: '/shrinkdatabase/setting',
+    //       icon: <PiFolder />,
+    //     },
+    //     {
+    //       name: 'DataBase Shrink',
+    //       href: '/shrinkdatabase/setting',
+    //       icon: <PiFolder />,
+    //     },
+    //     {
+    //       name: 'Log Out',
+    //       href: '/settings/logout',
+    //       icon: <PiFolder />,
+    //     },
+    //   ]
+    // }
   ];

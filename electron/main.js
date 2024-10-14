@@ -220,6 +220,7 @@ function createWindow() {
     mainWindow.loadURL(`file://${path.join(__dirname, '../build/index.html')}`);
   }
 
+  mainWindow.maximize();
   mainWindow.on('closed', () => {
     mainWindow = null;
     if (serverProcess) {
