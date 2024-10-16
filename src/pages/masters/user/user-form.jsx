@@ -10,7 +10,7 @@ const UserForm = ({ form }) => {
         <Row gutter={16}>
           <Col span={18}>
             <Form.Item
-              name="userName"
+              name="username"
               label="User Name"
               rules={[
                 {

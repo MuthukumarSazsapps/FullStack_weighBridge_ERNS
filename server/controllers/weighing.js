@@ -9,100 +9,100 @@ import cameraScreenShot from '../utils/screenShot.js';
 
 const createWeighing = async (req, res) => {
 
-    try {
-  
-      const uniqueId = await generateNewCode(db, "Sazs_WeighBridge_WeighingTransaction", "token")
-      const imagePath = await cameraScreenShot(uniqueId)
-      const {returnType}=req.body
-      const status= returnType==='yes'?'pending':'completed'
-      const query = `
+  try {
+
+    const uniqueId = await generateNewCode(db, "Sazs_WeighBridge_WeighingTransaction", "token")
+    const imagePath = await cameraScreenShot(uniqueId)
+    const { returnType } = req.body
+    const status = returnType === 'yes' ? 'pending' : 'completed'
+    const query = `
         INSERT INTO Sazs_WeighBridge_WeighingTransaction 
-        (tokenNo, vehicleNumber, vehicleType, returnType, customerName, driverName, materialName, mobileNumber,loadType, billType,weighmentStatus, amount, firstWeight,imagePath,createdBy,createdOn,modifiedBy,modifiedOn,isActive)
+        (tokenNo, vehicleNumber, vehicleTypeId, returnType, customerName, driverName, productId, mobileNumber,loadType, billType,weighmentStatus, amount, firstWeight,imagePath,createdBy,createdOn,modifiedBy,modifiedOn,isActive)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)
       `;
-  
-      const params = [
-        uniqueId,
-        req.body.vehicleNumber,
-        req.body.vehicleType,
-        req.body.returnType,
-        req.body.customerName,
-        req.body.driverName,
-        req.body.materialName,
-        req.body.mobileNumber,
-        req.body.loadType,
-        req.body.billType,
-        status,
-        req.body.amount,
-        req.body.measuredWeight,
-        // req.body.imagePath,
-        imagePath,
-        req.body.user,
-        dayjs().format('MM/DD/YYYY, h:mm A'),
-        'null',
-        'null',
-        1
-      ];
-  
-      const result = await executeQuery(db, query, params, 'run');
-  
-      if (result.changes > 0) {
-        return responseHandler({
-          req,
-          res,
-          data: { status: true, message: 'Record inserted successfully',tokenNo:uniqueId },
-          httpCode: HttpStatusCode.CREATED,
-        });
-      } else {
-        return responseHandler({
-          req,
-          res,
-          data: { error: 'No record inserted' },
-          httpCode: HttpStatusCode.BAD_REQUEST,
-        });
-      }
-    } catch (err) {
-      console.error('Error inserting record:', err.message);
+
+    const params = [
+      uniqueId,
+      req.body.vehicleNumber,
+      req.body.vehicleTypeId,
+      req.body.returnType,
+      req.body.customerName,
+      req.body.driverName,
+      req.body.productId,
+      req.body.mobileNumber,
+      req.body.loadType,
+      req.body.billType,
+      status,
+      req.body.amount,
+      req.body.measuredWeight,
+      // req.body.imagePath,
+      imagePath,
+      req.body.user,
+      dayjs().format('MM/DD/YYYY, h:mm A'),
+      'null',
+      'null',
+      1
+    ];
+
+    const result = await executeQuery(db, query, params, 'run');
+
+    if (result.changes > 0) {
       return responseHandler({
         req,
         res,
-        data: { error: 'Error inserting record' },
-        httpCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+        data: { status: true, message: 'Record inserted successfully', tokenNo: uniqueId },
+        httpCode: HttpStatusCode.CREATED,
+      });
+    } else {
+      return responseHandler({
+        req,
+        res,
+        data: { error: 'No record inserted' },
+        httpCode: HttpStatusCode.BAD_REQUEST,
       });
     }
-  };
+  } catch (err) {
+    console.error('Error inserting record:', err.message);
+    return responseHandler({
+      req,
+      res,
+      data: { error: 'Error inserting record' },
+      httpCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+    });
+  }
+};
 
-  const getAllWeighingList = async (req, res) => {
-    try {
-        const query = 'SELECT * FROM Sazs_WeighBridge_WeighingTransaction WHERE isActive = 1 ORDER BY createdOn DESC;';
-        const rows = await executeQuery(db, query); // Execute the SQL query
-
-        return responseHandler({
-            req,
-            res,
-            data: { weighingList: rows },
-            httpCode: HttpStatusCode.OK,
-            message: 'success'
-        });
-    } catch (err) {
-        return responseHandler({
-            req,
-            res,
-            data: { error: err.message },
-            httpCode: HttpStatusCode.BAD_REQUEST
-        });
-    }
-}
-
-const getSecondWeightList =async(req,res)=>{
+const getAllWeighingList = async (req, res) => {
   try {
-    const query="select * from Sazs_WeighBridge_WeighingTransaction where IsActive=1 AND returnType='yes' and weighmentStatus='pending'"
-    const result=await executeQuery(db,query);
+    const query = 'SELECT w.*, v.vehicleType, p.productName FROM   Sazs_WeighBridge_WeighingTransaction w  INNER JOIN   Sazs_WeighBridge_VehicleTypeMaster v ON w.vehicleTypeId = v.vehicleTypeId  INNER JOIN  Sazs_WeighBridge_ProductMaster p ON w.productId = p.productId WHERE w.isActive = 1 ORDER BY w.createdOn DESC;';
+    const rows = await executeQuery(db, query); // Execute the SQL query
 
     return responseHandler({
       req,
       res,
-      data:{secondWeightList:result},
+      data: { weighingList: rows },
+      httpCode: HttpStatusCode.OK,
+      message: 'success'
+    });
+  } catch (err) {
+    return responseHandler({
+      req,
+      res,
+      data: { error: err.message },
+      httpCode: HttpStatusCode.BAD_REQUEST
+    });
+  }
+}
+
+const getSecondWeightList = async (req, res) => {
+  try {
+    const query = "select * from Sazs_WeighBridge_WeighingTransaction where IsActive=1 AND returnType='yes' and weighmentStatus='pending'"
+    const result = await executeQuery(db, query);
+
+    return responseHandler({
+      req,
+      res,
+      data: { secondWeightList: result },
       httpCode: HttpStatusCode.OK,
       message: 'success'
 
@@ -113,7 +113,7 @@ const getSecondWeightList =async(req,res)=>{
       res,
       data: { error: error.message },
       httpCode: HttpStatusCode.BAD_REQUEST
-  });
+    });
   }
 }
 
@@ -123,11 +123,11 @@ const updateWeighingDetails = async (req, res) => {
       UPDATE Sazs_WeighBridge_WeighingTransaction 
       SET 
         vehicleNumber = ?, 
-        vehicleType = ?, 
+        vehicleTypeId = ?, 
         returnType = ?, 
         customerName = ?, 
         driverName = ?, 
-        materialName = ?, 
+        productId = ?, 
         mobileNumber = ?,
         loadType=?,
         billType = ?, 
@@ -142,11 +142,11 @@ const updateWeighingDetails = async (req, res) => {
 
     const params = [
       req.body.vehicleNumber,
-      req.body.vehicleType,
+      req.body.vehicleTypeId,
       req.body.returnType,
       req.body.customerName,
       req.body.driverName,
-      req.body.materialName,
+      req.body.productId,
       req.body.mobileNumber,
       req.body.loadType,
       req.body.billType,
@@ -187,12 +187,12 @@ const updateWeighingDetails = async (req, res) => {
   }
 };
 
-const updateSecondWeight=async(req,res)=>{
+const updateSecondWeight = async (req, res) => {
   try {
 
-    const imagePath = await cameraScreenShot(`${ req.body.tokenNo}-2`)
+    const imagePath = await cameraScreenShot(`${req.body.tokenNo}-2`)
 
-    const query=`
+    const query = `
           update Sazs_WeighBridge_WeighingTransaction
           set
           loadType = loadType || ' To ' || ?,
@@ -204,14 +204,14 @@ const updateSecondWeight=async(req,res)=>{
           tokenNo=?
     `
 
-    
-    const params=[
-        req.body.loadType,
-        req.body.secondWeight,
-        req.body.netWeight,
-        imagePath,
-        'completed',
-        req.body.tokenNo
+
+    const params = [
+      req.body.loadType,
+      req.body.secondWeight,
+      req.body.netWeight,
+      imagePath,
+      'completed',
+      req.body.tokenNo
     ]
 
     const result = await executeQuery(db, query, params, 'run');
@@ -225,7 +225,7 @@ const updateSecondWeight=async(req,res)=>{
       });
     } else {
       return responseHandler({
-        req,   
+        req,
         res,
         data: { error: 'No record updated' },
         httpCode: HttpStatusCode.BAD_REQUEST,
@@ -245,47 +245,51 @@ const updateSecondWeight=async(req,res)=>{
 
 const deleteWeighingDetails = async (req, res) => {
   try {
-      const query = `
+    const query = `
       UPDATE  Sazs_WeighBridge_WeighingTransaction 
       SET isActive=0  WHERE 
         tokenNo = ?
     `;
 
-      const params = [req.body.tokenNo]; // The ID of the company to delete
+    const params = [req.body.tokenNo]; // The ID of the company to delete
 
-      const result = await executeQuery(db, query, params, 'run');
+    const result = await executeQuery(db, query, params, 'run');
 
-      if (result.changes > 0) {
-          return responseHandler({
-              req,
-              res,
-              data: { status: true, message: 'Record deleted successfully' },
-              httpCode: HttpStatusCode.OK,
-          });
-      } else {
-          return responseHandler({
-              req,
-              res,
-              data: { error: 'No record found to delete' },
-              httpCode: HttpStatusCode.NOT_FOUND,
-          });
-      }
-  } catch (err) {
-      console.error('Error deleting record:', err.message);
+    if (result.changes > 0) {
       return responseHandler({
-          req,
-          res,
-          data: { error: 'Error deleting record' },
-          httpCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+        req,
+        res,
+        data: { status: true, message: 'Record deleted successfully' },
+        httpCode: HttpStatusCode.OK,
       });
+    } else {
+      return responseHandler({
+        req,
+        res,
+        data: { error: 'No record found to delete' },
+        httpCode: HttpStatusCode.NOT_FOUND,
+      });
+    }
+  } catch (err) {
+    console.error('Error deleting record:', err.message);
+    return responseHandler({
+      req,
+      res,
+      data: { error: 'Error deleting record' },
+      httpCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+    });
   }
 };
 
 export default {
-    createWeighing,
-    getAllWeighingList,
-    updateWeighingDetails,
-    deleteWeighingDetails,
-    getSecondWeightList,
-    updateSecondWeight
-  }
+  createWeighing,
+  getAllWeighingList,
+  updateWeighingDetails,
+  deleteWeighingDetails,
+  getSecondWeightList,
+  updateSecondWeight
+}
+
+
+
+// SELECT w.*, v.vehicleType, p.productName FROM   Sazs_WeighBridge_WeighingTransaction w  INNER JOIN   Sazs_WeighBridge_VehicleTypeMaster v ON w.vehicleTypeId = v.vehicleTypeId  INNER JOIN  Sazs_WeighBridge_ProductMaster p ON w.productId = p.productId WHERE w.isActive = 1 ORDER BY w.createdOn DESC;

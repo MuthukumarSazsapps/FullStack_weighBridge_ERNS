@@ -5,6 +5,8 @@ import product from './product.js'
 import vehicle from './vehicle.js'
 import weighing from './weighing.js';
 import camera from './camera.js'
+import user from './user.js'
+
 const routes = app => {
     app.use('/login',login)
     app.use('/company',company);
@@ -13,6 +15,7 @@ const routes = app => {
     app.use('/vehicle',vehicle)
     app.use('/weighing',weighing)
     app.use('/camera',camera)
+    app.use('/user',user)
 }
 
 export default routes;

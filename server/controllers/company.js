@@ -91,7 +91,7 @@ const createCompany = async (req, res) => {
     // Generate unique IDs for company and user in parallel
     const [companyId, userId] = await Promise.all([
       generateNewCode(db, "Sazs_WeighBridge_CompanyDetails", "cmny"),
-      generateNewCode(db, "Sazs_WeighBridge_AuthLogin", "user")
+      generateNewCode(db, "Sazs_WeighBridge_AuthLogin", "ownr")
     ]);
 
     // Prepare the SQL queries

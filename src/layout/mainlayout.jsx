@@ -2,12 +2,13 @@
 import React, { useState } from 'react';
 import { Breadcrumb, Layout, Menu, theme, Tooltip, Button } from 'antd';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { MenuItems } from './menuitems';  // Import your MenuItems
+import { AdminMenuItems,SubscriberMenuItems,UserMenuItems } from './menuitems';  // Import your MenuItems
 import logo from '../assets/images/logo/sazsapplogo.png'
 
 
 import { RiAccountPinCircleFill } from "react-icons/ri";
 import MainHeader from './header';
+import { useLocalStorage } from 'react-use';
 
 
 
@@ -21,7 +22,9 @@ const Mainlayout = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-
+  const [userData] = useLocalStorage('userData'); // As for now this is a session cookie, need to discuss
+  const userRole=userData?.role
+  const MenuItems=userRole==='admin'? AdminMenuItems: userRole==='owner'? SubscriberMenuItems:UserMenuItems
   const onOpenChange = (keys) => {
     const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
     setOpenKeys(latestOpenKey ? [latestOpenKey] : []);

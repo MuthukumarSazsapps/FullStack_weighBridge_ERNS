@@ -5,13 +5,7 @@ import { db } from '../server.js';
 import executeQuery from '../utils/dball.js';
 
 
-// const createUser= async (req,res)=>{
-//   try {
-    
-//   } catch (error) {
-    
-//   }
-// }
+
 
 const getAllLoginUser = async (req, res) => {
   try {
@@ -35,58 +29,6 @@ const getAllLoginUser = async (req, res) => {
     });
   }
 };
-
-// const login = async (req, res) => {
-//   try {
-   
-   
-//     const { username, password } = req.body;
-
-//     const query1 = 'SELECT * FROM Sazs_WeighBridge_CompanyDetails where isActive=1 AND username= ?';
-//     const rows = await executeQuery(db, query1,[username]);
-
-//     const query = "SELECT * FROM Sazs_WeighBridge_AuthLogin WHERE username = ? AND isActive=1";
-//     const user = await executeQuery(db, query,[username],"get");
-    
-//     if (!user) {
-//       return responseHandler({
-//         req,
-//         res,
-//         data: { error: 'User not found' },
-//         httpCode: HttpStatusCode.BAD_REQUEST,
-//       });
-//     }
-
-//     if (password === user.password) {
-//       const token = jwt.sign({ id: user.id }, 'sazsapps', {
-//         expiresIn: '1h',
-//       });
-//       // return res.json({ Status: 'success', token });
-//       return responseHandler({
-//         req,
-//         res,
-//         data:{Status: 'success',token,companyData:rows},
-//         httpCode: HttpStatusCode.OK,
-
-//       })
-//     } else {
-//       return responseHandler({
-//         req,
-//         res,
-//         data: { error: 'Incorrect password' },
-//         httpCode: HttpStatusCode.UNAUTHORIZED,
-//       });
-//     }
-//   } catch (error) {
-//     console.error('login err:', error);
-//     return responseHandler({
-//       req,
-//       res,
-//       data: { error: 'Invalid credentials' },
-//       httpCode: HttpStatusCode.UNAUTHORIZED,
-//     });
-//   }
-// }
 
 
 const login = async (req, res) => {
@@ -165,6 +107,8 @@ const login = async (req, res) => {
     });
   }
 };
+
+
 
 
   export default {

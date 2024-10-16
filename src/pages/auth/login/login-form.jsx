@@ -100,6 +100,7 @@ const LoginForm = () => {
           username: companyData.username,
           userId: companyData.userId,
           role: companyData.role,
+          companyId:companyData.companyId,
         });
 
         message.success('Login successful!');

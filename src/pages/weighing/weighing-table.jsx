@@ -303,7 +303,7 @@ if (process.env.NODE_ENV === "development") {
     },
     {
       title: 'materialName',
-      dataIndex: 'materialName',
+      dataIndex: 'productName',
       key: 'materialName',
       ...getColumnSearchProps('materialName'),
     },

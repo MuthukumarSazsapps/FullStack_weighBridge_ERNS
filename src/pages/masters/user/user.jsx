@@ -2,19 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Flex, Form, Input, Modal, message } from 'antd';
 import UserTable from './user-table';
 import UserForm from './user-form'
-import { getAllProductList,createProduct,updateProductDetails,deleteProductDetails } from '../../../app/api/product';
 import { useLocalStorage } from 'react-use';
+import { createUser, deleteUserDetails, getAllUserList, updateUserDetails } from '../../../app/api/user';
 
 
 const User = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [allProductList, setAllProductList] = useState([]);
+  const [allUserList, setAllUserList] = useState([]);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [action, setAction] = useState('create');
-  const [productId, setProductId] = useState(null);
+  const [userId, setUserId] = useState(null);
 
-  const [user] = useLocalStorage('user');
+  const [userData] = useLocalStorage('userData'); // As for now this is a session cookie, need to discuss
+  const user=userData?.role
+  const companyId=userData?.companyId
+
+  // setUserId(userData.userId)
+  
+  
   const showModal = () => {
     setIsModalVisible(true);
     setAction('create');
@@ -22,8 +28,8 @@ const User = () => {
 
   const fetchData = async () => {
     try {
-      const result = await getAllProductList();
-      setAllProductList(result.data.productList);
+      const result = await getAllUserList();
+      setAllUserList(result.data.userList);
     } catch (error) {
       console.log(error);
     }
@@ -34,7 +40,7 @@ const User = () => {
   }, []);
 
   const handleEdit = (record) => {
-    setProductId(record.productId);
+    setUserId(record.userId);
     setAction('update');
     form.setFieldsValue(record);
     setIsModalVisible(true);
@@ -42,17 +48,17 @@ const User = () => {
 
   const handleDelete = async (data) => {
     Modal.confirm({
-      title: 'Are you sure you want to delete this Product?',
+      title: 'Are you sure you want to delete this User?',
       content: 'This action cannot be undone.',
       onOk: async () => {
         try {
           setLoading(true);
-          const res = await deleteProductDetails(data);
+          const res = await deleteUserDetails(data);
           if (res.data.status === true) {
-            message.success('Product deleted successfully!');
+            message.success('User deleted successfully!');
             fetchData();
           } else {
-            message.error(`Error: ${res.data.message || 'Failed to delete Product'}`);
+            message.error(`Error: ${res.data.message || 'Failed to delete User'}`);
           }
         } catch (error) {
           message.error(`API Error: ${error.message}`);
@@ -75,18 +81,18 @@ const User = () => {
           setLoading(true);
           let res;
           if (action === 'update') {
-            res = await updateProductDetails({ ...data, productId,user });
+            res = await updateUserDetails({ ...data, userId,user,companyId });
           } else {
-            res = await createProduct({...data,user});
+            res = await createUser({...data,user,userId,companyId });
           }
           if (res.data.status === true) {
-            message.success('Product saved successfully!');
+            message.success('User saved successfully!');
             setIsModalVisible(false);
             setLoading(false);
             form.resetFields();
             fetchData();
           } else {
-            message.error(`Error: ${res.data.message || 'Failed to save Product'}`);
+            message.error(`Error: ${res.data.message || 'Failed to save User'}`);
           }
         } catch (error) {
           message.error(`API Error: ${error.message}`);
@@ -106,14 +112,14 @@ const User = () => {
     <>
       <Flex vertical gap='middle'>
         <Flex justify='flex-end'>
-          <Button type="primary" onClick={showModal}>Create Product</Button>
+          <Button type="primary" onClick={showModal}>Create User</Button>
         </Flex>
-        <UserTable ProductList={allProductList} handleEdit={handleEdit} handleDelete={(data) => handleDelete(data)} title='Product List' />
+        <UserTable UserList={allUserList} handleEdit={handleEdit} handleDelete={(data) => handleDelete(data)} title='User List' />
       </Flex>
 
       {isModalVisible && (
         <Modal
-          title={action === 'update' ? "Edit Product" : "Create Product"}
+          title={action === 'update' ? "Edit User" : "Create User"}
           open={isModalVisible}
           onOk={handleOk}
           onCancel={handleCancel}

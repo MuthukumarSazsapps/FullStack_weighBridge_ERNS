@@ -5,7 +5,7 @@ import Highlighter from 'react-highlight-words';
 import * as XLSX from 'xlsx';
 
 
-const UserTable = ({ ProductList, handleEdit,title,handleDelete }) => {
+const UserTable = ({ UserList, handleEdit,title,handleDelete }) => {
 
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -124,18 +124,25 @@ const UserTable = ({ ProductList, handleEdit,title,handleDelete }) => {
       ...getColumnSearchProps('id'),
     },
     {
-      title: 'ProductId',
-      dataIndex: 'productId',
+      title: 'UserId',
+      dataIndex: 'userId',
       key: 'productId',
       width: '10%',
-      ...getColumnSearchProps('productId'),
+      ...getColumnSearchProps('userId'),
     },
     {
-      title: 'ProductName',
-      dataIndex: 'productName',
-      key: 'productName',
+      title: 'User Name',
+      dataIndex: 'username',
+      key: 'userName',
       width: '20%',
-      ...getColumnSearchProps('productName'),
+      ...getColumnSearchProps('userName'),
+    },
+    {
+      title: 'Password',
+      dataIndex: 'password',
+      key: 'password',
+      width: '20%',
+      ...getColumnSearchProps('password'),
     },
     {
       title: 'CreatedBy',
@@ -254,7 +261,7 @@ const UserTable = ({ ProductList, handleEdit,title,handleDelete }) => {
 
       <Table
         columns={filteredColumns}
-        dataSource={ProductList}
+        dataSource={UserList}
         bordered
         pagination={{
           showSizeChanger: true,  // Enable the page size changer

@@ -196,7 +196,7 @@ const WeighingForm = ({ form, action, allCustomerList }) => {
                         <Space.Compact className='w-full'>
                             <Form.Item
                                 className='w-full'
-                                name="vehicleType"
+                                name="vehicleTypeId"
                                 label="Vehicle Type"
                                 rules={[
                                     {
@@ -281,7 +281,7 @@ const WeighingForm = ({ form, action, allCustomerList }) => {
                     <Space.Compact className='w-full'>
                         <Form.Item
                             className='w-full'
-                            name="materialName"
+                            name="productId"
                             label="Material Name"
                             rules={[
                                 {
