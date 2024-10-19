@@ -185,9 +185,13 @@ const WeighingForm = ({ form, action, allCustomerList }) => {
                                     required: true,
                                     message: 'Please enter Vehicle Number',
                                 },
+                                {
+                                    pattern: /^[a-zA-Z0-9]+$/,
+                                    message: 'Vehicle Number can only include letters and numbers.',
+                                },
                             ]}
                         >
-                            <Input placeholder="Please enter Vehicle Number" />
+                            <Input placeholder="Please enter Vehicle Number" maxLength={9}/>
                         </Form.Item>
                     </Col>
 
@@ -270,6 +274,10 @@ const WeighingForm = ({ form, action, allCustomerList }) => {
                                     required: true,
                                     message: 'Please enter Driver Name',
                                 },
+                                {
+                                    pattern: /^[a-zA-Z]+$/,
+                                    message: 'Name can only include letters.',
+                                  },
                             ]}
                         >
                             <Input placeholder="Please enter Driver Name" />
@@ -310,9 +318,13 @@ const WeighingForm = ({ form, action, allCustomerList }) => {
                                     required: true,
                                     message: 'Please enter Mobile Number',
                                 },
+                                {
+                                    pattern: /^[0-9]$/,
+                                    message: 'Number can only include Numbers.',
+                                },
                             ]}
                         >
-                            <Input placeholder="Please enter Mobile Number" />
+                            <Input placeholder="Please enter Mobile Number" maxLength={10} />
                         </Form.Item>
                     </Col>
                 </Row>

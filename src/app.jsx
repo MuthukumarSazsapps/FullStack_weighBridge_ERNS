@@ -53,32 +53,32 @@ const App = () => {
       {/* Subscriber Routes */}
       <Route element={<SubscriberRoutesValidator />}>
    
-        <Route path='o/customer/master' element={<Customer />} /> 
-        <Route path='o/material/master' element={<Product />} />
-        <Route path='o/vehicletype/master' element={<VehicleType />} />
-        <Route path='o/weighing/master' element={<Weighing />} />
-        <Route path='o/user/master' element={<User />} />
-        <Route path='o/vehicleno/master' element={<VehicleNumber />} />
+        <Route path='owner/customer/master' element={<Customer />} /> 
+        <Route path='owner/material/master' element={<Product />} />
+        <Route path='owner/vehicletype/master' element={<VehicleType />} />
+        <Route path='owner/weighing/master' element={<Weighing />} />
+        <Route path='owner/user/master' element={<User />} />
+        <Route path='owner/vehicleno/master' element={<VehicleNumber />} />
       </Route>
 
 
       <Route element={<AdminRoutesValidator />}>
-        <Route path='a/company/create' element={<Company />} />
-        <Route path='a/customer/master' element={<Customer />} />
-        <Route path='a/material/master' element={<Product />} />
-        <Route path='a/vehicletype/master' element={<VehicleType />} />
-        <Route path='a/weighing/master' element={<Weighing />} />
-        <Route path='a/user/master' element={<User />} />
-        <Route path='a/vehicleno/master' element={<VehicleNumber />} />
+        <Route path='admin/company/create' element={<Company />} />
+        <Route path='admin/customer/master' element={<Customer />} />
+        <Route path='admin/material/master' element={<Product />} />
+        <Route path='admin/vehicletype/master' element={<VehicleType />} />
+        <Route path='admin/weighing/master' element={<Weighing />} />
+        <Route path='admin/user/master' element={<User />} />
+        <Route path='admin/vehicleno/master' element={<VehicleNumber />} />
       </Route>
 
       <Route element={<UserRoutesValidator />}>
-        <Route path='u/customer/master' element={<Customer />} /> 
-        <Route path='u/material/master' element={<Product />} />
-        <Route path='u/vehicletype/master' element={<VehicleType />} />
-        <Route path='u/weighing/master' element={<Weighing />} />
-        {/* <Route path='u/users/master' element={<User />} /> */}
-        <Route path='u/vehicleno/master' element={<VehicleNumber />} />
+        <Route path='user/customer/master' element={<Customer />} /> 
+        <Route path='user/material/master' element={<Product />} />
+        <Route path='user/vehicletype/master' element={<VehicleType />} />
+        <Route path='user/weighing/master' element={<Weighing />} />
+        {/* <Route path='user/users/master' element={<User />} /> */}
+        <Route path='user/vehicleno/master' element={<VehicleNumber />} />
       </Route>
 
     </Route>

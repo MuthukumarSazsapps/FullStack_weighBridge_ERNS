@@ -31,6 +31,10 @@ const VehicleTypeForm = ({ form }) => {
                   required: true,
                   message: 'Please enter Amount ',
                 },
+                {
+                  pattern: /^[0-9]$/,
+                  message: 'Amount can only include Numbers.',
+              },
               ]}
             >
               <Input placeholder="Please Enter Amount" />

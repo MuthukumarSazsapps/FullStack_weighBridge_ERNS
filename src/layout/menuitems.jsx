@@ -17,12 +17,12 @@ export const AdminMenuItems = [
       dropdownItems: [
         {
           name: 'Create Company',
-          href: 'a/company/create',
+          href: 'admin/company/create',
           icon: <PiFolder />,
         },
         {
           name: 'user Masters',
-          href: 'a/user/master',
+          href: 'admin/user/master',
           icon: <PiFolder />,
         },
         // {
@@ -49,22 +49,22 @@ export const AdminMenuItems = [
       dropdownItems: [
         {
           name: 'customer Masters',
-          href: 'a/customer/master',
+          href: 'admin/customer/master',
           icon: <PiFolder />,
         },
         {
           name: 'Vehicle No Master',
-          href: 'a/vehicleno/master',
+          href: 'admin/vehicleno/master',
           icon: <PiFolder />,
         },
         {
           name: 'Vehicle Type Master',
-          href: 'a/vehicletype/master',
+          href: 'admin/vehicletype/master',
           icon: <PiFolder />,
         },
         {
           name: 'Material Master',
-          href: 'a/material/master',
+          href: 'admin/material/master',
           icon: <PiFolder />,
         },
       ],
@@ -76,7 +76,7 @@ export const AdminMenuItems = [
       dropdownItems: [
         {
           name: 'Weighment Master',
-          href: 'a/weighing/master',
+          href: 'admin/weighing/master',
           icon: <PiFolder />,
         },
       ]
@@ -143,12 +143,12 @@ export const AdminMenuItems = [
       dropdownItems: [
         {
           name: 'Create Company',
-          href: 'o/company/create',
+          href: 'owner/company/create',
           icon: <PiFolder />,
         },
         {
           name: 'user Masters',
-          href: 'o/user/master',
+          href: 'owner/user/master',
           icon: <PiFolder />,
         },
         // {
@@ -175,22 +175,22 @@ export const AdminMenuItems = [
       dropdownItems: [
         {
           name: 'customer Masters',
-          href: 'o/customer/master',
+          href: 'owner/customer/master',
           icon: <PiFolder />,
         },
         {
           name: 'Vehicle No Master',
-          href: 'o/vehicleno/master',
+          href: 'owner/vehicleno/master',
           icon: <PiFolder />,
         },
         {
           name: 'Vehicle Type Master',
-          href: 'o/vehicletype/master',
+          href: 'owner/vehicletype/master',
           icon: <PiFolder />,
         },
         {
           name: 'Material Master',
-          href: 'o/material/master',
+          href: 'owner/material/master',
           icon: <PiFolder />,
         },
       ],
@@ -202,7 +202,7 @@ export const AdminMenuItems = [
       dropdownItems: [
         {
           name: 'Weighment Master',
-          href: 'o/weighing/master',
+          href: 'owner/weighing/master',
           icon: <PiFolder />,
         },
       ]
@@ -301,22 +301,22 @@ export const AdminMenuItems = [
       dropdownItems: [
         {
           name: 'customer Masters',
-          href: '/customer/master',
+          href: 'user/customer/master',
           icon: <PiFolder />,
         },
         {
           name: 'Vehicle No Master',
-          href: '/vehicleno/master',
+          href: 'user/vehicleno/master',
           icon: <PiFolder />,
         },
         {
           name: 'Vehicle Type Master',
-          href: '/vehicletype/master',
+          href: 'user/vehicletype/master',
           icon: <PiFolder />,
         },
         {
           name: 'Material Master',
-          href: '/material/master',
+          href: 'user/material/master',
           icon: <PiFolder />,
         },
       ],
@@ -328,7 +328,7 @@ export const AdminMenuItems = [
       dropdownItems: [
         {
           name: 'Weighment Master',
-          href: '/weighing/master',
+          href: 'user/weighing/master',
           icon: <PiFolder />,
         },
       ]

@@ -24,6 +24,10 @@ const VehicleNumberForm = ({ form,vehicleTypeList }) => {
                   required: true,
                   message: 'Please enter Vehicle Number ',
                 },
+                {
+                  pattern: /^[a-zA-Z0-9]+$/,
+                  message: 'Name can only include letters and numbers.',
+                },
               ]}
             >
               <Input placeholder="Please enter VehicleNumber"/>
@@ -38,6 +42,7 @@ const VehicleNumberForm = ({ form,vehicleTypeList }) => {
                         required: true,
                         message: 'Please enter Vehicle type',
                     },
+                  
                 ]}
             >
                 <Select
@@ -60,6 +65,10 @@ const VehicleNumberForm = ({ form,vehicleTypeList }) => {
                   required: true,
                   message: 'Please enter Driver Name ',
                 },
+                {
+                  pattern: /^[a-zA-Z]+$/,
+                  message: 'Name can only include letters.',
+                },
               ]}
             >
               <Input placeholder="Please enter Driver Name"/>
@@ -74,9 +83,13 @@ const VehicleNumberForm = ({ form,vehicleTypeList }) => {
                   required: true,
                   message: 'Please enter Phone Number ',
                 },
+                {
+                  pattern: /^[0-9]{10}$/,
+                  message: 'Number can only include Numbers.',
+                },
               ]}
             >
-              <Input placeholder="Please Enter Phone Number" />
+              <Input placeholder="Please Enter Phone Number"  maxLength={10} />
             </Form.Item>
           </Col>
         </Row>

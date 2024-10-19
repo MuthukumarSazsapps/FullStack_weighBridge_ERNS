@@ -36,7 +36,10 @@ const login = async (req, res) => {
     const { username, password } = req.body;
 
     // Combined query to fetch both user and company data in one go
-    const query = username ==='Advika'?`SELECT * FROM Sazs_WeighBridge_AuthLogin WHERE username = ? AND isActive=1`:`
+    const query = username ==='Advika'?
+      `SELECT * FROM Sazs_WeighBridge_AuthLogin WHERE username = ? AND isActive=1`
+    :
+    `
       SELECT 
         u.*, 
         c.companyId, 
@@ -53,7 +56,7 @@ const login = async (req, res) => {
       JOIN 
         Sazs_WeighBridge_CompanyDetails c 
       ON 
-        u.username = c.username 
+        u.companyId = c.companyId 
       WHERE 
         u.username = ? 
         AND u.isActive = 1 
